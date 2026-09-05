@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibe Coding SOPs — Lecture 9</title>
+<meta name="description" content="Backend Engineering Syllabus, Lecture 9: standard operating procedures for shipping AI-assisted code.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="assets/deck.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#128203;</text></svg>">
+</head>
+<body>
+
+<div id="deck">
+
+  <!-- ============ OPEN ============ -->
+
+  <section class="slide" data-section="Lecture 9">
+    <div class="slide-inner">
+      <p class="eyebrow">Backend Engineering · Lecture 9</p>
+      <h1>Vibe Coding SOPs</h1>
+      <p class="wide">Standard operating procedures for shipping code you didn't entirely write.</p>
+      <div class="timing">
+        <span><b>60 min</b> lecture</span>
+        <span><b>45 min</b> exercise</span>
+        <span><b>15 min</b> debrief</span>
+      </div>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>Open by asking for a show of hands: who shipped AI-generated code this week? Who read every line of it?</p>
+        <p>Press <code>?</code> for the key map. <code>n</code> toggles these notes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Framing">
+    <div class="slide-inner">
+      <p class="eyebrow muted">The claim we are not making</p>
+      <p class="big-quote"><span class="strike">Code 10x faster with AI.</span></p>
+      <p class="wide" style="margin-top:2rem">You will type less. That is not the same as shipping more. The bottleneck was never typing — it was understanding, reviewing, and being right.</p>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>This is deliberate. The old version of this lecture led with "10x faster" and the rest of it argues against that. Name the tension early.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Framing">
+    <div class="slide-inner">
+      <p class="eyebrow">What actually changes</p>
+      <div class="cols">
+        <div>
+          <div class="col-label good">Cheaper now</div>
+          <ul class="bullets">
+            <li>First drafts</li>
+            <li>Boilerplate — DTOs, mappers, scaffolding</li>
+            <li>Explaining unfamiliar code</li>
+            <li>Test skeletons</li>
+            <li>One-off scripts and migrations</li>
+          </ul>
+        </div>
+        <div>
+          <div class="col-label bad">Exactly as expensive</div>
+          <ul class="bullets">
+            <li>Knowing what to build</li>
+            <li>Reviewing the diff</li>
+            <li>Owning the incident</li>
+            <li>Deciding the tradeoff</li>
+            <li>Being right about the edge case</li>
+          </ul>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>The right column is the whole lecture. Everything after this slide is procedure for the right column.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Framing">
+    <div class="slide-inner">
+      <p class="eyebrow">Today</p>
+      <ol class="bullets">
+        <li><strong>Key concepts</strong> — the vocabulary</li>
+        <li><strong>9.1</strong> AI-assisted development workflow</li>
+        <li><strong>9.2</strong> Code review process</li>
+        <li><strong>9.3</strong> Documentation</li>
+        <li><strong>9.4</strong> SOPs for common tasks</li>
+        <li><strong>Exercise</strong> — The Legacy Rescue</li>
+        <li><strong>Checkpoints</strong></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ KEY CONCEPTS ============ -->
+
+  <section class="slide divider" data-section="Key concepts">
+    <div class="slide-inner">
+      <div class="rule"></div>
+      <p class="eyebrow">Part one</p>
+      <h2>Key concepts</h2>
+      <p>Seven words you need to use precisely for the rest of the course.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Key concepts">
+    <div class="slide-inner">
+      <p class="eyebrow">Concept 1</p>
+      <h2>Context engineering</h2>
+      <p class="wide">The model is only as good as what you put in front of it: the repo's conventions, the failing test, the actual stack trace.</p>
+      <p class="wide"><em>Prompt wording matters far less than context.</em> Rewriting "please carefully" into "you are an expert" changes nothing. Pasting the error changes everything.</p>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>Counter the prompt-magic-words folklore here. Ask: when the model got it wrong last week, was the prompt bad, or did it not have the file?</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Key concepts">
+    <div class="slide-inner">
+      <p class="eyebrow">Concept 2</p>
+      <h2>Project context files</h2>
+      <p class="wide">Encode conventions once, so every session starts informed instead of guessing.</p>
+      <pre><span class="tok-c"># CLAUDE.md / AGENTS.md / .cursor/rules</span>
+
+<span class="tok-k">## Build</span>
+Prefer <span class="tok-s">`make`</span> over raw gradle — it sets profiles the raw command doesn't.
+
+<span class="tok-k">## Migrations</span>
+Forward-only. Never edit an applied migration.
+
+<span class="tok-k">## Authorship</span>
+No AI co-author trailers on commits. Ever.</pre>
+      <p class="tight">If you correct the model on the same thing twice, it belongs in this file.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Key concepts">
+    <div class="slide-inner">
+      <p class="eyebrow">Concept 3</p>
+      <h2>Agentic vs. chat</h2>
+      <div class="cols">
+        <div>
+          <div class="col-label">Chat</div>
+          <ul class="bullets">
+            <li>You carry the context in and the code out</li>
+            <li>Good for: explaining, designing, one function</li>
+            <li>Fails by: inventing APIs it can't check</li>
+          </ul>
+        </div>
+        <div>
+          <div class="col-label">Agentic</div>
+          <ul class="bullets">
+            <li>It reads files, edits, runs tests, iterates</li>
+            <li>Good for: multi-file changes, refactors, test loops</li>
+            <li>Fails by: confidently green tests that assert nothing</li>
+          </ul>
+        </div>
+      </div>
+      <p class="wide" style="margin-top:1.4rem">Different tools, <em>different failure modes.</em> Review accordingly.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Key concepts">
+    <div class="slide-inner">
+      <p class="eyebrow">Concept 4</p>
+      <h2>Hallucination check</h2>
+      <p class="wide">Verify every external API, config key, and library method against the real source. <em>Model memory is not a source.</em></p>
+      <ul class="bullets">
+        <li>The package that doesn't exist</li>
+        <li>The method that was removed two majors ago</li>
+        <li>The config key that is <em>almost</em> right</li>
+        <li>The citation to documentation that was never written</li>
+      </ul>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>The "almost right config key" is the dangerous one — it fails silently at runtime in staging, not at compile time.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Key concepts">
+    <div class="slide-inner">
+      <p class="eyebrow">Concept 5</p>
+      <h2>The safe zone</h2>
+      <p class="wide">Highest value, lowest risk: code that is <strong>tedious, mechanical, and immediately verifiable.</strong></p>
+      <div class="cols">
+        <div>
+          <div class="col-label good">Let it drive</div>
+          <ul class="bullets">
+            <li>DTOs and mappers</li>
+            <li>Test scaffolding</li>
+            <li>Migration skeletons</li>
+            <li>Repetitive refactors</li>
+            <li>Docs from existing code</li>
+          </ul>
+        </div>
+        <div>
+          <div class="col-label bad">You drive</div>
+          <ul class="bullets">
+            <li>Auth and permissions</li>
+            <li>Money arithmetic</li>
+            <li>Concurrency</li>
+            <li>Anything destructive</li>
+            <li>The bit you don't understand yet</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Key concepts">
+    <div class="slide-inner">
+      <p class="eyebrow">Concept 6</p>
+      <h2>You are the author</h2>
+      <p class="big-quote">AI authorship is invisible to reviewers and to production.</p>
+      <p class="wide" style="margin-top:1.8rem">Nobody debugging this at 2am cares which tool typed it. The commit has your name on it because the responsibility does.</p>
+      <p class="wide">No <code>Co-authored-by</code> trailers. No "generated with". Strip them before you push.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Key concepts">
+    <div class="slide-inner">
+      <p class="eyebrow">Concept 7</p>
+      <h2>Rubber ducking 2.0</h2>
+      <p class="wide">Using the model to explain a bug you understand badly — and noticing that the act of writing the question is what solved it half the time.</p>
+      <p class="wide"><em>Write down your own hypothesis before you ask.</em> Otherwise the first plausible answer becomes your hypothesis, and you have outsourced the thinking you were supposed to do.</p>
+    </div>
+  </section>
+
+  <!-- ============ 9.1 ============ -->
+
+  <section class="slide divider" data-section="9.1 Workflow">
+    <div class="slide-inner">
+      <div class="rule"></div>
+      <p class="eyebrow">9.1</p>
+      <h2>AI-assisted development workflow</h2>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.1 Workflow">
+    <div class="slide-inner">
+      <p class="eyebrow">Giving context</p>
+      <div class="cols">
+        <div>
+          <div class="col-label good">Include</div>
+          <ul class="bullets">
+            <li>The failing test</li>
+            <li>The actual error, in full</li>
+            <li>The file being changed</li>
+            <li>The conventions file</li>
+            <li>One neighbouring example of the pattern</li>
+          </ul>
+        </div>
+        <div>
+          <div class="col-label bad">Leave out</div>
+          <ul class="bullets">
+            <li>The whole repo</li>
+            <li>Six abandoned attempts</li>
+            <li>Unrelated files "for context"</li>
+            <li>Secrets, dumps, customer data</li>
+          </ul>
+        </div>
+      </div>
+      <p class="wide" style="margin-top:1.4rem">More context is not better context. Noise dilutes the signal you actually need it to weigh.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.1 Workflow">
+    <div class="slide-inner">
+      <p class="eyebrow">Iterative refinement</p>
+      <h2>Small diffs, tests between steps</h2>
+      <p class="wide">A 600-line change you cannot review is worse than no change. Break the work so that every step ends at a state you can run.</p>
+      <ol class="bullets">
+        <li>Describe the change and the constraint</li>
+        <li>Take one step</li>
+        <li>Run the tests</li>
+        <li>Read the diff</li>
+        <li>Correct the model, or correct yourself</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.1 Workflow">
+    <div class="slide-inner">
+      <p class="eyebrow">The skill nobody teaches</p>
+      <h2>Knowing when to stop</h2>
+      <p class="wide">Three failed attempts on the same problem is a signal, not an invitation to prompt harder.</p>
+      <ul class="bullets">
+        <li>The model is looping over the same wrong idea</li>
+        <li>You are pasting errors without reading them</li>
+        <li>The diff is growing and the test is still red</li>
+        <li>You could not explain the current state of the code</li>
+      </ul>
+      <p class="wide" style="margin-top:1.2rem"><em>Close the tab. Write it yourself. It will take twenty minutes.</em></p>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>Ask the room for the longest they've ever spent fighting a model on something they could have written by hand. There's always a good war story here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 9.2 ============ -->
+
+  <section class="slide divider" data-section="9.2 Review">
+    <div class="slide-inner">
+      <div class="rule"></div>
+      <p class="eyebrow">9.2</p>
+      <h2>Code review process</h2>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.2 Review">
+    <div class="slide-inner">
+      <p class="eyebrow">The shift</p>
+      <p class="big-quote">Review used to catch what you forgot. Now it catches what you never knew was there.</p>
+      <p class="wide" style="margin-top:1.8rem">Code you wrote has a shape in your head. Code you accepted does not. The review has to build that shape from scratch — which is slower, not faster.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.2 Review">
+    <div class="slide-inner">
+      <p class="eyebrow">Security</p>
+      <h2>What gets dropped silently</h2>
+      <ul class="bullets">
+        <li><strong>Authorization checks</strong> — the refactor kept the happy path and lost the guard</li>
+        <li><strong>Injection</strong> — string-built SQL because the prompt said "dynamic filter"</li>
+        <li><strong>Secrets in code</strong> — a plausible-looking default that is a real key shape</li>
+        <li><strong>Unsafe deserialization</strong> — accepting a type it shouldn't</li>
+        <li><strong>Error bodies that leak</strong> — stack traces returned to the client</li>
+      </ul>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>The dropped authz check is the single most common real-world AI review miss. It never shows up in tests because the tests were generated from the same happy path.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.2 Review">
+    <div class="slide-inner">
+      <p class="eyebrow">Performance</p>
+      <h2>The four smells</h2>
+      <ul class="bullets">
+        <li><strong>N+1 queries</strong> — the loop that looks innocent</li>
+        <li><strong>Missing index</strong> — the new <code>WHERE</code> column nobody indexed</li>
+        <li><strong>Unbounded fetch</strong> — <code>findAll()</code> against a table that grew</li>
+        <li><strong>Accidental O(n²)</strong> — a nested <code>includes()</code> over two lists</li>
+      </ul>
+      <p class="wide" style="margin-top:1.2rem">All four pass every unit test. All four are fine on ten rows.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.2 Review">
+    <div class="slide-inner">
+      <p class="eyebrow">Testing generated code</p>
+      <h2>Tests that assert the implementation</h2>
+      <pre class="bad"><span class="tok-c">// Generated test. Green. Worthless.</span>
+test(<span class="tok-s">'applies discount'</span>, () =&gt; {
+  <span class="tok-k">const</span> spy = mock(pricing.discountFor)
+  pricing.total(cart)
+  expect(spy).toHaveBeenCalled()          <span class="tok-c">// ← asserts a call</span>
+})</pre>
+      <pre><span class="tok-c">// Asserts the behaviour anyone actually cares about.</span>
+test(<span class="tok-s">'10% off at exactly 100 units'</span>, () =&gt; {
+  expect(pricing.total(cartOf(100))).toBe(<span class="tok-s">900_00</span>)
+})</pre>
+      <p class="tight">If the test would still pass after you delete the business rule, it is not a test.</p>
+    </div>
+  </section>
+
+  <!-- ============ 9.3 ============ -->
+
+  <section class="slide divider" data-section="9.3 Documentation">
+    <div class="slide-inner">
+      <div class="rule"></div>
+      <p class="eyebrow">9.3</p>
+      <h2>Documentation</h2>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.3 Documentation">
+    <div class="slide-inner">
+      <p class="eyebrow">Direction matters</p>
+      <h2>Docs from code, not code from docs</h2>
+      <p class="wide">Generating documentation <em>from</em> real code works, because the source of truth is checked in and the model is summarising something it can see.</p>
+      <p class="wide">Generating code from a prose description of what you wish existed produces something that looks like it matches — and drifts the moment either side changes.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.3 Documentation">
+    <div class="slide-inner">
+      <p class="eyebrow">API documentation</p>
+      <h2>Spec first, generate outward</h2>
+      <ul class="bullets">
+        <li>The OpenAPI spec is the contract, not a description of the contract</li>
+        <li>Server stubs and typed clients are generated from it</li>
+        <li><strong>Never hand-edit generated sources</strong> — change the spec, regenerate</li>
+        <li>Generation runs in CI, so drift fails the build instead of surprising the frontend</li>
+      </ul>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>Tie to whatever the students' own repo does — the generated <code>api/generated-*</code> directories exist precisely so this rule can be enforced.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="9.3 Documentation">
+    <div class="slide-inner">
+      <p class="eyebrow">ADRs</p>
+      <h2>Architecture decision records</h2>
+      <div class="cols">
+        <div>
+          <div class="col-label good">Belongs in one</div>
+          <ul class="bullets">
+            <li>The decision, in one sentence</li>
+            <li>What was true when you made it</li>
+            <li>The options you rejected and why</li>
+            <li>What would make you revisit it</li>
+          </ul>
+        </div>
+        <div>
+          <div class="col-label bad">Does not</div>
+          <ul class="bullets">
+            <li>How the code works today</li>
+            <li>Anything the code already says</li>
+            <li>A tutorial for the library you picked</li>
+            <li>Four paragraphs of AI-generated preamble</li>
+          </ul>
+        </div>
+      </div>
+      <p class="wide" style="margin-top:1.4rem">An ADR is <em>a decision with its expiry conditions.</em> If it has none, it's a wiki page.</p>
+    </div>
+  </section>
+
+  <!-- ============ THE SOPS ============ -->
+
+  <section class="slide divider" data-section="The SOPs">
+    <div class="slide-inner">
+      <div class="rule"></div>
+      <p class="eyebrow">9.4</p>
+      <h2>The SOPs</h2>
+      <p>Five checklists. The point of a checklist is that you run it when you are tired, in a hurry, and confident. That is exactly when you skip it.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="The SOPs">
+    <div class="slide-inner">
+      <div class="sop-card">
+        <span class="sop-id">SOP-1</span>
+        <h3>Verifying AI-generated code before you commit</h3>
+        <ol class="bullets">
+          <li>Read every changed line. If you can't explain a line, it doesn't go in.</li>
+          <li>Verify every external API, config key, and library method against real docs.</li>
+          <li>Check imports: no invented packages, no version the lockfile doesn't have.</li>
+          <li>Run the build and the <em>full</em> suite locally, not just the new test.</li>
+          <li>Diff-read for dropped behaviour: auth, nulls, error branches, logging.</li>
+          <li>Check for hardcoded values, credentials, leftover placeholders.</li>
+          <li>Strip AI authorship trailers. You are the author.</li>
+          <li>Re-read the diff as if a stranger wrote it. Because one did.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="The SOPs">
+    <div class="slide-inner">
+      <div class="sop-card">
+        <span class="sop-id">SOP-2</span>
+        <h3>Setting up a new service</h3>
+        <ol class="bullets">
+          <li>Scaffold from the canonical templates. <em>Never copy a live service to seed a new one.</em></li>
+          <li>Confirm which environment-selection model the infra uses before touching Terraform.</li>
+          <li>Put values where they belong: shared config vs. per-env vars vs. secrets.</li>
+          <li>Wire CI/CD and observability before the first real endpoint.</li>
+          <li>Open a draft PR early so the pipeline runs against a real branch.</li>
+        </ol>
+      </div>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>Step 1 exists because copying a live service carries its incidents, its dead flags, and its hardcoded account IDs into the new one.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="The SOPs">
+    <div class="slide-inner">
+      <div class="sop-card">
+        <span class="sop-id">SOP-3</span>
+        <h3>Database migrations</h3>
+        <ol class="bullets">
+          <li>Forward-only and immutable once merged. Never edit an applied migration.</li>
+          <li>Expand → migrate → contract. Never drop a column in the release that stops writing it.</li>
+          <li>Review the generated SQL by hand: types, nullability, defaults, index coverage.</li>
+          <li>Estimate lock impact on the <em>production</em> row count, not your local ten rows.</li>
+          <li>Run it against a realistic dataset before it reaches staging.</li>
+          <li>Write the rollback plan down before you apply.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="The SOPs">
+    <div class="slide-inner">
+      <div class="sop-card">
+        <span class="sop-id">SOP-4</span>
+        <h3>API endpoint creation</h3>
+        <ol class="bullets">
+          <li>Contract first — define the schema, then generate.</li>
+          <li>Never hand-edit generated sources; change the spec and regenerate.</li>
+          <li>Validate input at the boundary. Authorize on <em>every</em> endpoint, not just the obvious ones.</li>
+          <li>Decide the error contract explicitly: status codes, body shape, what leaks.</li>
+          <li>Pagination and limits from the start. An unbounded list endpoint is a future outage.</li>
+          <li>Test: happy path, auth failure, validation failure, empty result.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="The SOPs">
+    <div class="slide-inner">
+      <div class="sop-card">
+        <span class="sop-id">SOP-5</span>
+        <h3>Integration testing</h3>
+        <ol class="bullets">
+          <li>Real dependencies in containers over mocks wherever practical.</li>
+          <li>Each test owns its data and cleans up. No ordering dependencies.</li>
+          <li>Tag integration tests separately so unit runs stay fast in CI.</li>
+          <li>Assert on observable behaviour, not internal calls.</li>
+          <li>A flaky test is a failing test — fix it or delete it, never retry it away.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXERCISE ============ -->
+
+  <section class="slide divider" data-section="Exercise">
+    <div class="slide-inner">
+      <div class="rule"></div>
+      <p class="eyebrow">45 minutes</p>
+      <h2>The Legacy Rescue</h2>
+      <p>One function. Undocumented, badly named, and wrong in ways the tests don't currently catch.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Exercise">
+    <div class="slide-inner">
+      <p class="eyebrow">Setup</p>
+      <h2>Two commands, no install</h2>
+      <pre>git clone https://github.com/spartan-nhanho/slides-vibe-coding-sops
+cd slides-vibe-coding-sops/legacy-rescue &amp;&amp; node --test</pre>
+      <p class="wide">You get <code>src/billing.js</code> — a quote calculator carried over from a service nobody maintains — and a test file that passes. <em>The passing tests are part of the problem.</em></p>
+      <div class="chips">
+        <span class="chip accent">Node 20+</span>
+        <span class="chip">No dependencies</span>
+        <span class="chip">No build step</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Exercise">
+    <div class="slide-inner">
+      <p class="eyebrow">The tasks</p>
+      <ol class="bullets">
+        <li><strong>10 min</strong> — Use AI to explain what the code does. <em>Write your own hypothesis about the bug first.</em></li>
+        <li><strong>15 min</strong> — Refactor toward clean code with AI assistance. Small steps, tests between steps.</li>
+        <li><strong>10 min</strong> — Generate unit tests for the refactored code.</li>
+        <li><strong>10 min</strong> — Manual: run them, then find <em>at least two edge cases the AI missed</em> and add them yourself.</li>
+      </ol>
+      <p class="wide" style="margin-top:1.2rem">There are four seeded bugs. Most people find two.</p>
+      <div class="notes">
+        <div class="notes-label">Speaker notes</div>
+        <p>Don't say how many bugs there are until the debrief if you want the honest version of the exercise. The slide says four — hide it or change it depending on how you want to run the room.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Exercise">
+    <div class="slide-inner">
+      <p class="eyebrow">Rules</p>
+      <ul class="bullets">
+        <li>You may use any model or tool you like</li>
+        <li>You may not paste a fix you cannot explain</li>
+        <li>Every commit is authored by you</li>
+        <li>Keep a note of every time the model was <em>confidently wrong</em> — that's the debrief material</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Exercise">
+    <div class="slide-inner">
+      <p class="eyebrow">Debrief</p>
+      <h2>Three questions</h2>
+      <ol class="bullets">
+        <li>Which part did the AI genuinely do better than you would have?</li>
+        <li>Where did it mislead you <em>confidently</em>?</li>
+        <li>Which SOP step would have caught the bug you missed?</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ CHECKPOINTS ============ -->
+
+  <section class="slide divider" data-section="Checkpoints">
+    <div class="slide-inner">
+      <div class="rule"></div>
+      <p class="eyebrow">Part three</p>
+      <h2>Checkpoint questions</h2>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Checkpoints">
+    <div class="slide-inner">
+      <p class="eyebrow">Easy</p>
+      <h2>What is the danger of copy-pasting code straight from an LLM into production?</h2>
+      <div class="notes">
+        <div class="notes-label">Looking for</div>
+        <p>Not "it might be wrong" — that's true of all code. The specific danger: it is <em>plausible</em>, so it survives the skim that catches obviously-wrong code, and nobody has the mental model needed to debug it later.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Checkpoints">
+    <div class="slide-inner">
+      <p class="eyebrow">Easy</p>
+      <h2>Why should AI co-author trailers never appear on a commit?</h2>
+      <div class="notes">
+        <div class="notes-label">Looking for</div>
+        <p>Accountability. Blame, review, and incident response all assume a human owner. A trailer diffuses that, and it tells reviewers to lower their standard for the diff — the opposite of what it should do.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Checkpoints">
+    <div class="slide-inner">
+      <p class="eyebrow">Medium</p>
+      <h2>How do you structure a prompt to get a SQL query optimized specifically for Postgres?</h2>
+      <div class="notes">
+        <div class="notes-label">Looking for</div>
+        <p>Give it the DDL, the existing indexes, the row counts, the Postgres version, and the current <code>EXPLAIN ANALYZE</code>. Ask for the plan it expects. Then run the real <code>EXPLAIN</code> — the answer is verified against the planner, not against the model.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Checkpoints">
+    <div class="slide-inner">
+      <p class="eyebrow">Medium</p>
+      <h2>You ask AI to add a column to a table with 40M rows. What must you check before applying?</h2>
+      <div class="notes">
+        <div class="notes-label">Looking for</div>
+        <p>Whether the default forces a table rewrite, what lock level is taken and for how long, whether the migration runs inside a transaction that will hold that lock, index creation being <code>CONCURRENTLY</code>, statement timeouts, and the rollback. SOP-3, steps 3–6.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Checkpoints">
+    <div class="slide-inner">
+      <p class="eyebrow">Hard</p>
+      <h2>AI generated a regex for email validation. It looks correct. What is your SOP to verify it is safe against ReDoS?</h2>
+      <div class="notes">
+        <div class="notes-label">Looking for</div>
+        <p>Read it for nested quantifiers and overlapping alternation — the catastrophic-backtracking shapes. Test with adversarial input, not valid input: a long run of the ambiguous prefix plus one character that fails. Measure the time; it should not grow superlinearly. Then question the premise — validating email by regex is the wrong tool. Check for <code>@</code>, bound the length, and send a confirmation mail.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Checkpoints">
+    <div class="slide-inner">
+      <p class="eyebrow">Hard</p>
+      <h2>An AI-assisted PR passes all tests and review, then causes an incident. Where did the SOP fail?</h2>
+      <div class="notes">
+        <div class="notes-label">Looking for</div>
+        <p>Usually not in review — in the tests, which were generated from the same misunderstanding as the code, so they encode the bug as the expected behaviour. Both sides of the check came from one source. The fix is a human-written test derived from the requirement, not from the implementation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+
+  <section class="slide" data-section="Close">
+    <div class="slide-inner">
+      <p class="eyebrow">Take three things</p>
+      <ol class="bullets">
+        <li><strong>Context beats prompting.</strong> Give it the error, the test, and the conventions.</li>
+        <li><strong>Generated tests are not verification.</strong> They came from the same misunderstanding as the code.</li>
+        <li><strong>You are the author.</strong> Of the diff, of the incident, of the fix.</li>
+      </ol>
+      <div class="chips">
+        <span class="chip accent">SOP-1 through SOP-5 in the repo README</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Close">
+    <div class="slide-inner">
+      <p class="eyebrow muted">Lecture 9 · Backend Engineering</p>
+      <p class="big-quote">If you can't explain the line, it doesn't go in.</p>
+      <div class="chips">
+        <span class="chip">Press <b>o</b> for overview</span>
+        <span class="chip">Press <b>n</b> for notes</span>
+        <span class="chip">Press <b>?</b> for keys</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div id="progress"></div>
+
+<div id="chrome">
+  <span class="section-name" id="section-name"></span>
+  <span id="counter"></span>
+</div>
+
+<div id="help">
+  <div class="panel">
+    <h3>Keyboard</h3>
+    <dl>
+      <dt>→ ↓ space j</dt><dd>Next slide</dd>
+      <dt>← ↑ k</dt><dd>Previous slide</dd>
+      <dt>home / end</dt><dd>First / last slide</dd>
+      <dt>o</dt><dd>Overview grid</dd>
+      <dt>n</dt><dd>Speaker notes</dd>
+      <dt>t</dt><dd>Light / dark</dd>
+      <dt>f</dt><dd>Fullscreen</dd>
+      <dt>?</dt><dd>This panel</dd>
+      <dt>esc</dt><dd>Close</dd>
+    </dl>
+  </div>
+</div>
+
+<script src="assets/deck.js"></script>
+</body>
+</html>
