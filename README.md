@@ -58,6 +58,16 @@ Instructor answers are in [`legacy-rescue/INSTRUCTOR.md`](legacy-rescue/INSTRUCT
 
 ## The SOPs
 
+An SOP is a task you repeat, written down as fixed steps, so it comes out the
+same regardless of who runs it or how tired they are. Three things separate one
+from ordinary documentation: it is a checklist rather than a lecture, it is
+written for your worst day rather than your best, and it changes — an incident
+adds a step, a step nobody follows gets deleted.
+
+Checklists are not a beginner's aid. They exist because experts miss steps when
+they are rushed and confident, which is exactly the state in which a plausible
+AI diff gets merged.
+
 The five checklists from section 9.4, in one place for reference after the talk.
 
 ### SOP-1 — Verifying AI-generated code before you commit
