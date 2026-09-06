@@ -8,6 +8,7 @@ step, no install.
 
 ```
 index.html          the deck — open it in a browser
+SLIDE-PLAN.md       the slide-by-slide spec the deck is built from (English slides, Vietnamese notes)
 assets/             deck styles + runtime (vanilla CSS/JS)
 legacy-rescue/      the workshop exercise
   SPEC.md           the requirement — the source of truth
@@ -68,7 +69,8 @@ Checklists are not a beginner's aid. They exist because experts miss steps when
 they are rushed and confident, which is exactly the state in which a plausible
 AI diff gets merged.
 
-The five checklists from section 9.4, in one place for reference after the talk.
+The deck's section 7.4 presents one SOP frame and asks the room to fill it per task.
+These five checklists are the filled-in reference, for after the talk.
 
 ### SOP-1 — Verifying AI-generated code before you commit
 
@@ -121,3 +123,7 @@ Slides are plain `<section class="slide">` elements in `index.html`, in order.
 Add one anywhere and it appears; nothing is numbered by hand. `data-section`
 drives the label in the bottom bar. A `.notes` block inside a slide is the
 speaker note for it.
+Layout components (stat tiles, cards, before/after, pipeline, autonomy ladder, table) are
+classes in `assets/deck.css`; `SLIDE-PLAN.md` says which slide uses which. Add
+`data-owner="h"` or `"n"` to a slide to show a presenter badge (Hao / Nhan) in the bottom bar
+and the overview grid; slides without it show none.

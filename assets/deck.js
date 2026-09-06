@@ -5,6 +5,8 @@
   const progress = document.getElementById('progress');
   const counter = document.getElementById('counter');
   const sectionName = document.getElementById('section-name');
+  const owner = document.getElementById('owner');
+  const OWNERS = { h: 'Hao', n: 'Nhan' };
   const body = document.body;
 
   let current = 0;
@@ -16,6 +18,9 @@
     progress.style.width = `${((current + 1) / slides.length) * 100}%`;
     counter.innerHTML = `<b>${String(current + 1).padStart(2, '0')}</b> / ${slides.length}`;
     sectionName.textContent = slides[current].dataset.section || '';
+    const who = slides[current].dataset.owner || '';
+    owner.textContent = OWNERS[who] || '';
+    owner.className = who ? `owner ${who}` : 'owner';
     if (location.hash !== `#${current + 1}`) {
       history.replaceState(null, '', `#${current + 1}`);
     }
