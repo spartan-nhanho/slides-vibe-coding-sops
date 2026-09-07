@@ -9,6 +9,10 @@ step, no install.
 ```
 index.html          the deck — open it in a browser
 SLIDE-PLAN.md       the slide-by-slide spec the deck is built from (English slides, Vietnamese notes)
+SCRIPT.md           presenter script (Vietnamese): who says what, per slide, plus key-press rhythm
+EFFECTS-PLAN.md     step-by-step reveal plan per slide
+VISUAL-PLAN.md      the figure-per-slide redesign the deck follows
+assets/widgets.js   ReDoS live demo + SVG arc overlay, driven by data-widget
 assets/             deck styles + runtime (vanilla CSS/JS)
 legacy-rescue/      the workshop exercise
   SPEC.md           the requirement — the source of truth
@@ -28,8 +32,10 @@ python3 -m http.server 8000    # → http://localhost:8000
 
 | Key | |
 |---|---|
-| `→` `↓` `space` `j` | next slide |
-| `←` `↑` `k` | previous slide |
+| `→` `↓` `space` `j` | next step, then next slide |
+| `←` `↑` `k` | previous step / slide |
+| `r` | reset the current slide's steps |
+| `d` | run the live ReDoS demo (slide 23) |
 | `home` / `end` | first / last |
 | `o` | overview grid — click any slide to jump |
 | `n` | speaker notes |
@@ -37,7 +43,8 @@ python3 -m http.server 8000    # → http://localhost:8000
 | `f` | fullscreen |
 | `?` | key map |
 
-Slides are deep-linkable: `index.html#17` opens slide 17.
+Slides are deep-linkable: `index.html#17` opens slide 17, `index.html#13.2` opens slide 13 at step 2.
+Most slides reveal in steps; the bottom bar shows which pillar (C · V · O) a slide belongs to.
 
 **Export to PDF:** print the page (`⌘P`), destination *Save as PDF*, landscape,
 background graphics on. Each slide becomes one page and the speaker notes are

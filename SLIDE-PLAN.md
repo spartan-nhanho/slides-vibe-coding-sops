@@ -19,7 +19,7 @@ Each slide has four fields:
 
 Three pillars, repeated at every section: **Context · Verification · Ownership.**
 
-Total: **25 slides**, ~55–60 min + 45 min exercise + 15 min debrief.
+Total: **28 slides** (25 in the original design + 3 added in the addendum below: 7, 13, 26), ~70 min + 45 min exercise + 15 min debrief. Internal audience: the title slide carries no byline and there is no presenter intro.
 
 ---
 
@@ -368,3 +368,27 @@ Read the regex for **nested quantifiers** `(a+)+` and **overlapping alternation*
 - [ ] Dark theme, projection-safe sizes, test on the actual projector aspect ratio.
 
 *Plan for the Vibe Coding SOPs deck — English slides, 25-slide approved design. For build in `slides-vibe-coding-sops`. Sep 2026.*
+
+---
+
+# Addendum — three slides added after review (deck numbering 7, 13, 26)
+
+Numbering below is the **final deck order**; the original 25 slides shift accordingly (old 7–11 → 8–12, old 12–23 → 14–25, old 24–25 → 27–28).
+
+### Slide 7 · [Foundations] — How your agent actually works
+- **On slide:** Eyebrow `UNDER THE HOOD` · Headline **Your agent doesn't know. It reasons, acts, and observes.** · 4-step loop: **Reason** (what do I need next?) → **Act** (call a tool: read file, run tests, search, edit) → **Observe** (the tool's real output) → **Repeat** until done · Caption: *The only thing an agent can trust is what a tool showed it. Every check you give it (test · build · lint) is one more true observation in the loop.*
+- **Layout:** 4-step pipeline (same component as slide 12).
+- **Say:** ReAct = Reason + Act. Chat là một lần; agentic là nhiều vòng, mỗi vòng một lần quan sát thật. Ba hệ quả: agent chỉ đáng tin bằng thứ tool cho nó thấy; bước reason là chỗ nó tự tin sai; bước act là chỗ giới hạn quyền. Gộp Tool-using vào đây.
+- **Source:** Yao et al. — *ReAct* (2022); Anthropic — *Building effective agents*; K. Vyas — *ReAct*, *Tool-Using* (LinkedIn).
+
+### Slide 13 · [7.1] — Four agent patterns, and the SOP each one needs
+- **On slide:** Eyebrow `PATTERNS → PRACTICES` · Headline **Every agent pattern has a failure mode. Every SOP step plugs one.** · Table (Pattern / What the tool does / Where it fails / Your SOP step): Planner-Executor → approve spec.md, one test per step · Multi-agent → Writer/Reviewer, summaries in, one human owner · Memory-augmented → keep CLAUDE.md short and true, `/clear` on dirty context · Tool-using → least-privilege tools, installs and pushes through a human · Caption: *Context · Verification · Ownership — each row is one of the three pillars, mechanised.*
+- **Layout:** 4×4 table, dense variant.
+- **Say:** Mỗi pattern: làm gì, hỏng ở đâu, bước SOP nào bịt. Closes 7.1; handoff #1 moves here.
+- **Source:** K. Vyas — *Planner/Executor*, *Multi-Agent Collaboration*, *Memory-Augmented Agent*, *Tool-Using* (LinkedIn); Anthropic — *Building effective agents*.
+
+### Slide 26 · [Frontier] — If you can't observe it, you can't trust it
+- **On slide:** Eyebrow (amber) `OBSERVABILITY` · Headline **If you can't observe your agent, you can't trust it.** · 3 cards: `LOGGING` (structured record of every action, trace id + timestamp) · `TRACING` (logs joined into one execution path, latency per step) · `AUDIT TRAIL` (tamper-resistant, access-controlled: what was decided, which data read, whether a human approved) · Caption: *Metrics: latency · tokens (operations) · failure · escalation rate (reliability) · sensitive-data access · policy violations (governance). Stack: OpenTelemetry + Jaeger + Prometheus + Grafana.*
+- **Layout:** 3 cards, audit card in amber.
+- **Say:** Ba lớp, ba nhóm metric, cùng stack team đã dùng cho service. Nối thẳng vào slide 27 (DeepSeek Harness = hiện thân của lớp audit). Trụ Ownership bằng cơ chế.
+- **Source:** K. Vyas — *Observability in Agentic AI: Logging, Tracing, Audit Trails* (LinkedIn); OpenTelemetry docs.

@@ -1,6 +1,6 @@
 # Kịch bản nội dung — Lecture 9: Vibe Coding SOPs (Nhan × Hao)
 
-> Kịch bản cho deck 25 slide (`index.html`, dựng theo `SLIDE-PLAN.md`). Mỗi mục là một slide, đúng thứ tự. Mở slide N bằng `index.html#N`. Chữ trên slide tiếng Anh; nội dung nói tiếng Việt.
+> Kịch bản cho deck 28 slide (`index.html`, dựng theo `SLIDE-PLAN.md` và phần addendum của nó). Mỗi mục là một slide, đúng thứ tự. Chữ trên slide tiếng Anh; nội dung nói tiếng Việt. Buổi nội bộ: không giới thiệu người nói, vào thẳng chủ đề.
 
 ## Phân vai
 
@@ -8,42 +8,70 @@ Thông điệp xuyên suốt: **AI làm việc gõ code rẻ đi. Hiểu, review
 
 | Khối | Slide | Người | Nội dung | Phút |
 |---|---|---|---|---|
-| 1 | 1–11 | **Hao** | Mở đầu, foundations, 7.1 workflow | 22 |
-| 2 | 12–18 | **Nhan** | 7.2 review, security, 7.3 docs | 16 |
-| 3 | 19–20 + bài tập + debrief | **Hao** | Khung SOP, Legacy Rescue | 7 + 45 + 15 |
-| 4 | 21–25 | **Nhan** | Checkpoints, frontier, close | 15 |
+| 1 | 1–13 | **Hao** | Mở đầu, foundations + ReAct loop, 7.1 workflow + agent patterns | 28 |
+| 2 | 14–20 | **Nhan** | 7.2 review, security, 7.3 docs | 16 |
+| 3 | 21–22 + bài tập + debrief | **Hao** | Khung SOP, Legacy Rescue | 7 + 45 + 15 |
+| 4 | 23–28 | **Nhan** | Checkpoints, frontier, observability, close | 18 |
 
 Ba lần trao mic:
 
-1. **Sau slide 11, Hao → Nhan:** "Đó là cách làm việc với AI cho đúng: context, vòng lặp nhỏ, spec trước. Nhưng làm nhanh mà không review được thì vô nghĩa. Phần quan trọng nhất, review và những chỗ AI hỏng âm thầm, Nhan sẽ dẫn."
-2. **Sau slide 18, Nhan → Hao:** "Biết cái gì cần bắt rồi: đúng, an toàn, đủ nhanh, test có nghĩa, và AI không được quyết. Câu hỏi là làm sao bắt nó mỗi lần, kể cả lúc 2 giờ sáng. Hao sẽ đưa khung SOP, rồi cho các bạn thử tay trên code thật."
+1. **Sau slide 13, Hao → Nhan:** "Đó là cách làm việc với AI cho đúng: context, vòng lặp nhỏ, spec trước, và biết agent chạy bằng gì bên trong. Nhưng làm nhanh mà không review được thì vô nghĩa. Phần quan trọng nhất, review và những chỗ AI hỏng âm thầm, Nhan sẽ dẫn."
+2. **Sau slide 20, Nhan → Hao:** "Biết cái gì cần bắt rồi: đúng, an toàn, đủ nhanh, test có nghĩa, và AI không được quyết. Câu hỏi là làm sao bắt nó mỗi lần, kể cả lúc 2 giờ sáng. Hao sẽ đưa khung SOP, rồi cho các bạn thử tay trên code thật."
 3. **Sau debrief, Hao → Nhan:** "Các bạn vừa thấy tận mắt test xanh mà code sai. Nhan sẽ kiểm tra lại ba câu, rồi nói về chuyện gì xảy ra khi AI không còn dừng lại để hỏi nữa."
 
 Mỗi slide có bốn phần: **Trên slide** (đang hiện gì), **Nội dung** (nói gì, đủ chi tiết để nói mà không cần nhớ thêm), **Nếu bị hỏi**, **Nguồn**.
 
+## Nhịp bấm phím
+
+Deck lật theo bước: `→` hiện bước kế trong slide, hết bước mới sang slide. Số trong ngoặc là số lần bấm `→` trên slide đó trước khi sang slide sau. Chi tiết hiệu ứng trong `EFFECTS-PLAN.md`.
+
+| Slide | Bấm | Thứ tự hiện |
+|---|---|---|
+| 2 | 2 | dòng phụ, gạch "code typist" và sáng "code reviewer" → "fabricates, breaks everything" đổi amber |
+| 3 | 2 | dòng 92% và thanh 92/29 → "Quality isn't." đổi amber |
+| 4 | 4 | Context → Verify → Ownership (spotlight) → HUD ba chấm |
+| 6 | 3 | bullet 1 → bullet 2 + thanh context đầy dần → bullet 3, thanh tách bốn, gõ chữ |
+| 7 | 7 | Reason → Act → Observe → Repeat → cung loop → chip test/build/lint → caption |
+| 9 | 6 | box xanh (diff `+`) → caption → 4 cụm sáng lần lượt |
+| 10 | 4 | card Good (spotlight) → dòng Seq Scan → dòng Index Scan, đếm ngược ms → caption |
+| 11 | 7 | 4 kỹ thuật sáng lần lượt → card In practice → `/clear`, cột chat sụp → caption |
+| 12 | 7 | Explore → Plan → Code → Commit → quote → chip "a check it can run" → mũi tên checkpoint |
+| 13 | 5 | 4 dòng (spotlight, ô hỏng nhấp đỏ, ô SOP xanh) → caption |
+| 15 | 2 | attribution → 3 bằng chứng sáng xanh, gạch "done" |
+| 16 | 5 | tile The attack + `npm install` → dòng cài xong → dòng postinstall đỏ, tile rung → câu attacker → caption |
+| 17 | 6 | 5 dòng OWASP → lưới SAST quét + caption |
+| 18 | 7 | card Performance → 4 mùi (badge xanh nhấp mỗi lần) → card Bad tests → caption, rule bị xoá, "green" đổi đỏ |
+| 20 | 4 | 3 card (spotlight) → "never" đỏ |
+| 21 | 5 | 4 chip khung SOP → dòng loại task |
+| 22 | 7 | lệnh test + 4 ✔ → ✔ thành ? + câu "part of the problem" → 4 task → chip |
+| 23 | 5 | Easy → Medium → Hard (đỏ) → caption ReDoS → khung demo (bấm `d` để chạy, `x` reset) |
+| 24 | 2 | gạch "vibe coding", lede → caption, nền tối dần |
+| 25 | 7 | L1 → L2 → L3 → L4 → L5 (tắt đèn, HUD tắt) → callout 1.9M (rung) → caption |
+| 26 | 7 | Logging + dòng log → Tracing + waterfall → Audit + approved/blocked → caption → 3 nhóm metric |
+| 27 | 3 | Earned trust + thanh 4 đoạn → DeepSeek + log append → caption peak, HUD sáng cả ba |
+| 28 | 2 | dòng terminal gõ → câu cuối |
+
+Các slide không có trong bảng chỉ có một lần bấm (sang slide). Phím `r` reset bước của slide đang xem.
+
 ---
 
-## Khối 1 · HAO — Slide 1–11
+## Khối 1 · HAO — Slide 1–13
 
 ### Slide 1 · HAO — Vibe Coding SOPs
 
-**Trên slide:** title, tagline *Standard operating procedures for shipping code you didn't entirely write*, byline Nhan Ho × Hao Pham, 60 min lecture · 45 min exercise · 15 min debrief.
+**Trên slide:** tiêu đề trên nền một diff mờ trôi chậm; dòng thời lượng gõ ra với con trỏ nhấp nháy.
 
 **Nội dung**
 
-Bài 9: Vibe Coding SOPs. "SOP" là standard operating procedure, quy trình vận hành chuẩn: một việc lặp lại, viết thành các bước cố định, để kết quả như nhau bất kể ai làm và làm lúc nào. Chủ đề hôm nay là quy trình để ship những đoạn code mà bạn không hoàn toàn tự viết, tức là code có AI tham gia.
+Chủ đề hôm nay: quy trình để ship code có AI tham gia, tức là code mà mình không hoàn toàn tự viết. SOP là standard operating procedure: một việc lặp lại, viết thành các bước cố định, để kết quả như nhau bất kể ai làm và làm lúc nào.
 
-Hai người dẫn. Hao giữ nửa đầu: vì sao AI sai, và cách làm việc với nó cho đúng. Nhan giữ phần review, docs, security, và phần cuối về tương lai của nghề.
-
-Câu hỏi mở: tuần này ai đã ship code do AI sinh ra? Trong số đó, ai đã đọc từng dòng trước khi merge? Khoảng cách giữa hai con số đó là toàn bộ nội dung của buổi. Mọi người đều dùng AI. Rất ít người review đủ. Buổi này là về phần review đó.
-
-Cấu trúc: 60 phút giảng, 45 phút bài tập trên một hàm thật có bug thật, 15 phút debrief.
+Một câu hỏi để vào bài: tuần này ai đã ship code do AI sinh ra, và trong số đó ai đã đọc từng dòng trước khi merge? Khoảng cách giữa hai con số là nội dung của buổi. Cấu trúc: 60 phút giảng, 45 phút bài tập trên một hàm thật có bug thật, 15 phút debrief.
 
 ---
 
 ### Slide 2 · HAO — Mindset shift
 
-**Trên slide:** *"AI doesn't replace you — it forces you up a level."* From code typist → code reviewer. AI is a very fast junior dev who never tires, but sometimes fabricates, occasionally breaks everything.
+**Trên slide:** quote lớn; bên dưới hai hình người line-art: người gõ phím (bị gạch đỏ ở bước 1) → người cầm kính lúp soi diff (sáng teal).
 
 **Nội dung**
 
@@ -66,7 +94,7 @@ Phân biệt hai khái niệm để dùng từ chính xác:
 
 ### Slide 3 · HAO — Why this matters
 
-**Trên slide:** *Speed is what AI gives for free. Quality isn't.* Ba stat: 45% AI code fails OWASP Top 10 (Veracode 2025) · ~41% rise in bug rate after adopting AI without process (Uplevel, ~800 devs) · 29% of devs trust AI output, though 92% use it daily (Stack Overflow / GitHub 2025).
+**Trên slide:** ba donut: 45% đỏ, ~41% amber, và donut hai vòng lồng nhau 92% (nhạt) / 29% (đậm); bước 1 vòng hở giữa hai vòng nhấp sáng. Số đếm lên.
 
 **Nội dung**
 
@@ -90,7 +118,7 @@ Tốc độ là thứ AI cho không. Chất lượng thì không.
 
 ### Slide 4 · HAO — The three pillars
 
-**Trên slide:** *Every SOP answers one of three questions.* 01 CONTEXT · 02 VERIFY · 03 OWNERSHIP.
+**Trên slide:** ba icon lớn brain / shield / pen với tên trụ và một dòng; hiện từng cái (spotlight); bước 4 HUD ba chấm C·V·O xuất hiện ở thanh dưới.
 
 **Nội dung**
 
@@ -102,13 +130,13 @@ Mọi SOP hôm nay trả lời một trong ba câu hỏi.
 
 **Ownership.** Bạn sở hữu từng dòng đã commit, kể cả dòng AI viết. Với reviewer, với production, với người debug lúc 2 giờ sáng, việc AI viết hay không là vô hình. AI cầm bút, không cầm quyền quyết.
 
-Cách dùng ba trụ: khi nghe một quy tắc, hỏi nó thuộc trụ nào. Quy tắc không thuộc trụ nào thường là quy tắc không quan trọng. Ba trụ sẽ quay lại ở slide 24 dưới dạng khác: guardrail và audit trail cho agent.
+Cách dùng ba trụ: khi nghe một quy tắc, hỏi nó thuộc trụ nào. Quy tắc không thuộc trụ nào thường là quy tắc không quan trọng. Ba trụ sẽ quay lại ở slide 27 dưới dạng khác: guardrail và audit trail cho agent.
 
 ---
 
 ### Slide 5 · HAO — Divider 01 · Foundations
 
-**Trên slide:** 01 · FOUNDATIONS · *Why AI gets it wrong.*
+**Trên slide:** divider 01, nền có mạng nút mờ.
 
 **Nội dung**
 
@@ -118,7 +146,7 @@ Phần một, ngắn: vì sao AI sai. Hiểu LLM vận hành ra sao thì mọi S
 
 ### Slide 6 · HAO — Hallucination is a property, not a bug
 
-**Trên slide:** Next-token prediction: optimizes for plausible, not correct; no internal truth-check. The context window is finite and rots as it fills. Consequence: a 10,000-line file → it forgets the start and fabricates; fix: break the problem down before you prompt.
+**Trên slide:** trái: sơ đồ dự đoán token (`the function returns a` với bốn ứng viên và thanh xác suất, Promise 0.42 được chọn) và thanh RAM 12 ô đầy dần teal→amber→red, nhãn "system prompt" mờ đi; bước 3 tách thành bốn thanh xanh. Phải: tiêu đề + ba dòng ngắn.
 
 **Nội dung**
 
@@ -134,26 +162,56 @@ Câu chốt: context là tài nguyên bạn phải quản như RAM. Mọi SOP h�
 
 **Nếu bị hỏi**
 - *"Model mới context một triệu token thì còn vấn đề không?"* Cửa sổ lớn hơn không có nghĩa dùng hết được với cùng chất lượng. Context rot là chất lượng giảm theo độ dài, không phải hết chỗ. Cửa sổ lớn cho phép nạp nhiều hơn, vẫn phải chọn lọc.
-- *"RAG hay tool đọc file có giải quyết không?"* Có, đó là kỹ thuật just-in-time retrieval ở slide 10: nạp đúng thứ cần vào đúng lúc, thay vì nạp tất cả từ đầu.
+- *"RAG hay tool đọc file có giải quyết không?"* Có, đó là kỹ thuật just-in-time retrieval ở slide 11: nạp đúng thứ cần vào đúng lúc, thay vì nạp tất cả từ đầu.
 - *"Temperature 0 có hết bịa không?"* Không. Temperature chỉ làm output ổn định hơn giữa các lần chạy; nó vẫn chọn token hợp lý nhất, không phải đúng nhất.
 
 **Nguồn:** Karpathy — *Intro to LLMs*; Anthropic — *Effective Context Engineering for AI Agents*; IBM Research về context window.
 
 ---
 
-### Slide 7 · HAO — Divider 02 · 7.1 Workflow
+### Slide 7 · HAO — How your agent actually works: the ReAct loop
 
-**Trên slide:** 02 · SECTION 7.1 · *AI-Assisted Workflow.* Prompt → Context → Iterate → Workflow for big tasks.
+**Trên slide:** trái: vòng tròn ReAct với ba nút Reason / Act / Observe (icon), cung mũi tên chạy theo bước, tâm ghi "until done"; bước 5 cổng "tool output · the only way in" vào Observe; bước 6 ba chip test/build/lint đi vào cổng. Phải: tiêu đề + caption.
 
 **Nội dung**
 
-Phần 7.1, trái tim của bài. Bốn mục theo thứ tự nhân quả: viết prompt tốt (slide 8, 9), nuôi và dọn context (slide 10), vòng lặp tinh chỉnh và workflow cho task lớn (slide 11). Tất cả đều là hệ quả của slide 6: model chỉ có thứ bạn đưa, và thứ bạn đưa có giới hạn.
+Slide 6 vừa nói model chỉ dự đoán token, không có bộ kiểm-sự-thật. Vậy tại sao agentic tool vẫn sửa được bug thật, chạy được test thật? Vì tool bao quanh model bằng một vòng lặp, và vòng lặp đó có tên: ReAct, viết tắt của Reason + Act.
+
+**Vòng lặp bốn bước:**
+1. **Reason.** Model đọc mục tiêu và toàn bộ context hiện có, rồi viết ra suy nghĩ: mình cần biết gì tiếp theo. Ví dụ: "test đang fail ở `billing.test.js`, mình cần đọc `billing.js` trước".
+2. **Act.** Model chọn một tool và gọi nó với tham số cụ thể: đọc file, tìm kiếm trong repo, chạy `node --test`, sửa một đoạn code. Tool là thứ deterministic bên ngoài model.
+3. **Observe.** Kết quả thật của tool được nạp ngược vào context: nội dung file, output của test, lỗi của compiler. Đây là điểm duy nhất trong cả vòng lặp mà sự thật từ bên ngoài đi vào.
+4. **Lặp lại** cho đến khi model kết luận đã xong, hoặc hết ngân sách bước.
+
+Chat thường là một lần: prompt vào, câu trả lời ra, không có bước observe. Agentic là nhiều vòng, mỗi vòng có một lần quan sát thật. Đó là khác biệt cốt lõi giữa hai kiểu tool, và cũng là lý do chúng hỏng khác nhau: chat hỏng bằng cách bịa API vì không có gì để quan sát; agent hỏng bằng cách quan sát sai thứ, hoặc quan sát đúng nhưng kết luận sai.
+
+**Ba hệ quả cho SOP:**
+- **Agent chỉ đáng tin bằng những gì tool cho nó thấy.** Nếu repo không có test, bước observe chỉ có "file đã được ghi", và agent kết luận "xong" vì không có gì phủ định. Cho nó test, build, lint là thêm quan sát thật vào vòng lặp. Đây là lý do của câu "give the AI a check it can run" ở slide 12.
+- **Bước Reason là chỗ nó tự tin sai.** Suy nghĩ của model vẫn là văn bản dự đoán; nó có thể "lý luận" rất trôi chảy để đi đến một tool call sai. Vì thế đọc log tool call quan trọng hơn đọc lời giải thích của agent.
+- **Bước Act là chỗ phải giới hạn quyền.** Tool nào agent gọi được là quyết định của bạn, không phải của model: đọc file thì thoải mái, chạy test thì được, `git push` hay `rm -rf` hay cài package thì phải qua người. Slide 16 (slopsquatting) và slide 25 (xoá 1.9 triệu dòng) đều là hậu quả của bước Act không bị giới hạn.
+
+**Nếu bị hỏi**
+- *"Tool-using và ReAct khác gì nhau?"* Tool-using là khả năng gọi tool; ReAct là vòng lặp xen kẽ suy luận và gọi tool, nạp kết quả về rồi suy luận tiếp. Tool-using không có vòng lặp thì chỉ là một lần gọi API.
+- *"Agent có thể tự sửa lỗi của chính nó không?"* Có, nếu bước observe cho nó thấy lỗi. Test fail là một quan sát; "code trông ổn" không phải. Không có test thì agent không có gì để tự sửa.
+- *"Agentic tốn token hơn nhiều không?"* Có, mỗi vòng là một lần gọi model với toàn bộ context. Đó là lý do slide 11 nói quản context như RAM: context bẩn tốn tiền ở mọi vòng.
+
+**Nguồn:** Yao et al. — *ReAct: Synergizing Reasoning and Acting in Language Models* (2022); Anthropic — *Building effective agents*; K. Vyas — *Agentic AI Design Pattern: ReAct* và *Tool-Using* (LinkedIn).
 
 ---
 
-### Slide 8 · HAO — More specific = fewer corrections
+### Slide 8 · HAO — Divider 02 · 7.1 Workflow
 
-**Trên slide:** ✗ `add tests for foo.py` · ✓ `write a test for foo.py covering the edge case where the user is logged out. avoid mocks.` Caption: show examples, not descriptions · long docs first · include success criteria · name the technique.
+**Trên slide:** divider 02, nền đường ống mờ; lede Prompt → Context → Iterate → Workflow hiện từng từ.
+
+**Nội dung**
+
+Phần 7.1, trái tim của bài. Bốn mục theo thứ tự nhân quả: viết prompt tốt (slide 9, 10), nuôi và dọn context (slide 11), vòng lặp tinh chỉnh và workflow cho task lớn (slide 12). Tất cả đều là hệ quả của slide 6: model chỉ có thứ bạn đưa, và thứ bạn đưa có giới hạn.
+
+---
+
+### Slide 9 · HAO — More specific = fewer corrections
+
+**Trên slide:** hai cửa sổ chat: trái prompt mơ hồ và reply mờ có dấu "?" đỏ; phải prompt có phần thêm dạng diff `+` và reply có ✓; dưới cùng bốn icon thói quen.
 
 **Nội dung**
 
@@ -181,9 +239,9 @@ Câu chốt: prompt tồi không phải vì bạn viết dở tiếng Anh. Nó t
 
 ---
 
-### Slide 9 · HAO — Don't ask "write me the SQL"
+### Slide 10 · HAO — Don't ask "write me the SQL"
 
-**Trên slide:** BAD PROMPT "Write SQL to get orders by user" → nothing for it to optimize. GOOD PROMPT: schema + existing indexes + row counts + `EXPLAIN ANALYZE` of the current query + the goal. *A bad prompt hides the context only you have.*
+**Trên slide:** trái: cây kế hoạch thực thi Result → Seq Scan on orders (đỏ, 50,000,000 rows · 9120 ms) rồi bị thay bằng Index Scan (xanh, 312 rows · 3.1 ms) → orders_user_id_idx. Phải: checklist năm mục có icon + caption "verify against the planner".
 
 **Nội dung**
 
@@ -210,9 +268,9 @@ Rồi bước quyết định: chạy `EXPLAIN ANALYZE` thật với câu mới.
 
 ---
 
-### Slide 10 · HAO — A long chat is not a badge of honor
+### Slide 11 · HAO — A long chat is not a badge of honor
 
-**Trên slide:** 4 TECHNIQUES: compaction · note-taking (todo.md) · sub-agents · just-in-time retrieval. IN PRACTICE: `/clear` between unrelated tasks; corrected twice and still wrong → context is dirty, clear and rewrite. *Clean context + a good prompt almost always beats a long dragging chat.*
+**Trên slide:** trái: cửa sổ chat 8 bong bóng (hai bong bóng cuối viền đỏ fix #1, fix #2) và đồng hồ RAM 96%; bước 5 bong bóng sụp còn một, đồng hồ về xanh 4%. Phải: bốn kỹ thuật với icon sáng lần lượt + dòng `/clear`.
 
 **Nội dung**
 
@@ -241,9 +299,9 @@ Câu chốt: context sạch cộng prompt tốt gần như luôn thắng một p
 
 ---
 
-### Slide 11 · HAO — Big task? Make the AI interview you first
+### Slide 12 · HAO — Big task? Make the AI interview you first
 
-**Trên slide:** Explore → Plan → Code → Commit. *"Ask me one question at a time so we can develop a thorough spec…"* — Harper Reed. Core: give the AI a check it can run (test / build / screenshot).
+**Trên slide:** đường ray bốn ga Explore / Plan / Code / Commit có icon; ga Plan có thanh chắn amber và con dấu APPROVED (bước 2); ga Code có đèn giao thông, đèn xanh bật ở bước 6 kèm nhãn "a check it can run"; bước 7 mũi tên nét đứt "checkpoint · roll back" từ Commit về Code. Quote Harper Reed ở dưới.
 
 **Nội dung**
 
@@ -258,7 +316,7 @@ Task nhỏ: prompt thẳng. Task lớn, nhiều file, nhiều ngày: bắt AI ph
 **Workflow của Harper Reed**, kể lại được:
 - Bắt đầu bằng prompt: "Hỏi tôi từng câu một để cùng xây một spec chi tiết cho ý tưởng này. Chỉ một câu mỗi lần." Model hỏi về phạm vi, dữ liệu, edge case, ràng buộc; bạn trả lời; kết quả là `spec.md` do hai bên cùng viết.
 - Từ spec, dùng model sinh `prompt_plan.md` (chuỗi prompt cho từng bước nhỏ, mỗi bước có test) và `todo.md` (danh sách việc, tick dần).
-- Thực thi từng bước theo plan. `todo.md` giữ trạng thái xuyên nhiều lần gọi model, đúng kỹ thuật note-taking ở slide 10.
+- Thực thi từng bước theo plan. `todo.md` giữ trạng thái xuyên nhiều lần gọi model, đúng kỹ thuật note-taking ở slide 11.
 
 **Cốt lõi khiến agentic tool thực sự chạy được một mình**: cho AI một cách tự kiểm. Test, build, lint, screenshot. Anthropic viết: cho model một check mà nó chạy được, đó là khác biệt giữa phiên bạn phải ngồi canh và phiên bạn có thể bỏ đi. Không có test, agent chỉ có thể **nói** là xong; nó không có cách nào biết mình xong thật.
 
@@ -271,15 +329,41 @@ Câu chốt: task lớn thì spec trước, code sau. Spec là nơi bạn cầm 
 
 **Nguồn:** Anthropic — *Claude Code Best Practices*; Harper Reed — *My LLM codegen workflow atm*; Willison — *How I use LLMs to write code*.
 
-**Handoff → Nhan:** "Đó là cách làm việc với AI cho đúng: context, vòng lặp nhỏ, spec trước. Nhưng làm nhanh mà không review được thì vô nghĩa. Phần quan trọng nhất, review và những chỗ AI hỏng âm thầm, Nhan sẽ dẫn."
+---
+
+### Slide 13 · HAO — Four agent patterns, and the SOP each one needs
+
+**Trên slide:** lưới 2×2 bốn card, mỗi card một sơ đồ nhỏ (planner tree, ba agent → một người, ba lớp memory, bốn tool với install bị khoá đỏ) + tên + dòng ✗ hỏng khi (đỏ) + dòng ✓ vá bằng (xanh); hiện từng card (spotlight).
+
+**Nội dung**
+
+Bốn pattern mà mọi agentic coding tool hiện nay dùng, gọi đúng tên, và với mỗi pattern: nó làm gì, nó hỏng ở đâu, và bước SOP nào trong deck sinh ra để bịt chỗ hỏng đó.
+
+**1. Planner / Executor.** Một vai lập kế hoạch: nhận mục tiêu lớn, chia thành các task có thứ tự và phụ thuộc, nói rõ mỗi task cần tool gì. Các vai thực thi: mỗi task một phạm vi hẹp, trả về kết quả có cấu trúc. Tách "làm gì" khỏi "làm thế nào", giống tổ chức tách chiến lược khỏi vận hành. Chỗ hỏng: plan sai thì mọi bước sau đều sai một cách nhất quán, và executor phạm vi rộng sẽ sửa cả thứ không được giao. SOP: đây chính là Explore → Plan → Code → Commit ở slide 12. Duyệt `spec.md` trước khi có dòng code nào, vì sửa plan rẻ hơn sửa code. Mỗi task nhỏ, một test một bước, để executor không có chỗ đi lạc. Trụ Context.
+
+**2. Multi-agent collaboration.** Thay một agent to làm mọi việc bằng nhiều agent chuyên biệt, có lớp điều phối và lớp giám sát. Trong coding tool: sub-agent đi đọc hai mươi file rồi trả về tóm tắt, sub-agent tìm kiếm, sub-agent review. Chỗ hỏng: vai chồng lấn, không ai sở hữu kết quả cuối, và agent này tin lời agent kia như tin sự thật. SOP: Writer/Reviewer ở slide 15, một phiên viết, một phiên context sạch review. Sub-agent chỉ trả tóm tắt vào context chính (slide 11). Và kết quả cuối luôn có đúng một người ký. Trụ Ownership.
+
+**3. Memory-augmented.** Ba loại bộ nhớ: ngắn hạn là context của phiên và trạng thái task; dài hạn là thứ sống qua nhiều phiên, trong coding tool là `CLAUDE.md`, `AGENTS.md`, `todo.md`; có cấu trúc là repo, lockfile, DB, những nguồn sự thật có thẩm quyền. Chỗ hỏng: bộ nhớ cũ hoặc sai làm agent lặp lại đúng một lỗi ở mọi phiên, và ai cũng tưởng đó là "quy ước". Bài gốc có câu đáng giữ: agent nhớ được thì phải chịu trách nhiệm được, tức bộ nhớ cũng cần người quản. SOP: giữ `CLAUDE.md` ngắn và đúng, mỗi dòng tự hỏi "bỏ đi AI có sai không", và sửa ngay khi nó sai. `/clear` khi context bẩn (slide 11). Trụ Context.
+
+**4. Tool-using.** Agent chọn và gọi tool: đọc, tìm, chạy lệnh, sửa file, cài package, commit, push. Bài gốc nêu bốn điều kiện: tool phải deterministic và định nghĩa rõ; quyền truy cập được kiểm soát; output có cấu trúc; thao tác nhạy cảm phải qua lớp duyệt. Chỗ hỏng: quyền ghi sai và package sai, hai sự cố đã có trong deck (slopsquatting ở slide 16, xoá 1.9 triệu dòng ở slide 25). SOP: quyền tối thiểu cho từng tool; đọc và chạy test thì tự do, cài package, push, chạm production thì qua người. Trụ Verification và Ownership.
+
+Câu chốt: bốn pattern không phải lý thuyết để nhớ. Chúng giải thích vì sao checklist ở slide 21 có đúng những bước đó, và vì sao bỏ một bước là mở lại đúng một chỗ hỏng.
+
+**Nếu bị hỏi**
+- *"Tool nào dùng pattern nào?"* Gần như tool nào cũng dùng cả bốn ở mức độ khác nhau; plan mode là Planner/Executor, sub-agent là multi-agent, file quy ước là memory, mọi thứ còn lại là tool-using. Tên gọi trong tool khác nhau, cơ chế giống nhau.
+- *"Có nên tự xây multi-agent cho team không?"* Câu hỏi khác bài này. Bài này về dùng tool có sẵn cho đúng; xây agent là chủ đề riêng với chi phí và rủi ro riêng.
+
+**Nguồn:** K. Vyas — *Planner/Executor*, *Multi-Agent Collaboration*, *Memory-Augmented Agent*, *Tool-Using* (LinkedIn); Anthropic — *Building effective agents*, *Claude Code Best Practices*.
+
+**Handoff → Nhan:** "Đó là cách làm việc với AI cho đúng: context, vòng lặp nhỏ, spec trước, và biết agent chạy bằng gì bên trong. Nhưng làm nhanh mà không review được thì vô nghĩa. Phần quan trọng nhất, review và những chỗ AI hỏng âm thầm, Nhan sẽ dẫn."
 
 ---
 
-## Khối 2 · NHAN — Slide 12–18
+## Khối 2 · NHAN — Slide 14–20
 
-### Slide 12 · NHAN — Divider 03 · 7.2 Review
+### Slide 14 · NHAN — Divider 03 · 7.2 Review
 
-**Trên slide:** 03 · SECTION 7.2 · *Code Review Process.* Four axes only you can sign off: Correct · Secure · Fast enough · Meaningful tests.
+**Trên slide:** divider 03, nền kính lúp soi diff mờ.
 
 **Nội dung**
 
@@ -287,9 +371,9 @@ Phần 7.2: code review. Review code AI khác review code người: code ngườ
 
 ---
 
-### Slide 13 · NHAN — "You have to test what it writes."
+### Slide 15 · NHAN — "You have to test what it writes."
 
-**Trên slide:** quote Willison; *"If you haven't seen it run, it's not a working system."* Make the AI show evidence: test output, the command it ran, a screenshot, not "done".
+**Trên slide:** quote gõ ra; dưới là hai pane: trái cửa sổ chat agent nói "Done ✅ all tests pass", phải terminal `node --test` in ✖ 2 failed; bước 2 ba con dấu test output / command it ran / screenshot.
 
 **Nội dung**
 
@@ -309,9 +393,9 @@ Mẹo tổ chức Writer/Reviewer: một phiên (hoặc một agent) viết code
 
 ---
 
-### Slide 14 · NHAN — When hallucination becomes a supply-chain attack
+### Slide 16 · NHAN — When hallucination becomes a supply-chain attack
 
-**Trên slide:** 19.7% of packages LLMs recommend don't exist (576k samples, 16 models) · 58% of hallucinated names repeat across runs · the attacker registers the fake name first, with malware attached. SOP: verify the package exists and is reputable before install; `npm audit` in CI.
+**Trên slide:** trái: chuỗi tấn công bốn nút LLM suggests → doesn't exist (?) → attacker squats it (skull trong registry) → npm install (đỏ, rung ở bước 4). Phải: hai số lớn 19.7% và 58% đếm lên. Caption SOP.
 
 **Nội dung**
 
@@ -342,9 +426,9 @@ Nối về slide 6: hallucination check ở đó là lời khuyên. Ở đây n�
 
 ---
 
-### Slide 15 · NHAN — What AI generates → OWASP Top 10
+### Slide 17 · NHAN — What AI generates → OWASP Top 10
 
-**Trên slide:** bảng 5 dòng: Missing auth middleware · IDOR → A01 (High); Hardcoded key · weak hash · `Math.random()` tokens → A02 (High); String-built SQL · XSS → A03 (High); Trusting the client for price / role → A04 (Med); Open CORS · public bucket · debug routes → A05 (Med). SOP: SAST (Semgrep OWASP ruleset, gitleaks) in the pipeline.
+**Trên slide:** lưới 10 ô A01…A10, năm ô AI hay dính sáng lên theo bước (đỏ High, amber Med) với icon và 4 từ; bước 6 tấm lưới SAST hạ xuống phủ lưới.
 
 **Nội dung**
 
@@ -372,9 +456,9 @@ SOP: đưa SAST (static application security testing) vào pipeline như một l
 
 ---
 
-### Slide 16 · NHAN — Two places AI is "green but wrong"
+### Slide 18 · NHAN — Two places AI is "green but wrong"
 
-**Trên slide:** PERFORMANCE: four smells, N+1 · missing index · unbounded `findAll()` · accidental O(n²); all pass every unit test, all fine on ten rows. BAD TESTS: high coverage ≠ safe; mock overuse; asserting current behavior instead of correct. SOP: a human writes at least one edge-case test the AI missed, and runs it.
+**Trên slide:** trái: sơ đồ N+1 (orders (100) tỏa 13 đường xuống users, nhãn "101 queries · 1 + N") và ba icon mùi còn lại sáng amber theo bước; phải: donut coverage 95% xanh với "0 rules verified" đỏ và dòng `expect(spy).toHaveBeenCalled()`. Badge "✓ 4 passed · on 10 rows" cố định góc phải trên, "green" trong tiêu đề đổi đỏ ở bước 7.
 
 **Nội dung**
 
@@ -386,7 +470,7 @@ Hai chỗ code AI xanh mà sai: test pass, CI xanh, và vẫn hỏng ở product
 3. **Unbounded fetch**: `findAll()` hoặc `SELECT *` không `LIMIT` trên bảng đã lớn. Chạy ổn hai năm, rồi một ngày bảng đủ lớn để làm hết memory.
 4. **O(n²) vô tình**: `items.filter(x => other.includes(x))`, `includes` lồng trong vòng lặp trên hai list. Mỗi list 10 phần tử thì 100 phép so; mỗi list 10 nghìn thì 100 triệu.
 
-Cả bốn pass mọi unit test, vì unit test chạy trên dữ liệu nhỏ. Cả bốn ổn trên mười dòng. Chúng chỉ lộ ở production, lúc đắt nhất. Không tài liệu nào dạy hay bằng hai ba ví dụ thật từ codebase của team. SOP: yêu cầu AI kèm phân tích độ phức tạp khi sinh code xử lý danh sách hoặc query; với DB, xem `EXPLAIN ANALYZE` như slide 9; review bằng mắt tìm vòng lặp có I/O bên trong.
+Cả bốn pass mọi unit test, vì unit test chạy trên dữ liệu nhỏ. Cả bốn ổn trên mười dòng. Chúng chỉ lộ ở production, lúc đắt nhất. Không tài liệu nào dạy hay bằng hai ba ví dụ thật từ codebase của team. SOP: yêu cầu AI kèm phân tích độ phức tạp khi sinh code xử lý danh sách hoặc query; với DB, xem `EXPLAIN ANALYZE` như slide 10; review bằng mắt tìm vòng lặp có I/O bên trong.
 
 **Test dởm, ba kiểu:**
 1. **Lạm dụng mock** đến mức test không kiểm gì thật. Ví dụ: mock `discountFor`, gọi `total(cart)`, rồi assert `discountFor` đã được gọi. Test này xanh dù công thức giảm giá sai hoàn toàn; nó chỉ chứng minh hàm được gọi.
@@ -406,9 +490,9 @@ Chốt phần 7.2: AI review được style và lỗi rõ. Bốn thứ chỉ con
 
 ---
 
-### Slide 17 · NHAN — Divider 04 · 7.3 Docs
+### Slide 19 · NHAN — Divider 04 · 7.3 Docs
 
-**Trên slide:** 04 · SECTION 7.3 · *Documentation.* Give AI the pen, not the decision.
+**Trên slide:** divider 04, nền sách mở mờ.
 
 **Nội dung**
 
@@ -416,9 +500,9 @@ Phần 7.3, documentation, một slide. Nguyên tắc: cho AI cầm bút, không
 
 ---
 
-### Slide 18 · NHAN — AI drafts; a human reviews and decides
+### Slide 20 · NHAN — AI drafts; a human reviews and decides
 
-**Trên slide:** DOCS FROM CODE: generate docs from real code (safe); AI docs "sound right but are technically wrong" where it's complex. API · DIÁTAXIS: tutorial · how-to · reference · explanation; which type for whom is your call. ADR: Title / Status / Context / Decision / Consequences; a decision with its expiry conditions; AI may draft, never decide.
+**Trên slide:** trái: dòng `code → docs` an toàn / `prose → code` drift, rồi lưới Diátaxis 2×2 (trục learning↔doing, practical↔theoretical) với Tutorial / How-to / Explanation / Reference. Phải: tờ ADR-014 năm dòng, con dấu "DRAFTED BY AI" mờ, bước 4 con dấu "DECIDED BY: ____" teal.
 
 **Nội dung**
 
@@ -446,11 +530,11 @@ Chốt: cho AI cầm bút, đừng cho AI cầm quyền quyết. Docs và ADR l�
 
 ---
 
-## Khối 3 · HAO — Slide 19–20, bài tập, debrief
+## Khối 3 · HAO — Slide 21–22, bài tập, debrief
 
-### Slide 19 · HAO — Divider 05 · SOPs for common tasks
+### Slide 21 · HAO — Divider 05 · SOPs for common tasks
 
-**Trên slide:** 05 · SECTION 7.4 · *SOPs for common tasks.* One SOP frame, filled per task. (Slide chỉ có tiêu đề; nội dung dưới đây là nói.)
+**Trên slide:** divider 05, nền checklist mờ; tấm giấy kẻ dòng bốn ô tick lần lượt (chấm C/V/V/O), dòng cuối "signed: ____ · new service · migration · endpoint · integration test".
 
 **Nội dung**
 
@@ -493,9 +577,9 @@ Chốt: SOP không phải để trói tay. Nó là context đóng gói sẵn đ�
 
 ---
 
-### Slide 20 · HAO — The Legacy Rescue
+### Slide 22 · HAO — The Legacy Rescue
 
-**Trên slide:** *One function. Undocumented, badly named, wrong in ways the tests don't catch.* Bốn task; lệnh `git clone … && cd legacy-rescue && node --test`; `src/billing.js` và một file test pass; *the passing tests are part of the problem*; read `SPEC.md` first; Node 20+, no deps.
+**Trên slide:** trái: bốn trạm có icon brain / broom / flask / magnifier; phải: thẻ file `src/billing.js · 2019 · "do not touch"` với bốn dấu ? mờ, terminal gõ lệnh và in 4 ✔ rồi đổi thành ? ở bước 2, câu "passing tests are part of the problem", chip Node 20+ · No deps · No AI trailers.
 
 **Nội dung**
 
@@ -536,7 +620,7 @@ Spec cố ý để ngỏ: tiền có nên là float đô la không.
 
 2. **Free shipping tính trên subtotal trước discount.** Code lưu `pre = t` trước khi giảm, rồi `if (pre > 500) ship = 0`. Spec: miễn ship khi subtotal sau mọi discount trên 500. Ví dụ: 600 món giá 0.90: 540 trước giảm, 459 sau giảm 15%; spec vẫn tính ship 15; code ra 459.00, spec ra 474.00. Loại bug: đọc sai thứ tự áp dụng quy tắc; chỉ lộ khi có test mà discount kéo tổng qua ngưỡng 500.
 
-3. **Hàm mutate order của caller.** Code `o.items.push({ sku: 'SHIPPING', qty: 1, price: ship })`. Hàm không thuần: gọi lần hai với cùng order, danh sách có thêm dòng shipping, ra số khác. Ví dụ: order 2 món giá 25, EU: lần một 65.00, lần hai 80.00. Đây là bug gây sự cố thật ngoài đời (retry, tính lại giỏ, hiển thị lại đều gọi hàm nhiều lần), và gần như không ai tìm ra bằng cách đọc. Chỉ lộ khi có test gọi `calc` hai lần, mà test sinh từ implementation không bao giờ làm vậy, vì implementation "chạy đúng" ở lần đầu. Đây là punchline cho câu checkpoint Hard và cho slide 16.
+3. **Hàm mutate order của caller.** Code `o.items.push({ sku: 'SHIPPING', qty: 1, price: ship })`. Hàm không thuần: gọi lần hai với cùng order, danh sách có thêm dòng shipping, ra số khác. Ví dụ: order 2 món giá 25, EU: lần một 65.00, lần hai 80.00. Đây là bug gây sự cố thật ngoài đời (retry, tính lại giỏ, hiển thị lại đều gọi hàm nhiều lần), và gần như không ai tìm ra bằng cách đọc. Chỉ lộ khi có test gọi `calc` hai lần, mà test sinh từ implementation không bao giờ làm vậy, vì implementation "chạy đúng" ở lần đầu. Đây là punchline cho câu checkpoint Hard và cho slide 18.
 
 4. **Tax đánh lên cả shipping.** Code `total = (t + ship) * (1 + tax)`. Spec: tax chỉ trên hàng. Ví dụ: 1 món 100 đô ở VN: code ra 126.50, spec ra 125.00; chênh 1.50 là 10% của shipping. Loại bug: gộp sai phạm vi áp thuế; model tìm ra khi được đưa spec, bỏ qua khi chỉ đọc code.
 
@@ -550,11 +634,11 @@ Câu chốt bài tập: AI làm 80% việc trong 5 phút. 20% còn lại, biết
 
 ---
 
-## Khối 4 · NHAN — Slide 21–25
+## Khối 4 · NHAN — Slide 23–28
 
-### Slide 21 · NHAN — Checkpoint questions
+### Slide 23 · NHAN — Checkpoint questions
 
-**Trên slide:** EASY: copy-pasting straight from an LLM into prod, what's the danger? MEDIUM: how do you structure a prompt for a Postgres-optimized SQL query? HARD: AI generated an email regex, it looks correct, your SOP to verify it's safe against ReDoS? Caption: ReDoS → catastrophic backtracking → one crafted request pins a CPU.
+**Trên slide:** ba card Easy / Medium / Hard có icon (Hard đỏ, icon regex); caption ReDoS; bước 5 khung demo (phím `d` chạy, `x` reset) kèm đồ thị thời gian trục log bên phải.
 
 **Nội dung**
 
@@ -564,14 +648,14 @@ Hỏi từng câu, lấy ý từ lớp trước, rồi chốt. Đáp án không 
 
 Không phải "nó có thể sai", điều đó đúng với mọi code. Ba tầng nguy hiểm cụ thể:
 - **Đúng đắn:** code hợp lý một cách bề mặt, nên sống sót qua lần đọc lướt vốn chỉ bắt code sai rõ ràng. Và sau này không ai có mental model để debug, vì không ai từng nghĩ ra nó. Chưa thấy nó chạy thì chưa phải hệ thống chạy được. Model bịa thư viện và method với giọng tự tin.
-- **Bảo mật:** các lỗ hổng OWASP ở slide 15 (secret hardcode, injection, thiếu auth); 45% code AI fail benchmark OWASP; và slopsquatting, cài nhầm package độc do AI bịa tên.
+- **Bảo mật:** các lỗ hổng OWASP ở slide 17 (secret hardcode, injection, thiếu auth); 45% code AI fail benchmark OWASP; và slopsquatting, cài nhầm package độc do AI bịa tên.
 - **Sở hữu và riêng tư:** dán code dự án vào AI public là rò rỉ. Vụ Samsung 2023: kỹ sư dán mã nguồn bán dẫn nội bộ vào ChatGPT để nhờ sửa, ba lần trong 20 ngày; công ty cấm toàn bộ nhân viên dùng. Và người commit vẫn chịu trách nhiệm từng dòng.
 
 Chốt: nguy hiểm không phải AI viết sai, mà là nó sai theo cách trông rất đúng, và bạn ship mà không biết.
 
 **Medium — prompt để lấy SQL tối ưu cho Postgres.**
 
-Checklist sáu mục, khớp slide 9: schema các bảng liên quan; index hiện có; quy mô dữ liệu và phân bố; câu query hiện tại kèm output `EXPLAIN ANALYZE`; version Postgres; mục tiêu rõ (thời gian, tránh full scan, giới hạn index). Yêu cầu model giải thích plan mới vì sao nhanh hơn. Rồi chạy `EXPLAIN ANALYZE` thật với câu mới và so. Kiểm chứng với planner, không phải với model.
+Checklist sáu mục, khớp slide 10: schema các bảng liên quan; index hiện có; quy mô dữ liệu và phân bố; câu query hiện tại kèm output `EXPLAIN ANALYZE`; version Postgres; mục tiêu rõ (thời gian, tránh full scan, giới hạn index). Yêu cầu model giải thích plan mới vì sao nhanh hơn. Rồi chạy `EXPLAIN ANALYZE` thật với câu mới và so. Kiểm chứng với planner, không phải với model.
 
 **Hard — SOP kiểm tra regex AI sinh có an toàn trước ReDoS.**
 
@@ -611,9 +695,9 @@ for (const n of [20, 22, 24, 26, 28]) {
 
 ---
 
-### Slide 22 · NHAN — Even Karpathy retired "vibe coding"
+### Slide 24 · NHAN — Even Karpathy retired "vibe coding"
 
-**Trên slide:** He moved to Agentic Engineering (Mar 2026): the dev is a supervisor orchestrating autonomous agents; oversight gets tighter. *If autonomy keeps rising, what's the endpoint? → the dark factory.*
+**Trên slide:** trái: dòng thời gian, thẻ "vibe coding · Feb 2025" bị gạch đỏ và mờ ở bước 1, thẻ "Agentic Engineering · Mar 2026" sáng teal, đường kéo dài mờ dần tới dấu "?". Phải: tiêu đề, lede, caption "→ the dark factory." gõ ra; nền tối dần.
 
 **Nội dung**
 
@@ -627,9 +711,9 @@ Cây cầu sang slide sau: nếu mức tự động cứ tăng, agent làm nhi�
 
 ---
 
-### Slide 23 · NHAN — The end of the ladder: a codebase that ships itself
+### Slide 25 · NHAN — The end of the ladder: a codebase that ships itself
 
-**Trên slide:** ladder L1 Assisted → L2 + Review → L3 + Auto gates → L4 Escalate-only → L5 Dark factory. REAL RISK: an agent with the wrong write access wiped 1.9 million production rows; you still own the incident. Caption: a dark factory runs with the lights off, nobody there; for code: write · test · review · ship autonomously, agents that adapt and judge like a dev but never stop to ask.
+**Trên slide:** nhà máy năm gian L1…L5 với cửa sổ sáng và hình người (5/3/2/1/0); theo bước, đèn gian trước tắt và người mờ đi; L5 viền đỏ, cửa sổ tắt hẳn, HUD tắt; băng chuyền nét đứt chạy dưới chân. Bước 6 callout đỏ "wiped 1.9 million production rows", bước 7 "You still own the incident" đỏ, HUD chỉ còn O.
 
 **Nội dung**
 
@@ -652,9 +736,39 @@ Không kết luận ở slide này. Câu hỏi để lại: nếu L5 là đích,
 
 ---
 
-### Slide 24 · NHAN — Full autonomy doesn't remove humans — it changes their shape
+### Slide 26 · NHAN — If you can't observe it, you can't trust it
 
-**Trên slide:** EARNED TRUST: read-only → write-to-branch → staging → production, expanding access by proven reliability; limit each agent's blast radius. DEEPSEEK HARNESS: open-source agent harness, everything is a plugin; append-only, inspectable session log. Caption: *Today's SOP = the manual version of the same discipline. Verification + Ownership encoded into guardrails + audit trails. Discipline scales, it doesn't vanish.*
+**Trên slide:** dashboard: ba ô stat có sparkline (latency 2.1s, tokens 38k, escalations 3/day amber), dòng log, waterfall trace (edit được "approved · nhan@", npm install ⛔ blocked), chuỗi log append-only có ổ khoá; caption ba nhóm metric sáng lần lượt. Đèn bật lại khi vào slide.
+
+**Nội dung**
+
+Slide 25 vừa để lại câu hỏi: nếu agent tự chạy không ai xem, làm sao biết nó đã làm gì. Câu trả lời có ba lớp, và ba lớp này là điều kiện để bất kỳ nấc nào từ L3 trở lên tồn tại được.
+
+**Logging.** Ghi có cấu trúc từng hành động của agent: request đến, tool nó chọn, tham số nó truyền, kết quả trả về, exception nếu có. Mỗi bản ghi có trace id và timestamp. Trong coding agent: mỗi lần đọc file, mỗi lệnh shell, mỗi lần sửa file là một dòng log, không phải một câu tóm tắt do model tự viết. Log do hệ thống ghi thì đáng tin; "báo cáo" do model viết thì không, vì nó cũng là văn bản dự đoán.
+
+**Tracing.** Nối các log rời thành một đường thực thi: agent đã suy luận bước gì, gọi tool gì, theo thứ tự nào, mỗi bước mất bao lâu. Đây là thứ cho phép trả lời "vì sao nó xoá file đó" bằng cách lần ngược từ hành động về quan sát và suy luận trước đó, thay vì hỏi lại model và nhận một lời giải thích bịa sau sự việc. Tracing cũng cho thấy chỗ tốn thời gian và token, để tối ưu.
+
+**Audit trail.** Bản ghi chống sửa, có kiểm soát truy cập, trả lời ba câu của trách nhiệm: quyết định gì đã được đưa ra, dữ liệu nào đã được đọc, có người duyệt hay không và là ai. Khác log ở chỗ log để debug, audit để chịu trách nhiệm; audit phải append-only, không ai kể cả agent xoá được.
+
+**Ba nhóm metric cần theo dõi**, ngoài "đúng hay sai": vận hành (latency, token tiêu thụ), tin cậy (tỷ lệ fail, tỷ lệ phải escalate lên người), governance (số lần chạm dữ liệu nhạy cảm, số lần vi phạm policy). Tỷ lệ escalate đặc biệt đáng xem: nó là con số nói thẳng agent đang ở nấc nào của thang tự động.
+
+**Stack** phổ biến và mã nguồn mở: OpenTelemetry để sinh log và trace theo chuẩn, Jaeger để xem trace, Prometheus để gom metric, Grafana để nhìn. Đây là cùng stack team backend đã dùng cho service; agent chỉ là một service nữa cần được quan sát.
+
+Nguyên tắc: observability phải là lớp thiết kế từ đầu, không phải monitoring gắn thêm sau khi có sự cố. Câu bài gốc: nếu bạn không quan sát được hành vi của agent, bạn không thể tin nó.
+
+Nối sang slide 27: DeepSeek Harness với session log append-only là một hiện thân cụ thể của lớp audit này. Và nhìn về đầu buổi: đây là trụ Ownership chuyển từ "người ký tên trên PR" thành "hệ thống ghi lại ai đã làm gì, không xoá được".
+
+**Nếu bị hỏi**
+- *"Coding tool hiện tại có log kiểu này không?"* Hầu hết ghi lại lịch sử phiên và tool call ở mức cơ bản. Trace id, metric, audit chống sửa thì chưa phải chuẩn; đó là khoảng cách giữa tool cá nhân và agent chạy trong tổ chức.
+- *"Log của agent có chứa dữ liệu nhạy cảm không?"* Có thể, vì context có thể chứa secret hoặc dữ liệu khách hàng. Nên audit trail cần kiểm soát truy cập và chính sách lưu trữ, đúng như bài gốc nêu ở phần memory: nhớ được thì phải chịu trách nhiệm được.
+
+**Nguồn:** K. Vyas — *Observability in Agentic AI: Logging, Tracing, Audit Trails* (LinkedIn); OpenTelemetry docs; slide 27 (DeepSeek Harness).
+
+---
+
+### Slide 27 · NHAN — Full autonomy doesn't remove humans — it changes their shape
+
+**Trên slide:** trái: cầu thang bốn bậc read-only → write-to-branch → staging → production, ba ổ khoá mở xanh, bậc cuối ổ khoá amber và hình người "a human holds the lever"; phải: Earned trust, Append-only log với dãy khối #1…#4 nối thêm. Caption peak; hàng ba icon trụ sáng cả ba ở bước 3, HUD sáng cả ba.
 
 **Nội dung**
 
@@ -677,9 +791,9 @@ Câu bắt buộc: "review đổi hình", không bao giờ "hết cần review".
 
 ---
 
-### Slide 25 · NHAN — You are the one who signs.
+### Slide 28 · NHAN — You are the one who signs.
 
-**Trên slide:** *You are the one who signs.* `$ Speed is what AI gives for free. Quality is what you keep — and SOPs are how you keep it without slowing down.` *If you can't explain the line, it doesn't go in.*
+**Trên slide:** tiêu đề; dòng terminal `$` gõ ra; bước 2 nét bút vẽ chữ ký trên dòng "signed by" và câu cuối.
 
 **Nội dung**
 
