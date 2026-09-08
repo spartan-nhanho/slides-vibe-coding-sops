@@ -340,6 +340,36 @@ ol.steps li::before {
 .divider h2 { font-size: clamp(2.4rem, 8vh, 5.4rem); max-width: 18ch; }
 .divider .lede { max-width: 52ch; }
 
+/* hero divider: the section name is the headline, the number steps back */
+.divider.divider-name .hero-title {
+  font-size: clamp(4rem, 17vh, 11rem);
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  max-width: none;
+  margin: 0.4rem 0 1.4rem;
+  color: var(--text);
+}
+.divider.divider-name .hero-title::after {
+  content: "";
+  display: block;
+  width: 6rem;
+  height: 3px;
+  margin-top: 1.2rem;
+  background: var(--accent);
+}
+.divider.divider-name .sub {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 4vh, 2.5rem);
+  line-height: 1.2;
+  max-width: 24ch;
+  margin: 0 0 1rem;
+  color: var(--text);
+}
+.divider.divider-name .lede { margin-top: 0.4rem; }
+.divider.divider-name .bgfig { right: 3vw; top: 60%; width: clamp(12rem, 28vw, 24rem); }
+
 /* ---------- quote slides ---------- */
 
 .quote .mark {

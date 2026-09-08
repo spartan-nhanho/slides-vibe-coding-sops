@@ -587,7 +587,7 @@ Cây cầu sang slide sau: nếu mức tự động cứ tăng, agent làm nhi�
 
 ### Slide 23 · NHAN — Divider · The Dark Factory
 
-**Trên slide:** 06 · THE DARK FACTORY · *When no human writes, reviews, or tests the code.* No human writes, reviews, or manually tests code. Humans write specs and acceptance criteria; automated systems do the rest.
+**Trên slide:** 06 · Part two · **THE DARK FACTORY** (tiêu đề lớn) · *When no human writes, reviews, or tests the code.* Humans write specs and acceptance criteria. Automated systems do the rest.
 
 **Nội dung**
 
