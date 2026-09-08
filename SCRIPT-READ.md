@@ -1,6 +1,6 @@
 # Kịch bản đọc — Lecture 9: Vibe Coding SOPs
 
-> Deck 36 slide: bỏ bài tập và checkpoint, khối dark factory 11 slide (23–33) theo năm mục: vấn đề, cấp độ, bốn giai đoạn, kiến trúc, rủi ro. Bản này khác `SCRIPT.md`: mỗi slide có **Hiểu trước khi nói** (kiến thức nền, viết để hiểu chứ không phải để nói) và **Đọc** (lời dẫn nguyên văn, đọc được từ đầu đến cuối). Ai nói slide nào ghi ở tiêu đề. Đọc hết bản này một lượt là nắm được toàn bộ kiến thức của buổi; sau đó chỉ cần cầm `SCRIPT.md` để tra nhanh.
+> Deck 36 slide: bỏ bài tập và checkpoint, khối dark factory 11 slide (23–33) theo năm mục: vấn đề, cấp độ, bốn giai đoạn, kiến trúc, rủi ro. Bản này khác `SCRIPT.md`: mỗi slide có **Hiểu trước khi nói** (kiến thức nền, viết để hiểu chứ không phải để nói) và **Đọc** (lời dẫn nguyên văn theo giọng người đứng trước phòng: mở bằng tình huống quen thuộc, giải thích bối cảnh ngoài slide, đi qua hình trên slide, và đặt câu hỏi cho khán giả để kéo thảo luận). Đọc thành tiếng, mỗi slide 2–4 phút; câu hỏi cho phòng là chỗ dừng 5–10 giây, không cần ai trả lời. Ai nói slide nào ghi ở tiêu đề. Đọc hết bản này một lượt là nắm được toàn bộ kiến thức của buổi; sau đó chỉ cần cầm `SCRIPT.md` để tra nhanh.
 
 Câu chuyện của buổi, tóm trong ba câu: AI làm việc gõ code rẻ đi. Hiểu, review và đúng thì vẫn đắt như cũ. SOP là quy trình cho phần đắt đó. Ba trụ xuyên suốt: **Context** (cho AI đúng thứ nó cần), **Verification** (không kiểm chứng được thì không ship), **Ownership** (bạn ký tên cho từng dòng).
 
@@ -14,11 +14,13 @@ Câu chuyện của buổi, tóm trong ba câu: AI làm việc gõ code rẻ đi
 
 **Nói đơn giản.** Buổi này nói về một chuyện rất cụ thể: khi AI viết phần lớn code cho bạn, bạn phải làm gì để code đó không gây hoạ. Câu trả lời là một bộ quy trình, gọi là SOP, giống như checklist của phi công trước khi cất cánh.
 
-**Đọc.** Chủ đề hôm nay là quy trình để ship code có AI tham gia, tức là code mà mình không hoàn toàn tự viết. SOP nghĩa là quy trình vận hành chuẩn: một việc lặp lại, viết thành các bước cố định, để kết quả như nhau bất kể ai làm và làm lúc nào.
+**Đọc.** Chào mọi người. Trước khi vào bài, tôi muốn kể một chuyện chắc nhiều người ở đây từng gặp. Tuần trước, một bạn trong team tôi mở PR khoảng bốn trăm dòng, mô tả gọn gàng, test xanh, CI xanh. Tôi hỏi bạn ấy: đoạn xử lý null ở giữa hàm này là để làm gì? Bạn ấy im một lúc rồi nói: "Em không chắc, Claude nó thêm vào." PR đó merge rồi. Không có gì hỏng, ít nhất là chưa. Nhưng câu trả lời đó là lý do có buổi hôm nay.
 
-Một câu hỏi để vào bài. Tuần này ai đã ship code do AI sinh ra? Và trong số đó, ai đã đọc từng dòng trước khi merge? Khoảng cách giữa hai con số đó chính là nội dung của buổi. Ai cũng dùng AI, rất ít người review đủ. Hôm nay nói về phần review đó.
+Bài số chín, tên là Vibe Coding SOPs. Tôi giải thích từng chữ. Vibe coding là cách gọi việc để AI viết code rồi dùng luôn, kiểu "thấy chạy là được". SOP là standard operating procedure, quy trình vận hành chuẩn: một việc lặp lại, viết thành các bước cố định, để ai làm cũng ra kết quả giống nhau, kể cả lúc mệt, lúc vội, lúc tự tin. Ghép hai thứ lại: làm sao dùng AI viết code mà vẫn ship được code mình dám ký tên.
 
-Cấu trúc: khoảng tám mươi lăm phút, hỏi đáp xen giữa các phần.
+Cho tôi xin hai lần giơ tay. Lần một: tuần này ai đã merge code do AI viết phần lớn? Lần hai, giữ tay nếu bạn đã đọc từng dòng của code đó trước khi merge. Mọi người nhìn quanh phòng một chút. Khoảng cách giữa hai lần giơ tay chính là nội dung của buổi hôm nay. Không ai ở đây sai cả; tôi cũng hạ tay ở lần hai. Vấn đề là chúng ta đang làm một việc mới bằng thói quen cũ.
+
+Buổi này khoảng tám mươi phút. Nửa đầu tôi dẫn: vì sao AI sai, làm việc với nó thế nào cho đúng, và soi code của nó ở đâu. Nửa sau Nhân dẫn phần thú vị hơn: chuyện gì xảy ra khi người ta bỏ hẳn con người ra khỏi vòng lặp. Cứ giơ tay cắt ngang bất cứ lúc nào, buổi này là nội bộ, không cần chờ đến cuối.
 
 ---
 
@@ -28,11 +30,15 @@ Cấu trúc: khoảng tám mươi lăm phút, hỏi đáp xen giữa các phần
 
 **Nói đơn giản.** Trước đây bạn là người gõ. Giờ AI gõ, bạn là người kiểm. Giống như bạn lên làm tổ trưởng, có một nhân viên mới rất nhanh nhưng hay nói bừa: bạn không gõ thay nó, nhưng mọi thứ nó nộp ra đều mang tên bạn.
 
-**Đọc.** Hình bên trái là người gõ code. Hình bên phải là người cầm kính lúp soi diff. AI không thay bạn; nó ép bạn đi từ hình trái sang hình phải.
+**Đọc.** Câu trên slide là câu tôi muốn mọi người mang về nếu quên hết những thứ khác: AI không thay bạn, nó ép bạn lên một bậc.
 
-Hãy hình dung AI như một junior developer cực nhanh, không biết mệt, nhưng thỉnh thoảng bịa và đôi khi phá sạch mọi thứ. Bạn là tech lead của junior đó. Tech lead không gõ thay junior, nhưng chịu trách nhiệm cho mọi thứ junior merge. Cách một tech lead tốt làm việc với junior chính là SOP: giao việc rõ, cho đủ context, yêu cầu bằng chứng, đọc diff, rồi ký tên.
+Nhìn hai hình. Bên trái là người gõ phím, code chảy ra từ đầu ngón tay. Đó là nghề của chúng ta mười năm qua. Bên phải là người cầm kính lúp soi vào một cái diff. Đó là nghề của chúng ta từ bây giờ. Không phải vì ai bắt, mà vì phần gõ đã rẻ đến mức không còn là việc đáng trả lương nữa.
 
-Một điều bài này không hứa: code nhanh gấp mười. Bạn sẽ gõ ít hơn, đúng. Nhưng gõ chưa bao giờ là nút thắt. Nút thắt là hiểu vấn đề, review được thay đổi, và đúng ở edge case. Ba việc đó AI không làm rẻ đi.
+Tôi hay dùng một hình ảnh với team mình: hãy coi AI như một junior developer rất đặc biệt. Bạn này gõ nhanh gấp trăm lần bạn, không bao giờ mệt, không bao giờ cáu, đã đọc mọi tài liệu công khai trên đời. Nhưng bạn này có hai tật. Thứ nhất, thỉnh thoảng bịa: bịa tên hàm, bịa tên thư viện, bịa cả cách một API hoạt động, và bịa bằng giọng rất tự tin. Thứ hai, đôi khi phá sạch mọi thứ, vì không hiểu hệ quả của việc mình làm; nó không biết bảng đó có năm mươi triệu dòng, không biết endpoint đó có khách hàng đang gọi.
+
+Vậy bạn làm gì với một junior như thế? Bạn không gõ thay nó. Bạn giao việc rõ, cho đủ thông tin, yêu cầu nó chứng minh đã chạy thử, đọc diff của nó, rồi ký tên. Đó chính xác là năm bước của một tech lead giỏi, và cũng chính xác là SOP mà hôm nay chúng ta sẽ xây.
+
+Một điều tôi không hứa: code nhanh gấp mười. Ai nghe con số đó ở đâu thì cứ nghi ngờ. Bạn sẽ gõ ít hơn, đúng. Nhưng gõ chưa bao giờ là nút thắt của nghề này. Hỏi thật: trong một tuần, bao nhiêu phần trăm thời gian của bạn là gõ code? Tôi đoán dưới một phần ba. Phần còn lại là hiểu vấn đề, đọc code người khác, và cãi nhau xem thế nào là đúng. Ba việc đó AI không làm rẻ đi, và mọi thứ sau slide này là quy trình cho ba việc đó.
 
 ---
 
@@ -42,15 +48,17 @@ Một điều bài này không hứa: code nhanh gấp mười. Bạn sẽ gõ �
 
 **Nói đơn giản.** Ba con số chỉ nói một điều: người ta dùng AI rất nhiều nhưng không tin nó, và khi không có quy trình thì bug tăng. Quy trình là thứ biến "không tin" thành "có cách kiểm".
 
-**Đọc.** Ba con số để thấy tại sao cần quy trình.
+**Đọc.** Ba con số này để trả lời câu hỏi "có cần quy trình không, hay cứ dùng là được".
 
-Bốn mươi lăm phần trăm: gần một nửa code AI sinh ra không qua được benchmark OWASP Top 10, theo Veracode 2025. Nghĩa là nhận code AI mà không kiểm bảo mật thì xác suất mang lỗ hổng đã biết vào production cỡ tung đồng xu.
+Donut đầu tiên, màu đỏ: bốn mươi lăm phần trăm. Veracode năm 2025 cho AI sinh code rồi đem chạy qua bộ kiểm tra OWASP Top 10, tức mười loại lỗ hổng web phổ biến nhất. Gần một nửa không qua. Nói cách khác, nếu bạn nhận code AI mà không có bước kiểm bảo mật, xác suất mang một lỗ hổng đã biết vào production cỡ tung đồng xu. Không phải lỗi lạ, mà là những lỗi có tên, có số, có tài liệu.
 
-Khoảng bốn mươi mốt phần trăm: bug rate tăng chừng đó ở các đội áp dụng AI mà không có quy trình, theo Uplevel. Từ khoá là "không có quy trình": cùng công cụ, kết quả phụ thuộc cách dùng.
+Donut thứ hai, màu cam: khoảng bốn mươi mốt phần trăm. Uplevel theo dõi khoảng tám trăm developer và thấy bug rate tăng chừng đó ở các đội áp dụng AI mà không có quy trình. Tôi muốn nhấn vào cụm "mà không có quy trình". Cùng một công cụ, đội có quy trình và đội không có quy trình ra hai kết quả khác nhau. Công cụ không quyết định, cách dùng quyết định.
 
-Và donut cuối: chín mươi hai phần trăm developer dùng AI hằng ngày, nhưng chỉ hai mươi chín phần trăm tin output của nó. Khoảng hở giữa hai vòng chính là chỗ SOP sống. Người ta đang dùng thứ mình không tin. SOP biến "tôi không tin nó" thành "tôi có bước để kiểm nó".
+Donut thứ ba là cái tôi thích nhất. Vòng ngoài nhạt là chín mươi hai phần trăm developer dùng AI hằng ngày. Vòng trong đậm là hai mươi chín phần trăm nói rằng họ tin output của nó. Nhìn khoảng hở giữa hai vòng. Chúng ta đang dùng hằng ngày một thứ mà chúng ta không tin. Có ai thấy mình trong con số đó không?
 
-Tốc độ là thứ AI cho không. Chất lượng thì không.
+Khoảng hở đó chính là chỗ SOP sống. Không tin thì có hai cách: hoặc bỏ không dùng, mà không ai bỏ được nữa; hoặc có bước để kiểm, để "không tin" biến thành "tôi có cách kiểm". Buổi hôm nay là cách thứ hai.
+
+Câu chốt: tốc độ là thứ AI cho không. Chất lượng thì không.
 
 ---
 
@@ -60,15 +68,17 @@ Tốc độ là thứ AI cho không. Chất lượng thì không.
 
 **Nói đơn giản.** Ba câu hỏi để nhớ suốt buổi. Tôi đã đưa AI đủ thông tin chưa (Context)? Tôi có bằng chứng nó chạy đúng chưa (Verification)? Ai ký tên chịu trách nhiệm (Ownership)? Ba chấm ở góc dưới slide chính là ba câu này.
 
-**Đọc.** Mọi SOP hôm nay trả lời một trong ba câu hỏi.
+**Đọc.** Trước khi đi vào chi tiết, tôi đưa cái khung để mọi thứ sau này có chỗ treo. Mọi quy tắc hôm nay trả lời một trong ba câu hỏi, và tôi sẽ nhắc lại ba câu này ở mỗi phần.
 
-Context: tôi đã cho AI cái gì? AI chỉ tốt bằng thứ bạn đưa vào. Nó không biết repo của bạn, quy ước của team, cái test đang fail, trừ khi bạn đưa. Và chỗ chứa đó có giới hạn, nên quản như quản RAM.
+Câu một, Context: tôi đã cho AI cái gì? Nghe hiển nhiên, nhưng đây là lỗi phổ biến nhất. AI không biết repo của bạn, không biết quy ước của team, không biết cái test đang fail, trừ khi bạn đưa. Và chỗ chứa của nó có giới hạn, đưa nhiều quá thì nó quên phần đầu. Nên phải quản như quản RAM: nạp đúng thứ cần, dọn thứ không cần.
 
-Verification: tôi chứng minh nó chạy được không? Bằng chứng là test pass, build xanh, screenshot thật. Không phải câu "đã xong" của model, vì model không có khả năng tự biết mình sai.
+Câu hai, Verification: tôi chứng minh nó chạy được không? Chú ý chữ "chứng minh". Bằng chứng là test pass, build xanh, screenshot màn hình thật. Không phải câu "đã xong" của model. Lát nữa ở slide sáu mọi người sẽ thấy vì sao model không có khả năng tự biết mình sai, nên bằng chứng phải đến từ bên ngoài nó.
 
-Ownership: ai ký? Bạn ký, cho từng dòng, kể cả dòng AI viết. AI cầm bút, không cầm quyền quyết.
+Câu ba, Ownership: ai ký? Với reviewer, với production, với người bị gọi dậy lúc hai giờ sáng để debug, việc AI viết hay bạn viết là vô hình. Commit mang tên bạn. AI cầm bút, không cầm quyền quyết.
 
-Từ slide này trở đi, ba chấm ở góc dưới sẽ sáng theo trụ của từng slide. Khi nghe một quy tắc, hãy tự hỏi nó thuộc trụ nào.
+Từ slide này trở đi, mọi người để ý ba chấm nhỏ ở góc dưới màn hình: C, V, O. Chấm nào sáng nghĩa là slide đó thuộc trụ đó. Đây là cách tôi tự ép mình: nếu một quy tắc không thuộc trụ nào, có lẽ nó không đáng nói.
+
+Một cách dùng ngay: lần tới thấy team đề xuất một quy tắc mới về AI, hỏi nó thuộc trụ nào. Không trả lời được thì thường là quy tắc để cho có.
 
 ---
 
@@ -76,7 +86,7 @@ Từ slide này trở đi, ba chấm ở góc dưới sẽ sáng theo trụ củ
 
 **Nói đơn giản.** Chuyển phần: trước khi học cách dùng, hiểu tại sao AI hay sai.
 
-**Đọc.** Phần một, rất ngắn: vì sao AI sai. Hiểu mô hình hoạt động ra sao thì mọi quy tắc phía sau đều có lý do, thay vì là giáo điều phải học thuộc.
+**Đọc.** Phần một, rất ngắn, ba slide. Tôi gọi là phần khoa học, nhưng không có công thức. Mục đích chỉ một: hiểu AI hoạt động ra sao thì mọi quy tắc phía sau đều có lý do. Nếu không hiểu, các quy tắc thành giáo điều, và giáo điều thì người ta bỏ ngay khi deadline đến.
 
 ---
 
@@ -86,13 +96,17 @@ Từ slide này trở đi, ba chấm ở góc dưới sẽ sáng theo trụ củ
 
 **Nói đơn giản.** AI viết chữ bằng cách đoán chữ tiếp theo cho nghe hợp tai, không phải cho đúng. Nên nó bịa là chuyện bình thường, và bịa bằng giọng rất tự tin. Thêm nữa, trí nhớ ngắn hạn của nó có giới hạn, nhét nhiều quá thì nó quên phần đầu. Vì vậy: chia nhỏ việc trước khi hỏi.
 
-**Đọc.** Bên trái là cách model làm việc. Câu đang viết dở: "the function returns a". Model có bốn ứng viên cho mảnh chữ tiếp theo, mỗi ứng viên một xác suất. Nó chọn "Promise" vì xác suất cao nhất, không phải vì nó đã kiểm tra hàm đó trả về gì. Toàn bộ LLM là phép chọn này lặp lại hàng nghìn lần. Nó tối ưu cho "nghe hợp lý nhất", không phải "đúng nhất". Không có bộ kiểm-sự-thật bên trong. Vì thế bịa không phải bug hiếm gặp; nó là tính chất của cơ chế. Và model bịa vẫn nghe tự tin, vì giọng tự tin có xác suất cao trong dữ liệu nó học. Độ tự tin của câu chữ không mang thông tin về độ đúng.
+**Đọc.** Tôi muốn mọi người nhìn bên trái trước, chỗ dòng chữ "the function returns a". Model đang viết dở câu đó và phải chọn mảnh chữ tiếp theo. Nó có bốn ứng viên, mỗi ứng viên một xác suất: Promise bốn mươi hai phần trăm, string ba mươi mốt, Result mười chín, null tám. Nó chọn Promise. Vì sao? Không phải vì nó đã mở hàm ra xem. Vì trong hàng tỷ dòng code nó từng đọc, sau cụm chữ đó thường là Promise.
 
-Thanh phía dưới là context window, tức mọi thứ model nhìn thấy trong một lần gọi: system prompt, lịch sử chat, file bạn dán, output của lệnh. Nó có giới hạn, và quan trọng hơn, nó mục dần khi đầy lên. Nhìn thanh đầy từ trái sang phải: chữ "system prompt" ở đầu mờ đi. Đó là chuyện thật: context càng dài, attention càng loãng, model quên chỉ dẫn ban đầu và sai nhiều hơn.
+Toàn bộ mô hình ngôn ngữ lớn là phép chọn này, lặp lại hàng nghìn lần. Nó được huấn luyện để tối ưu một thứ duy nhất: nghe hợp lý nhất. Không phải đúng nhất. Bên trong không có bước tra cứu, không có bộ kiểm sự thật, không có chỗ để nó nói "tôi không chắc". Nên khi mọi người nghe từ hallucination, bịa, đừng nghĩ đó là lỗi hiếm gặp sẽ được vá ở phiên bản sau. Nó là tính chất của cơ chế.
 
-Hệ quả thực hành: ném một file mười nghìn dòng vào rồi hỏi, nó quên phần đầu và bịa phần sau. Cách xử lý ở dòng cuối: chia nhỏ bài toán trước khi prompt. Bốn thanh xanh, bốn cửa sổ sạch.
+Có ai thắc mắc vì sao nó bịa mà nghe vẫn tự tin thế không? Vì trong dữ liệu huấn luyện, văn bản đúng thường được viết bằng giọng tự tin. Model học cách viết tự tin, không học cách đúng. Độ tự tin của câu chữ không mang thông tin gì về độ đúng. Tôi nhắc lại câu này vì nó phá một thói quen rất người: chúng ta tin người nói chắc nịch.
 
-Câu chốt: context là tài nguyên bạn phải quản như RAM.
+Giờ nhìn thanh phía dưới. Đó là context window, tất cả những gì model nhìn thấy trong một lần gọi: system prompt, lịch sử chat, file bạn dán, output của lệnh. Nó có giới hạn, ai cũng biết. Nhưng điều ít người biết hơn: nó mục dần trước khi đầy. Nhìn thanh tô từ trái sang phải, chữ "system prompt" ở đầu mờ đi. Đó là chuyện thật: context càng dài, cơ chế attention càng loãng, model quên chỉ dẫn ban đầu và sai nhiều hơn. Anthropic gọi hiện tượng này là context rot. Ai từng chat hai tiếng với AI rồi thấy nó bắt đầu "quên" quy ước mình dặn từ đầu? Đó chính là nó.
+
+Hệ quả thực hành ở dòng cuối: ném một file mười nghìn dòng vào rồi hỏi, nó quên phần đầu và bịa phần sau. Cách xử lý không phải mua model to hơn. Cách xử lý là chia nhỏ bài toán trước khi prompt. Bốn thanh xanh, bốn cửa sổ sạch.
+
+Một câu để nhớ: context là tài nguyên bạn phải quản như RAM. Tất cả quy tắc hôm nay, nhìn kỹ, đều là kỹ thuật quản một nguồn lực hữu hạn.
 
 ---
 
@@ -102,17 +116,21 @@ Câu chốt: context là tài nguyên bạn phải quản như RAM.
 
 **Nói đơn giản.** Tool như Claude Code không "biết" gì hơn model, nhưng nó cho model một vòng lặp: nghĩ, làm một việc thật (đọc file, chạy test), nhìn kết quả thật, rồi nghĩ tiếp. Kết quả thật là thứ duy nhất nó tin được. Không có test để chạy thì nó chỉ có thể nói "xong rồi".
 
-**Đọc.** Slide trước nói model không có bộ kiểm-sự-thật. Vậy tại sao agent vẫn sửa được bug thật, chạy được test thật? Vì tool bọc model trong vòng lặp này. Nó có tên là ReAct: reason và act.
+**Đọc.** Slide trước chắc có người đang nghĩ: nếu model chỉ đoán chữ, tại sao Claude Code hay Cursor sửa được bug thật, chạy được test thật? Câu hỏi hay, và câu trả lời là hình tròn này.
 
-Nút một, Reason: model đọc mục tiêu và toàn bộ context, rồi viết ra suy nghĩ, mình cần biết gì tiếp theo. Ví dụ: test đang fail ở file billing test, mình cần đọc billing.js trước.
+Model tự nó chỉ đoán chữ. Nhưng tool bọc model trong một vòng lặp, và vòng lặp đó có tên: ReAct, ghép từ reason và act, từ một bài báo năm 2022. Ba nút.
 
-Nút hai, Act: model chọn một tool và gọi nó với tham số cụ thể. Đọc file, tìm trong repo, chạy node test, sửa một đoạn code. Tool là thứ có thật, chạy bên ngoài model.
+Nút một, Reason: model đọc mục tiêu và toàn bộ context, rồi viết ra một suy nghĩ về việc cần làm tiếp. Ví dụ: "test đang fail ở billing test, mình cần đọc billing.js trước". Đây là văn bản, vẫn là đoán chữ, nhưng là đoán về hành động.
 
-Nút ba, Observe: kết quả thật của tool được nạp ngược vào context. Nội dung file, output của test, lỗi compile. Đây là điểm duy nhất trong cả vòng lặp mà sự thật từ bên ngoài đi vào. Nhìn cái cổng nhỏ bên trái: "tool output, the only way in".
+Nút hai, Act: model chọn một tool và gọi nó với tham số cụ thể. Đọc file này. Tìm chuỗi kia trong repo. Chạy node test. Sửa đoạn code từ dòng này đến dòng kia. Tool là thứ có thật, chạy bên ngoài model, trên máy của bạn.
 
-Rồi lặp lại cho đến khi xong. Chat thường là một lần: prompt vào, câu trả lời ra, không có observe. Agent là nhiều vòng, mỗi vòng một lần quan sát thật.
+Nút ba, Observe: kết quả thật của tool được nạp ngược vào context. Nội dung file. Output của test, kể cả dòng đỏ. Lỗi compile. Đây là điểm duy nhất trong cả vòng lặp mà sự thật từ bên ngoài đi vào. Nhìn cái cổng nhỏ bên trái với dòng "tool output, the only way in". Tôi cố ý vẽ chỉ một cổng.
 
-Ba hệ quả. Một: agent chỉ đáng tin bằng những gì tool cho nó thấy. Repo không có test thì bước observe chỉ có "file đã ghi", và agent kết luận xong vì không có gì phủ định. Cho nó test, build, lint, ba chip xanh đi vào cổng, là thêm quan sát thật vào vòng lặp. Hai: bước reason là chỗ nó tự tin sai, vì suy nghĩ vẫn là văn bản dự đoán; đọc log tool call quan trọng hơn đọc lời giải thích của agent. Ba: bước act là chỗ phải giới hạn quyền. Đọc file thì thoải mái, chạy test thì được, push hay xoá hay cài package thì phải qua người.
+Rồi lặp lại đến khi xong hoặc hết ngân sách bước. Chat thường là một lần: prompt vào, câu trả lời ra, không có observe. Agent là nhiều vòng, mỗi vòng một lần quan sát thật. Đó là toàn bộ khác biệt giữa hai loại công cụ, và cũng là lý do chúng hỏng khác nhau: chat hỏng bằng cách bịa API vì không có gì phủ định; agent hỏng bằng cách quan sát đúng nhưng kết luận sai, hoặc không có gì đáng để quan sát.
+
+Ba hệ quả tôi muốn mọi người mang về. Một: agent chỉ đáng tin bằng những gì tool cho nó thấy. Nếu repo không có test, bước observe chỉ có "file đã ghi", và agent kết luận xong vì không có gì nói ngược lại. Cho nó test, build, lint, ba chip xanh đi vào cổng, là thêm sự thật vào vòng lặp. Hai: bước reason là chỗ nó tự tin sai, nên khi review, đọc log tool call quan trọng hơn đọc lời giải thích của nó. Ba: bước act là chỗ phải giới hạn quyền. Đọc file thì thoải mái. Chạy test thì được. Push, xoá, cài package thì phải qua người. Lát nữa Nhân sẽ kể chuyện một agent có quyền ghi sai đã làm gì.
+
+Ai ở đây đang dùng agent mode hằng ngày? Lần gần nhất nó báo "done" mà bạn kiểm lại thấy chưa done, là ở nút nào?
 
 ---
 
@@ -120,7 +138,7 @@ Ba hệ quả. Một: agent chỉ đáng tin bằng những gì tool cho nó th�
 
 **Nói đơn giản.** Chuyển phần: bốn thói quen làm việc với AI.
 
-**Đọc.** Phần 7.1, trái tim của bài. Bốn mục theo thứ tự nhân quả: viết prompt tốt, nuôi và dọn context, vòng lặp tinh chỉnh, và workflow cho task lớn. Tất cả là hệ quả của hai slide vừa rồi: model chỉ có thứ bạn đưa, và thứ bạn đưa có giới hạn.
+**Đọc.** Phần 7.1, trái tim của bài. Bốn mục, đi theo thứ tự nhân quả: viết prompt tốt, nuôi và dọn context, vòng lặp tinh chỉnh, và workflow cho task lớn. Tất cả là hệ quả của hai slide vừa rồi: model chỉ có thứ bạn đưa, thứ bạn đưa có giới hạn, và sự thật chỉ vào qua một cổng.
 
 ---
 
@@ -130,11 +148,15 @@ Ba hệ quả. Một: agent chỉ đáng tin bằng những gì tool cho nó th�
 
 **Nói đơn giản.** Nói với AI như giao việc cho người mới: nói rõ cần gì, không được gì, và xong là như thế nào. Prompt tệ không phải vì viết dở, mà vì giấu thông tin chỉ mình biết.
 
-**Đọc.** Hai cửa sổ chat. Bên trái, prompt "add tests for foo.py". Model phải đoán test cho hàm nào, case nào, mock hay gọi thật, framework nào. Nó đoán theo kiểu phổ biến nhất, tức không phải kiểu của team bạn, và câu trả lời là cái khối mờ có dấu hỏi. Rồi bạn sửa ba vòng.
+**Đọc.** Hai cửa sổ chat, cùng một yêu cầu, hai cách viết.
 
-Bên phải, cùng câu đó nhưng có phần thêm vào, tô xanh như một dòng diff: cover edge case user đã logout, không dùng mock. Dài hơn không nhiều, nhưng có phạm vi, có ràng buộc, và ngầm có tiêu chí thành công. Câu trả lời có dấu tick.
+Bên trái: "add tests for foo.py". Sáu chữ. Tôi cá là ai ở đây cũng từng gõ đúng câu này. Giờ đặt mình vào vị trí model: test cho hàm nào trong foo.py? Case nào? Mock hay gọi thật? Framework nào? Nó không biết, nên nó đoán. Và nó đoán theo kiểu phổ biến nhất trong dữ liệu nó học, tức là kiểu của "trung bình internet", không phải kiểu của team bạn. Kết quả là cái khối mờ có dấu hỏi. Rồi bạn sửa ba vòng, và ở vòng thứ ba bạn kết luận "AI này dở".
 
-Bốn thói quen ở hàng dưới. Cho ví dụ thay vì mô tả: "validateEmail, user@example.com ra true, user@.com ra false" tốt hơn một đoạn văn tả hàm. Tài liệu dài đặt đầu prompt, câu hỏi đặt cuối. Đưa sẵn tiêu chí thành công: chạy test sau khi implement. Và gọi đúng tên kỹ thuật để tra được: few-shot, chain-of-thought, prompt chaining.
+Bên phải, cùng câu đó nhưng có phần thêm vào, tô xanh như một dòng diff: cover edge case user đã logout, không dùng mock. Chỉ dài hơn hai mươi chữ, nhưng có ba thứ mà bên trái không có: phạm vi, ràng buộc, và ngầm định tiêu chí thành công. Câu trả lời có dấu tick.
+
+Bốn thói quen ở hàng dưới, tôi đi nhanh. Một, cho ví dụ thay vì mô tả: "validateEmail, user@example.com ra true, user@.com ra false" tốt hơn một đoạn văn tả hàm, vì ví dụ cố định hành vi còn mô tả để ngỏ diễn giải. Hai, tài liệu dài đặt đầu prompt, câu hỏi đặt cuối; model chú ý phần cuối hơn, và phần cuối nên là chỉ thị. Ba, đưa sẵn tiêu chí thành công: "chạy test sau khi implement", "không đổi public API". Đó là cách để model tự kiểm được và bạn có cái để so. Bốn, gọi đúng tên kỹ thuật để tra được: few-shot là cho ví dụ, chain-of-thought là bắt nó nêu bước suy luận trước, prompt chaining là chia thành nhiều prompt nối tiếp.
+
+Có người sẽ hỏi: thế còn mấy câu thần chú như "you are a senior engineer", "please think carefully"? Câu trả lời ngắn: gần như vô dụng. Đổi giọng prompt không thêm thông tin. Dán error, dán test, dán file thì thêm thông tin. Lần tới model sai, trước khi hỏi "prompt tôi viết có hay không", hãy hỏi "nó có file chưa".
 
 Câu chốt: prompt tồi không phải vì bạn viết dở tiếng Anh. Nó tồi vì bạn giấu context mà chỉ bạn biết.
 
@@ -146,15 +168,17 @@ Câu chốt: prompt tồi không phải vì bạn viết dở tiếng Anh. Nó t
 
 **Nói đơn giản.** Ví dụ SQL: đừng nói "viết câu SQL", hãy đưa cấu trúc bảng, index, số dòng, và kết quả EXPLAIN. Rồi tự chạy EXPLAIN kiểm lại. Tin cái máy chấm, không tin lời AI.
 
-**Đọc.** Ví dụ áp dụng cho một việc thật.
+**Đọc.** Ví dụ áp dụng cho một việc thật mà chắc ai làm backend cũng gặp: tối ưu một câu SQL chậm.
 
-Đừng hỏi "viết cho tôi câu SQL lấy đơn hàng theo user". Model sẽ trả về một câu SELECT đúng cú pháp. Nó không biết bảng orders có năm mươi triệu dòng, không biết có index gì, không biết câu hiện tại đang quét cả bảng. Không có gì để tối ưu, nên nó không tối ưu.
+Cách hỏi tồi: "viết cho tôi câu SQL lấy đơn hàng theo user". Model trả về một câu SELECT đúng cú pháp trong hai giây. Nhưng nó không biết bảng orders có năm mươi triệu dòng, không biết có index gì, không biết câu hiện tại đang quét cả bảng. Không có gì để tối ưu, nên nó không tối ưu. Nó chỉ viết.
 
-Bên phải là năm thứ một DBA cần. Schema các bảng liên quan. Index hiện có. Số dòng, ví dụ orders năm mươi triệu. Câu query hiện tại kèm output EXPLAIN ANALYZE, để model thấy chính xác thứ planner thấy. Và mục tiêu rõ: giảm seq scan trên orders, hoặc dưới một trăm mili giây.
+Giờ hỏi ngược: nếu bạn nhờ một DBA giỏi tối ưu câu này, người đó sẽ đòi gì? Bên phải là năm thứ. Schema các bảng liên quan. Index hiện có. Số dòng, ví dụ orders năm mươi triệu, users hai triệu. Câu query hiện tại kèm output của EXPLAIN ANALYZE, tức bản kế hoạch thực thi thật với thời gian thật, để model thấy chính xác thứ planner của Postgres thấy. Và mục tiêu rõ: giảm seq scan trên orders, hoặc dưới một trăm mili giây.
 
-Bên trái là cây kế hoạch thực thi. Trước: Seq Scan on orders, năm mươi triệu dòng, hơn chín giây. Sau khi AI có đủ context và đề xuất index: Index Scan, ba trăm mười hai dòng, ba mili giây.
+Bên trái là cây kế hoạch. Trước: Seq Scan on orders, quét năm mươi triệu dòng, hơn chín giây. Sau khi AI có đủ context và đề xuất một index trên user_id: Index Scan, ba trăm mười hai dòng, ba mili giây.
 
-Bước quyết định: bạn chạy EXPLAIN ANALYZE thật với câu mới. Kiểm chứng với planner, không phải với model. Đó là trụ Verification áp vào SQL.
+Nhưng bước quan trọng nhất không phải là AI đề xuất. Là bước cuối: bạn chạy EXPLAIN ANALYZE thật với câu mới và so hai kết quả. Kiểm chứng với planner, không phải với model. Planner là cái máy không biết nói dối. Model thì nói rất hay.
+
+Một mẹo nhỏ với agent: bạn không cần dán tay năm thứ đó. Bảo nó tự chạy backslash d orders, tự chạy EXPLAIN ANALYZE, rồi mới đề xuất, rồi chạy lại để so. Cả vòng kiểm chứng nằm trong một phiên.
 
 ---
 
@@ -164,11 +188,15 @@ Bước quyết định: bạn chạy EXPLAIN ANALYZE thật với câu mới. K
 
 **Nói đơn giản.** Chat càng dài, AI càng lẫn, vì nó nhớ cả những lần bạn sửa sai. Sửa hai lần vẫn sai thì mở phiên mới. File CLAUDE.md là sổ tay quy ước cho AI đọc mỗi lần bắt đầu.
 
-**Đọc.** Phiên chat dài không phải huân chương. Bên trái là một session tám lượt: refactor, sửa, sửa lại, "still wrong, fix một", "still wrong, fix hai". Đồng hồ RAM chỉ chín mươi sáu phần trăm. Lịch sử hội thoại là đòn bẩy mạnh nhất, vì model nhớ mọi thứ đã nói; và cũng là thứ dễ làm hỏng nhất, vì nó nhớ cả mọi lối rẽ bỏ dở.
+**Đọc.** Có ai ở đây có một phiên chat với AI kéo dài cả ngày, hàng trăm lượt, và cảm thấy tự hào về nó không? Tôi từng như vậy. Slide này là để nói: phiên chat dài không phải huân chương.
 
-Bốn kỹ thuật có tên. Compaction: tóm tắt lịch sử thành một đoạn ngắn rồi tiếp tục với đoạn đó. Note-taking: bộ nhớ ngoài context, một file todo.md trong repo mà model đọc và cập nhật; trạng thái sống qua nhiều phiên. Sub-agents: giao việc đọc hai mươi file cho agent phụ, chỉ nhận về bản tóm tắt. Just-in-time: nạp thông tin khi cần, theo đường dẫn hoặc câu truy vấn, thay vì đổ hết vào đầu.
+Nhìn cửa sổ bên trái. Một session tám lượt: refactor, sửa, sửa lại, rồi hai bong bóng đỏ "still wrong, fix một", "still wrong, fix hai". Đồng hồ RAM bên cạnh chỉ chín mươi sáu phần trăm. Lịch sử hội thoại là đòn bẩy mạnh nhất, vì model nhớ mọi thứ đã nói. Nhưng nó cũng là gánh nặng, vì nó nhớ cả sáu lần thử sai, mọi lối rẽ bỏ dở, và giờ nó bị neo vào cách hiểu sai của chính nó.
 
-Và quy tắc hai lần: đã sửa AI hai lần cùng một lỗi mà vẫn sai, context đã bẩn. Nó bị neo vào cách hiểu sai trong lịch sử. Bấm slash clear, cửa sổ chat sụp xuống còn một prompt sạch có test, error, và file. Đồng hồ về bốn phần trăm. Đừng sửa lần ba.
+Bốn kỹ thuật có tên, để mọi người tra được. Compaction: tóm tắt lịch sử thành một đoạn ngắn rồi tiếp tục với đoạn đó; giữ quyết định, bỏ quá trình. Note-taking: bộ nhớ ngoài context, một file todo.md trong repo mà model đọc và cập nhật; trạng thái sống qua nhiều phiên, không phụ thuộc lịch sử chat. Sub-agents: giao việc đọc hai mươi file cho một agent phụ có context riêng, chỉ nhận về bản tóm tắt; context chính không phải gánh hai mươi file để tìm một hàm. Just-in-time: nạp thông tin khi cần, theo đường dẫn hoặc câu truy vấn, thay vì đổ hết vào đầu phiên.
+
+Và một quy tắc rất thực dụng, tôi gọi là quy tắc hai lần: đã sửa AI hai lần cùng một lỗi mà vẫn sai, context đã bẩn. Đừng sửa lần ba. Bấm clear, cửa sổ chat sụp xuống còn một prompt sạch có test, error, và file. Đồng hồ về bốn phần trăm. Lần thứ ba trên context sạch thường đúng ngay, và tôi vẫn ngạc nhiên mỗi lần thấy vậy.
+
+Cuối cùng là file quy ước dự án, CLAUDE.md hay AGENTS.md tuỳ tool. Nó được nạp tự động mỗi phiên, nên mỗi phiên bắt đầu với thông tin đúng thay vì đoán. Ghi gì vào đó? Lệnh build và test đúng của repo, code style, các gotcha, quy tắc migration, quy tắc authorship. Quy tắc chọn dòng: nếu bạn phải sửa model cùng một chuyện hai lần, chuyện đó thuộc về file này. Quy tắc giữ ngắn: mỗi dòng tự hỏi "bỏ dòng này thì AI có sai không", không thì bỏ, vì file này cũng chiếm context.
 
 Câu chốt: context sạch cộng prompt tốt gần như luôn thắng một phiên dài lê thê.
 
@@ -180,17 +208,19 @@ Câu chốt: context sạch cộng prompt tốt gần như luôn thắng một p
 
 **Nói đơn giản.** Việc lớn thì đừng bảo AI làm ngay. Bắt nó đọc trước, viết kế hoạch, bạn duyệt, rồi mới code từng bước nhỏ có test. Kế hoạch là chỗ bạn cầm lái.
 
-**Đọc.** Task nhỏ thì prompt thẳng. Task lớn, nhiều file, nhiều ngày, thì bắt AI phỏng vấn bạn trước khi viết dòng code nào. Đường ray có bốn ga.
+**Đọc.** Đến giờ chúng ta nói về task nhỏ: một hàm, một bug. Task lớn thì khác. Nhiều file, nhiều ngày, đụng vào kiến trúc. Với task lớn, lời khuyên của tôi ngược với bản năng: đừng bảo AI làm ngay. Bắt nó phỏng vấn bạn trước.
 
-Ga Explore: đọc, hiểu, không sửa gì. Nhiều tool có plan mode đúng cho việc này. Mục đích là tách nghiên cứu khỏi thực thi, để không giải sai bài toán.
+Đường ray có bốn ga, theo cách Anthropic đề xuất. Ga Explore: đọc, hiểu, không sửa gì. Nhiều tool có plan mode đúng cho việc này, ở Claude Code là bấm Shift Tab: nó đọc repo, trả lời câu hỏi, nhưng mọi tool ghi đều bị khoá. Mục đích là tách nghiên cứu khỏi thực thi, để không giải sai bài toán vì hiểu sai codebase.
 
-Ga Plan: ra một file spec.md và bạn duyệt. Nhìn thanh chắn: nó chỉ mở khi có con dấu approved. Đây là chỗ bạn cầm lái, vì sửa spec rẻ hơn sửa code.
+Ga Plan: ra một file spec.md và bạn duyệt. Nhìn thanh chắn trên ga: nó chỉ mở khi có con dấu approved. Đây là chỗ bạn cầm lái, và là chỗ rẻ nhất để cầm lái, vì sửa một dòng spec rẻ hơn sửa ba trăm dòng code.
 
-Ga Code: bước nhỏ, mỗi bước một test. Nhìn đèn giao thông trên ga: đèn xanh là "a check it can run". Cho AI một cách tự kiểm là khác biệt giữa phiên bạn phải ngồi canh và phiên bạn có thể bỏ đi. Không có test, agent chỉ có thể nói là xong.
+Ga Code: bước nhỏ, mỗi bước một test. Một thay đổi sáu trăm dòng bạn không review nổi thì tệ hơn là không thay đổi gì. Nhìn đèn giao thông trên ga: đèn xanh là "a check it can run". Câu này của Anthropic tôi thấy đúng nhất trong mọi tài liệu về agent: cho AI một cách tự kiểm, test hoặc build hoặc screenshot, là khác biệt giữa phiên bạn phải ngồi canh và phiên bạn có thể đi pha cà phê. Không có test, agent chỉ có thể nói là xong.
 
 Ga Commit: checkpoint thường xuyên. Mũi tên nét đứt quay về Code: bước sau hỏng thì quay lại bằng git, không phải bằng cách prompt tiếp.
 
-Câu trích ở dưới là của Harper Reed: "Hỏi tôi từng câu một để cùng xây một spec chi tiết." Kết quả là spec do hai bên cùng viết. Spec là nơi bạn cầm lái.
+Câu trích ở dưới là của Harper Reed, một người dùng AI viết code rất nặng. Prompt của ông chỉ một câu: "Hỏi tôi từng câu một để cùng xây một spec chi tiết cho ý tưởng này." Model hỏi về phạm vi, dữ liệu, edge case; ông trả lời; kết quả là một spec do hai bên cùng viết, rồi mới sinh kế hoạch từng bước, rồi mới code. Có ai từng thử cách này chưa? Cảm giác đầu tiên thường là chậm. Cảm giác thứ hai, sau một tuần, là ít phải làm lại hơn hẳn.
+
+Và một câu hỏi tôi hay nhận: biết khi nào nên dừng và tự viết? Ba lần thất bại trên cùng một vấn đề là tín hiệu, không phải lời mời prompt mạnh hơn. Đóng tab, tự viết, thường mất hai mươi phút.
 
 ---
 
@@ -200,18 +230,17 @@ Câu trích ở dưới là của Harper Reed: "Hỏi tôi từng câu một đ�
 
 **Nói đơn giản.** Bốn kiểu "máy" bên trong tool AI, mỗi kiểu có một chỗ dễ hỏng, và mỗi chỗ hỏng ứng với một bước trong checklist của mình.
 
-**Đọc.** Bốn pattern mà mọi agentic coding tool hiện nay đều dùng. Với mỗi pattern: nó làm gì, hỏng ở đâu, và bước SOP nào bịt chỗ hỏng.
+**Đọc.** Slide này để nối phần workflow với phần review sắp tới. Bốn pattern mà mọi agentic coding tool hiện nay đều dùng bên trong, dù tên gọi khác nhau. Với mỗi pattern tôi nói ba thứ: nó làm gì, hỏng ở đâu, và bước SOP nào bịt chỗ hỏng.
 
-Planner Executor: một vai lập kế hoạch chia mục tiêu thành task, các vai thực thi làm từng task phạm vi hẹp. Hỏng khi plan sai, vì mọi bước sau sai một cách nhất quán. Vá bằng: duyệt spec trước khi có dòng code nào, và một test mỗi bước. Trụ Context.
+Planner và Executor. Một vai lập kế hoạch chia mục tiêu lớn thành các task có thứ tự, các vai thực thi làm từng task với phạm vi hẹp. Đây chính là plan mode và bốn ga ở slide trước. Hỏng ở đâu? Plan sai thì mọi bước sau sai một cách rất nhất quán, vì executor làm đúng cái nó được giao. Vá bằng: duyệt spec trước khi có dòng code nào, và một test mỗi bước. Trụ Context.
 
-Multi-agent: nhiều agent chuyên biệt, đọc, tìm, review, có lớp điều phối. Hỏng khi vai chồng lấn và không ai sở hữu kết quả, agent này tin lời agent kia như tin sự thật. Vá bằng: tách Writer và Reviewer, sub-agent chỉ trả tóm tắt, và đúng một người ký. Trụ Ownership.
+Multi-agent. Nhiều agent chuyên biệt, đọc, tìm, review, có một lớp điều phối. Hỏng ở đâu? Vai chồng lấn, không ai sở hữu kết quả, và agent này tin lời agent kia như tin sự thật. Có ai từng thấy hai agent tự khen nhau "looks good to me" rồi merge chưa? Vá bằng: tách Writer và Reviewer thành hai phiên có context khác nhau, sub-agent chỉ trả về tóm tắt, và đúng một người ký. Trụ Ownership.
 
-Memory-augmented: ba lớp bộ nhớ, session, file như CLAUDE.md và todo.md, và repo với DB. Hỏng khi bộ nhớ cũ hoặc sai làm agent lặp lại đúng một lỗi ở mọi phiên, và ai cũng tưởng đó là quy ước. Vá bằng: giữ CLAUDE.md ngắn và đúng, clear khi context bẩn. Trụ Context.
+Memory-augmented. Ba lớp bộ nhớ: phiên hiện tại, file như CLAUDE.md và todo.md, và repo với DB. Hỏng ở đâu? Bộ nhớ cũ hoặc sai làm agent lặp lại đúng một lỗi ở mọi phiên, và sau một tháng cả team tưởng đó là quy ước. Vá bằng: giữ CLAUDE.md ngắn và đúng, sửa ngay khi nó sai, clear khi context bẩn. Trụ Context.
 
-Tool-using: agent gọi tool đọc, test, sửa, và cả cài package, push. Hỏng khi quyền ghi sai hoặc package sai; hai sự cố sẽ nói ở phần sau. Vá bằng: quyền tối thiểu cho từng tool, cài và push phải qua người. Trụ Verification và Ownership.
+Tool-using. Agent gọi tool: đọc, test, sửa, và cả cài package, commit, push. Hỏng ở đâu? Quyền ghi sai và package sai; nhìn cái ổ khoá đỏ ở tool thứ tư. Hai sự cố thật về chuyện này sẽ có ở phần sau. Vá bằng: quyền tối thiểu cho từng tool; đọc và chạy test thì tự do, cài package, push, chạm production thì qua người. Trụ Verification và Ownership.
 
-Bốn pattern này giải thích vì sao checklist ở phần 7.4 có đúng những bước đó, và bỏ một bước là mở lại đúng một chỗ hỏng.
-
+Điểm tôi muốn mọi người thấy: checklist ở phần 7.4 không phải danh sách ngẫu nhiên. Mỗi bước trong đó tồn tại vì một trong bốn pattern này có một chỗ hỏng. Bỏ một bước là mở lại đúng một chỗ hỏng.
 
 ---
 
@@ -221,7 +250,9 @@ Bốn pattern này giải thích vì sao checklist ở phần 7.4 có đúng nh�
 
 **Nói đơn giản.** Chuyển phần: khi AI nộp code, mình soi cái gì.
 
-**Đọc.** Phần 7.2, code review. Review code AI khác review code người ở một điểm: code bạn viết có hình dạng trong đầu bạn, review chỉ là kiểm lại. Code bạn chấp nhận từ AI không có hình dạng trong đầu ai. Review phải dựng hình dạng đó từ đầu, nên chậm hơn, không nhanh hơn. Bốn trục chỉ con người ký được: đúng, an toàn, đủ nhanh, và test có nghĩa. Mỗi trục một quy tắc.
+**Đọc.** Phần 7.2: code review. Tôi mở bằng một quan sát. Review code của đồng nghiệp, bạn có lợi thế: người viết có hình dạng của đoạn code trong đầu, và bạn chỉ cần kiểm lại hình dạng đó. Review code AI thì không ai có hình dạng nào trong đầu cả. Bạn phải dựng nó từ đầu. Nên review code AI chậm hơn, không nhanh hơn, và ai lên kế hoạch ngược lại sẽ gặp rắc rối.
+
+Bốn trục, và bốn trục này chỉ con người ký được: đúng, an toàn, đủ nhanh, và test có nghĩa. Mỗi trục một quy tắc, đi trong bốn slide.
 
 ---
 
@@ -231,15 +262,15 @@ Bốn pattern này giải thích vì sao checklist ở phần 7.4 có đúng nh�
 
 **Nói đơn giản.** Quy tắc số một: phải thấy nó chạy. AI nói "xong, test pass" không có giá trị; bắt nó đưa output test thật.
 
-**Đọc.** Một quy tắc bất di bất dịch, của Simon Willison: bạn phải test thứ nó viết. Chưa thấy nó chạy thì chưa phải hệ thống chạy được.
+**Đọc.** Quy tắc số một, bất di bất dịch, của Simon Willison: bạn phải test thứ nó viết. Chưa thấy nó chạy thì chưa phải hệ thống chạy được.
 
-Nhìn hai cửa sổ. Bên trái, agent nói: "Done, refactored calc, all tests pass, ready to merge." Bên phải, terminal thật: hai test fail. Hai cái này đặt cạnh nhau là cả slide.
+Tôi biết câu này nghe hiển nhiên. Nhìn hai cửa sổ để thấy vì sao phải nhắc. Bên trái, agent nói: "Done. Refactored calc, all tests pass. Ready to merge." Bên phải, terminal thật: hai test fail. Hai cái này đặt cạnh nhau là cả slide. Agent không nói dối theo nghĩa con người; nó chỉ tạo ra câu chữ hợp lý nhất sau khi sửa code, và "all tests pass" là câu hợp lý nhất.
 
-Vì sao phải nhấn mạnh điều hiển nhiên này? Vì AI mắc lỗi kiểu rất không giống người. Một junior viết sai thì thường trông sai: tên biến lạ, logic lủng củng. AI viết sai thì trông đúng: đặt tên đẹp, có docstring, có comment, và gọi một method không tồn tại. Reviewer người quen dùng "trông hợp lý" làm bộ lọc đầu, và bộ lọc đó vô hiệu với code AI. Code càng trông chuyên nghiệp, càng ít bị kiểm.
+Vì sao chúng ta hay bị qua mặt? Vì AI mắc lỗi theo kiểu rất không giống người. Một junior viết sai thì thường trông sai: tên biến lạ, logic lủng củng, có mùi. AI viết sai thì trông đúng: đặt tên đẹp, có docstring, có comment, và gọi một method không tồn tại. Reviewer người quen dùng "trông hợp lý" làm bộ lọc đầu tiên, và bộ lọc đó vô hiệu hoàn toàn với code AI. Code càng trông chuyên nghiệp, càng ít bị soi. Nghĩ lại chuyện PR bốn trăm dòng ở đầu buổi: nó trông rất chuyên nghiệp.
 
-Quy tắc: bắt AI trưng bằng chứng thay vì lời khẳng định. Ba con dấu: output của test nguyên văn, lệnh nó đã chạy và kết quả, screenshot màn hình thật. Không chấp nhận chữ "đã xong" không kèm output.
+Quy tắc: bắt AI trưng bằng chứng thay vì lời khẳng định. Ba con dấu bên phải: output của test nguyên văn, có số pass và fail; lệnh nó đã chạy và kết quả; screenshot màn hình thật với thay đổi giao diện. Không chấp nhận chữ "đã xong" không kèm output. Với agent, prompt đơn giản là: chạy test rồi dán nguyên văn output, không tóm tắt.
 
-Mẹo tổ chức: Writer và Reviewer. Một phiên viết code, một phiên khác với context sạch review lại diff. Phiên viết có thiên kiến với code nó vừa viết, giống người. Phiên sạch đọc như người lạ. Kết hợp với quy tắc cuối của người: đọc lại diff như thể người lạ viết, vì đúng là người lạ viết.
+Mẹo tổ chức mà tôi thấy hiệu quả nhất: Writer và Reviewer. Một phiên viết code, một phiên khác với context sạch review lại diff. Phiên viết có thiên kiến với code nó vừa viết, giống hệt người. Phiên sạch đọc như người lạ. Kết hợp với quy tắc cuối cho chính bạn: đọc lại diff như thể người lạ viết. Vì đúng là người lạ viết.
 
 ---
 
@@ -249,15 +280,17 @@ Mẹo tổ chức: Writer và Reviewer. Một phiên viết code, một phiên k
 
 **Nói đơn giản.** AI hay gợi ý tên thư viện không tồn tại. Kẻ xấu biết vậy nên đăng ký sẵn tên đó kèm mã độc. Bạn cài là dính. Kiểm tra thư viện có thật và uy tín trước khi cài.
 
-**Đọc.** Kể như một câu chuyện, theo bốn nút. Nút một: AI gợi ý một package, "use react-validate-utils-pro". Tên nghe rất hợp lý. Nút hai: package đó không tồn tại. Model bịa, vì tên đó có xác suất cao theo mẫu; chuyện này xảy ra gần hai mươi phần trăm số lần. Nút ba: kẻ tấn công biết model hay bịa đúng tên đó, nên đăng ký sẵn trên npm hoặc PyPI, kèm mã độc. Nút bốn: bạn, hoặc agent của bạn, gõ npm install. Script postinstall chạy với quyền của bạn, trên máy dev hoặc trong CI. Hallucination vừa biến thành lỗ hổng supply chain. Người ta gọi là slopsquatting.
+**Đọc.** Slide này tôi kể như một câu chuyện, theo bốn nút trên hình, vì nó là câu chuyện thật đang xảy ra.
 
-Hai con số bên phải, từ nghiên cứu Socket tổng hợp trên năm trăm bảy mươi sáu nghìn mẫu code sinh bởi mười sáu model. Mười chín phẩy bảy phần trăm package được gợi ý không tồn tại. Và đáng sợ hơn: năm mươi tám phần trăm tên bịa lặp lại qua nhiều lần chạy. Attacker không cần đoán mò; chạy model vài lần với prompt phổ biến, lấy đúng tên nó hay bịa, đăng ký. Mục tiêu trở nên dự đoán được.
+Nút một: bạn hỏi AI cách validate email trong React, nó gợi ý "cài react-validate-utils-pro". Tên nghe rất hợp lý, đúng kiểu đặt tên của hệ sinh thái. Nút hai: package đó không tồn tại. Model bịa, vì cái tên đó có xác suất cao theo mẫu nó học. Chuyện này xảy ra gần hai mươi phần trăm số lần, tôi sẽ đưa số ngay. Nút ba: kẻ tấn công biết model hay bịa đúng cái tên đó, nên đăng ký sẵn trên npm hoặc PyPI, kèm mã độc trong script cài đặt. Nút bốn: bạn, hoặc tệ hơn là agent của bạn, gõ npm install. Script postinstall chạy với quyền của bạn, trên máy dev hoặc trong CI. Mã độc lấy token, lấy secret, và bạn không thấy gì vì package "cài thành công". Người ta gọi là slopsquatting.
 
-Vì sao chuyện này mới: typosquatting cũ dựa vào người gõ nhầm, xác suất thấp và ngẫu nhiên. Slopsquatting dựa vào model gợi ý cùng một tên sai cho hàng nghìn người, xác suất cao và có hệ thống.
+Hai con số bên phải, từ nghiên cứu Socket tổng hợp trên năm trăm bảy mươi sáu nghìn mẫu code do mười sáu model sinh ra. Mười chín phẩy bảy phần trăm package được gợi ý không tồn tại. Và con số đáng sợ hơn: năm mươi tám phần trăm tên bịa lặp lại qua nhiều lần chạy. Nghĩa là kẻ tấn công không cần đoán mò. Chạy model vài lần với những prompt phổ biến, ghi lại tên nó hay bịa, đăng ký đúng tên đó. Mục tiêu trở nên dự đoán được.
 
-SOP: trước khi cài bất kỳ package nào AI gợi ý, kiểm tra nó tồn tại trên registry chính thức, đúng tên. Kiểm tra uy tín: tuổi, lượt tải hằng tuần, maintainer, repo có thật không. Cảnh giác với package mới tạo, ít lượt tải, tên gần giống package nổi tiếng. npm audit và dependency scanning trong CI. Và với agent: không cho quyền cài package tự do, cài là bước có người duyệt.
+Có ai từng cài một package do AI gợi ý mà không mở trang npm của nó ra xem không? Tôi có. Đó là lý do quy tắc này phải là bước bắt buộc chứ không phải lời khuyên.
 
-Nếu ai hỏi lockfile có bảo vệ không: lockfile khoá version của package đã chọn, nó không ngăn chọn nhầm package ngay lần đầu.
+SOP: trước khi cài bất kỳ package nào AI gợi ý, kiểm tra nó tồn tại trên registry chính thức, đúng tên, đúng scope. Kiểm tra uy tín: tuổi, lượt tải hằng tuần, maintainer, repo có thật và có hoạt động không. Cảnh giác với package mới tạo, ít lượt tải, tên gần giống package nổi tiếng. npm audit và dependency scanning trong CI để lưới đỡ là máy, không phải trí nhớ. Và với agent: không cho quyền cài package tự do; cài là bước có người duyệt. Ở Claude Code, đó là một dòng deny rule trong settings.
+
+Nếu ai hỏi lockfile có bảo vệ không: lockfile khoá version của package bạn đã chọn. Nó không ngăn bạn chọn nhầm package ngay lần đầu.
 
 ---
 
@@ -267,19 +300,19 @@ Nếu ai hỏi lockfile có bảo vệ không: lockfile khoá version của pack
 
 **Nói đơn giản.** Năm trong mười loại lỗ hổng phổ biến nhất là thứ AI hay tự tạo ra: quên kiểm tra quyền, hardcode key, nối chuỗi SQL, tin dữ liệu từ client, cấu hình mở. Cần máy quét code trong CI làm lưới đỡ.
 
-**Đọc.** Mười ô là OWASP Top 10, danh sách mười loại rủi ro web phổ biến nhất. Năm ô sáng là năm loại AI hay tạo ra nhất. Đi từng ô.
+**Đọc.** Mười ô trên màn hình là OWASP Top 10, danh sách mười loại rủi ro web phổ biến nhất, có tên và số chuẩn, có tài liệu để tra. Tôi dùng khung này thay vì tự nghĩ danh sách, vì khi bị hỏi "sao anh nói cái này nguy hiểm", tôi trỏ vào tài liệu chứ không trỏ vào cảm giác. Năm ô sáng là năm loại AI hay tự tạo ra nhất. Đi từng ô.
 
-A01, Broken Access Control. Thiếu auth middleware, IDOR. Cách AI tạo ra: refactor một handler, giữ happy path, đánh rơi đoạn kiểm tra quyền; hoặc sinh endpoint mới mà quên guard vì prompt không nhắc. IDOR là đổi id mười bảy thành mười tám trên URL là xem được đơn hàng người khác. Đây là lỗi review AI phổ biến nhất ngoài đời, và test không bắt được vì test sinh từ cùng happy path.
+A01, Broken Access Control, kiểm soát truy cập bị vỡ. Cách AI tạo ra: bạn bảo nó refactor một handler, nó giữ happy path và đánh rơi đoạn kiểm tra quyền; hoặc sinh endpoint mới mà quên guard vì prompt không nhắc. IDOR là ví dụ cụ thể: đổi id mười bảy thành mười tám trên URL là xem được đơn hàng người khác. Đây là lỗi review AI phổ biến nhất ngoài đời, và test không bắt được, vì test được sinh từ cùng happy path: cả code lẫn test đều đi qua con đường "user hợp lệ xem đơn của mình".
 
-A02, Cryptographic Failures. API key hardcode, vì AI học từ vô số ví dụ có key giả nên điền một chuỗi trông như key thật. Hash mật khẩu bằng MD5. Và Math.random() làm token: nó không phải bộ sinh ngẫu nhiên mật mã, đoán được từ vài giá trị trước.
+A02, Cryptographic Failures. API key hardcode, vì AI đã học từ hàng vạn ví dụ có key giả nên nó điền một chuỗi trông như key thật. Hash mật khẩu bằng MD5. Và Math.random() làm token: nó không phải bộ sinh ngẫu nhiên mật mã, đoán được từ vài giá trị trước.
 
-A03, Injection. SQL nối chuỗi vì prompt nói "dynamic filter" và model chọn cách đơn giản nhất. XSS vì render HTML từ input người dùng không escape.
+A03, Injection. SQL nối chuỗi vì prompt nói "dynamic filter" và model chọn cách đơn giản nhất. XSS vì render HTML từ input người dùng mà không escape.
 
-A04, Insecure Design. Tin client cho giá hoặc role gửi lên trong request. Code đúng cú pháp, sai thiết kế; không linter nào bắt được, chỉ người hiểu nghiệp vụ mới thấy.
+A04, Insecure Design. Tin client cho giá hoặc role gửi lên trong request. Code đúng cú pháp, sai thiết kế. Không linter nào bắt được, chỉ người hiểu nghiệp vụ mới thấy. Đây là ô tôi lo nhất.
 
-A05, Misconfiguration. CORS mở toang "cho nó chạy", bucket public, route debug còn sót lại.
+A05, Misconfiguration. CORS mở toang "cho nó chạy đã", bucket public, route debug còn sót lại từ lúc thử.
 
-Có nghiên cứu Stanford và NYU: developer dùng AI assistant viết code kém an toàn hơn, và tự tin hơn rằng code mình an toàn. Hai hiệu ứng cộng lại là lý do cần lưới đỡ bằng máy. Nhìn tấm lưới hạ xuống: SAST, quét code tĩnh. Semgrep với ruleset OWASP bắt injection, thiếu auth, crypto yếu. gitleaks quét secret trong diff. Chạy trên mọi PR, fail build khi có finding mức cao. Nó không thay review; nó bắt phần mắt người bỏ khi vội.
+Có một nghiên cứu của Stanford và NYU khiến tôi nhớ mãi: developer dùng AI assistant viết code kém an toàn hơn developer viết tay, và tự tin hơn rằng code mình an toàn. Hai hiệu ứng cộng lại: sai nhiều hơn và kiểm ít hơn. Đó là lý do cần lưới đỡ bằng máy. Nhìn tấm lưới hạ xuống: SAST, quét code tĩnh. Semgrep với ruleset OWASP bắt injection, thiếu auth, crypto yếu; gitleaks quét secret trong diff. Chạy trên mọi PR, fail build khi có finding mức cao. Nó không thay review. Nó bắt phần mắt người bỏ khi vội.
 
 ---
 
@@ -289,13 +322,17 @@ Có nghiên cứu Stanford và NYU: developer dùng AI assistant viết code ké
 
 **Nói đơn giản.** Hai kiểu "xanh mà sai": code chậm nhưng test vẫn pass vì test chỉ chạy trên mười dòng; và test do AI sinh chỉ chứng minh hàm được gọi, không chứng minh kết quả đúng. Phép thử: xoá luật nghiệp vụ mà test vẫn xanh thì đó không phải test.
 
-**Đọc.** Hai chỗ code AI xanh mà sai: test pass, CI xanh, và vẫn hỏng ở production. Để ý cái badge góc phải: bốn test pass, trên mười dòng dữ liệu. Nó sẽ xanh suốt slide này.
+**Đọc.** Hai chỗ code AI "xanh mà sai": test pass, CI xanh, và vẫn hỏng ở production. Tôi muốn mọi người để ý cái badge ở góc phải: bốn test pass, trên mười dòng dữ liệu. Nó sẽ xanh suốt slide này, và đó chính là vấn đề.
 
-Bên trái là N+1. Lấy danh sách một trăm đơn hàng, rồi trong vòng lặp gọi thêm một query lấy user của từng đơn. Một trăm lẻ một query thay vì hai. Code trông sạch, mỗi dòng đều hợp lý. Ba mùi còn lại ở dưới: thiếu index cho cột WHERE mới thêm, trên mười dòng không khác gì, trên năm mươi triệu dòng là full scan. findAll không giới hạn trên bảng đã lớn, chạy ổn hai năm rồi một ngày đủ lớn để hết memory. Và O bình phương vô tình, includes lồng trong vòng lặp trên hai list, mười phần tử thì trăm phép so, mười nghìn thì trăm triệu. Cả bốn pass mọi unit test, vì unit test chạy trên dữ liệu nhỏ. Badge vẫn xanh.
+Bên trái là N+1. Lấy danh sách một trăm đơn hàng, rồi trong vòng lặp gọi thêm một query lấy user của từng đơn. Một trăm lẻ một query thay vì hai. Code trông rất sạch, mỗi dòng đều hợp lý, không có mùi gì. Ba mùi còn lại ở dưới. Thiếu index cho cột WHERE mới thêm: trên mười dòng không khác gì, trên năm mươi triệu dòng là quét cả bảng. findAll không giới hạn trên bảng đã lớn: chạy ổn hai năm, rồi một ngày bảng đủ lớn để làm hết memory, và không ai nhớ đoạn code đó. O bình phương vô tình: includes lồng trong vòng lặp trên hai list, mười phần tử thì trăm phép so, mười nghìn thì trăm triệu.
 
-Bên phải là test dởm. Donut coverage chín mươi lăm phần trăm, xanh, và bên trong ghi: không rule nào được kiểm chứng. Dòng code dưới là ví dụ: expect spy to have been called. Test này mock hàm giảm giá, gọi total, rồi assert là hàm đã được gọi. Nó xanh dù công thức giảm giá sai hoàn toàn. Kiểu thứ hai: khẳng định hành vi hiện tại thay vì hành vi đúng. Test sinh bằng cách chạy code rồi ghi lại output; nếu code đang sai, test xanh chỉ đóng băng cái sai lại. Test đúng phải dẫn xuất từ yêu cầu: đúng một trăm đơn vị thì giảm mười phần trăm, tổng chín trăm đô, số chín trăm lấy từ spec, không phải từ chạy code.
+Cả bốn pass mọi unit test. Vì sao? Vì unit test chạy trên dữ liệu nhỏ. Badge vẫn xanh. Chúng chỉ lộ ở production, lúc đắt nhất. Không tài liệu nào dạy hay bằng hai ba ví dụ thật từ codebase của team; tôi khuyến khích mỗi team giữ một danh sách "mùi của mình".
 
-Phép thử một câu: xoá business rule đi mà test vẫn pass, thì đó không phải test. Nhìn dòng cuối: xoá dòng if qty lớn hơn bằng một trăm, badge vẫn xanh. Chữ "green" trong tiêu đề đổi sang đỏ là vì vậy.
+Bên phải là chuyện test dởm, và cái này liên quan trực tiếp đến câu chuyện đầu buổi. Donut coverage chín mươi lăm phần trăm, xanh, và bên trong ghi: không rule nào được kiểm chứng. Nhìn dòng code dưới: expect spy to have been called. Test này mock hàm giảm giá, gọi total, rồi assert là hàm đã được gọi. Nó xanh dù công thức giảm giá sai hoàn toàn, vì nó chỉ chứng minh hàm được gọi, không chứng minh kết quả đúng.
+
+Kiểu thứ hai nguy hiểm hơn: khẳng định hành vi hiện tại thay vì hành vi đúng. AI sinh test bằng cách chạy code rồi ghi lại output làm giá trị kỳ vọng. Nếu code đang sai, test xanh chỉ đóng băng cái sai lại, và chống lại mọi lần sửa sau. Test đúng phải dẫn xuất từ yêu cầu: đúng một trăm đơn vị thì giảm mười phần trăm, tổng chín trăm đô, và số chín trăm lấy từ spec, không phải từ chạy code.
+
+Phép thử một câu, dùng được ngay chiều nay: xoá business rule đi mà test vẫn pass, thì đó không phải test. Nhìn dòng cuối: xoá dòng if qty lớn hơn bằng một trăm, badge vẫn xanh. Chữ "green" trong tiêu đề đổi sang đỏ là vì vậy.
 
 SOP: người viết ít nhất một test edge case mà AI bỏ sót, và tự chạy để thấy nó pass thật. Chốt phần 7.2: AI review được style và lỗi rõ. Bốn thứ chỉ con người ký: đúng, an toàn, đủ nhanh, test có nghĩa.
 
@@ -305,7 +342,7 @@ SOP: người viết ít nhất một test edge case mà AI bỏ sót, và tự 
 
 **Nói đơn giản.** Chuyển phần: tài liệu.
 
-**Đọc.** Phần 7.3, documentation, một slide. Nguyên tắc: cho AI cầm bút, không cho AI cầm quyền quyết.
+**Đọc.** Phần 7.3, documentation, một slide thôi. Nguyên tắc gói trong một câu: cho AI cầm bút, không cho AI cầm quyền quyết. Docs và quyết định kiến trúc là nơi ranh giới đó rõ nhất.
 
 ---
 
@@ -315,16 +352,17 @@ SOP: người viết ít nhất một test edge case mà AI bỏ sót, và tự 
 
 **Nói đơn giản.** AI viết nháp tài liệu thì tốt, nhưng quyết định kiến trúc phải là người ký. Tài liệu chia bốn loại cho bốn nhu cầu, trộn lẫn là khó dùng.
 
-**Đọc.** Dòng đầu: code sang docs thì an toàn, vì nguồn sự thật đã check in và model chỉ tóm tắt thứ nó nhìn thấy. Văn xuôi sang code thì drift: sinh code từ một đoạn mô tả thứ bạn ước là có sẽ cho ra thứ trông khớp, và lệch ngay khi một bên thay đổi. Cảnh báo quan trọng: docs AI sinh nghe rất hợp lý nhưng sai kỹ thuật đúng ở những chỗ phức tạp nhất, nơi model phải suy diễn thay vì tóm tắt, và đó cũng là nơi cần docs nhất. Người duyệt tập trung vào chỗ phức tạp.
+**Đọc.** Dòng đầu tiên là hướng đi. Code sang docs thì an toàn, vì nguồn sự thật đã check in và model chỉ tóm tắt thứ nó nhìn thấy. Đây là việc AI làm rất tốt, và tôi khuyến khích: docs cho một module cũ không ai nhớ, sinh từ code, người duyệt. Văn xuôi sang code thì ngược lại: sinh code từ một đoạn mô tả thứ bạn ước là có sẽ cho ra thứ trông khớp, và lệch ngay khi một bên thay đổi.
 
-Lưới bốn ô là Diátaxis. Hai trục: người đọc đang học hay đang làm, và họ cần thực hành hay lý thuyết. Tutorial để học, cầm tay chỉ việc. How-to để làm một việc cụ thể có mục tiêu rõ. Reference để tra cứu chính xác, khô, đầy đủ. Explanation để hiểu vì sao. AI viết loại nào cũng nhanh. Chọn loại nào cho ai là việc của bạn. Phần lớn docs khó dùng vì trộn bốn loại vào một trang.
+Một cảnh báo tôi đọc được và thấy rất đúng: docs AI sinh nghe rất hợp lý nhưng sai kỹ thuật đúng ở những chỗ phức tạp nhất, nơi model phải suy diễn thay vì tóm tắt, và đó cũng là nơi cần docs nhất. Nên khi duyệt docs AI viết, đừng đọc đều; tập trung vào chỗ phức tạp.
 
-Bên phải là một tờ ADR, Architecture Decision Record, theo template Nygard: title, status, context, decision, và consequences. ADR bất biến; quyết định mới thì viết ADR mới supersede cái cũ, để lịch sử suy nghĩ còn nguyên. Một ADR là một quyết định kèm điều kiện hết hạn, dòng "revisit when". Không có điều kiện hết hạn thì nó là trang wiki.
+Lưới bốn ô là Diátaxis, một khung phân loại docs mà tôi ước mình biết sớm hơn. Hai trục: người đọc đang học hay đang làm, và họ cần thực hành hay lý thuyết. Ra bốn loại. Tutorial để học, cầm tay chỉ việc, một đường thẳng từ zero đến kết quả đầu tiên. How-to để làm một việc cụ thể, có mục tiêu rõ, cho người đã biết cơ bản. Reference để tra cứu chính xác, khô, đầy đủ. Explanation để hiểu vì sao. AI viết loại nào cũng nhanh. Nhưng chọn loại nào cho ai là việc của bạn. Có ai từng mở một trang docs mà nửa đầu là tutorial, nửa sau là reference, xen vài đoạn triết lý, và không tìm được thứ mình cần? Đó là vì trộn bốn loại vào một trang.
 
-Điểm đắt nhất là hai con dấu. "Drafted by AI" thì được. "Decided by" phải là tên người. Model bịa rationale rất trôi chảy, và team sẽ có một tài liệu ghi lý do chưa ai từng bàn. Context và Decision phải do người viết hoặc sửa từng câu.
+Bên phải là một tờ ADR, Architecture Decision Record, theo template Nygard. Năm mục: title, status, context, decision, consequences. ADR bất biến; quyết định mới thì viết ADR mới supersede cái cũ, để lịch sử suy nghĩ còn nguyên. Một ADR là một quyết định kèm điều kiện hết hạn; nhìn dòng "revisit when". Không có điều kiện hết hạn thì nó là trang wiki.
+
+Điểm đắt nhất là hai con dấu. "Drafted by AI" thì được, thậm chí nên. "Decided by" phải là tên người. Vì model bịa rationale rất trôi chảy, và nếu để nó điền, team sẽ có một tài liệu ghi lý do chưa ai từng bàn, và sáu tháng sau ai cũng tưởng đã bàn. Context và Decision phải do người viết, hoặc ít nhất sửa từng câu.
 
 Chốt: cho AI cầm bút, đừng cho AI cầm quyền quyết. Đây là trụ Ownership.
-
 
 ---
 
@@ -334,13 +372,17 @@ Chốt: cho AI cầm bút, đừng cho AI cầm quyền quyết. Đây là trụ
 
 **Nói đơn giản.** Một khung bốn bước dùng cho mọi việc: nạp thông tin chuẩn, cho AI cách tự kiểm, soi rủi ro riêng của loại việc đó, người ký tên.
 
-**Đọc.** SOP thực ra là gì: một việc lặp lại, viết thành các bước cố định, để kết quả như nhau bất kể ai làm và mệt đến đâu. Nó là checklist chứ không phải bài giảng. Nó viết cho ngày tệ nhất của bạn, hai giờ sáng, đang vội, đang dở việc khác. Và nó sống: một sự cố thêm một bước, một bước không ai làm theo thì xoá. Checklist không phải cho người chưa biết. Không ai merge một AI diff tồi vì không biết review; họ merge vì nó trông hợp lý, họ đang vội, và họ tự tin.
+**Đọc.** Slide cuối phần của tôi, và là slide gói mọi thứ lại thành một tờ giấy.
 
-Checklist cụ thể phụ thuộc stack của team, nên đây là một khung. Tờ giấy có bốn ô. Một, nạp context chuẩn: template của team, một PR mẫu tốt gần đây, file convention, schema. Trụ Context. Hai, cho AI một cách tự kiểm: test, build, lint chạy được trong phiên. Ba, verify điểm rủi ro đặc thù của loại task. Bốn, người ký tên trước khi merge. Trụ Ownership.
+Trước hết, SOP thực ra là gì. Một việc lặp lại, viết thành các bước cố định, để kết quả như nhau bất kể ai làm và mệt đến đâu. Ba điểm phân biệt với tài liệu thông thường: nó là checklist chứ không phải bài giảng; nó viết cho ngày tệ nhất của bạn, hai giờ sáng, đang vội, đang dở việc khác; và nó sống, một sự cố thêm một bước, một bước không ai làm theo thì xoá.
 
-Điểm rủi ro theo từng loại task ở dòng cuối. Service mới: đây là chỗ AI mạnh nhất và an toàn nhất, vì boilerplate, DTO, mapper là việc nhàm chán và kiểm chứng được ngay; verify đúng convention, đúng phân tầng, controller không gọi thẳng repository. Migration: nhỏ và tăng dần, versioned cùng code, chỉ đi tới và không sửa migration đã apply, có rollback viết ra trước, và breaking change thì dùng parallel change: thêm cột mới, ghi cả hai, bỏ cột cũ ở release sau; không bao giờ drop cột trong cùng release ngừng ghi vào nó. Endpoint: validate input ở biên, authorize trên mọi endpoint chứ không chỉ cái hiển nhiên, quyết định error contract, pagination từ đầu. Integration test: dependency thật trong container thay vì mock, mỗi test tự dọn dữ liệu, test flaky là test fail.
+Tôi muốn nói rõ một hiểu lầm: checklist không phải cho người chưa biết làm. Phi công giỏi nhất vẫn đọc checklist trước khi cất cánh. Không ai merge một AI diff tồi vì không biết cách review. Họ merge vì nó trông hợp lý, họ đang vội, và họ tự tin. Checklist là để chống lại ba thứ đó.
 
-Năm checklist đầy đủ có trong README của repo. Chốt: SOP không phải để trói tay. Nó là context đóng gói sẵn để lần sau bạn và AI làm đúng ngay từ đầu.
+Checklist cụ thể phụ thuộc stack của team, nên đây là một khung, và các bạn điền theo task của mình. Tờ giấy có bốn ô. Một, nạp context chuẩn: template của team, một PR mẫu tốt gần đây, file convention, schema; đó là trụ Context, và bên máy là CLAUDE.md. Hai, cho AI cách tự kiểm: test, build, lint chạy được ngay trong phiên; bên máy là hook chạy test sau mỗi lần sửa. Ba, verify điểm rủi ro riêng của loại task: migration thì lock và rollback, endpoint thì auth và validation, package thì tồn tại và uy tín. Bốn, người ký tên trước khi merge; trụ Ownership; bên máy là permission prompt và deny rule cho push.
+
+Dòng cuối là bốn loại task hay gặp: service mới, migration, endpoint, integration test. Năm checklist đầy đủ cho từng loại có trong README của repo, tôi không đọc ở đây. Chỉ nhắc một thứ: nếu bạn dùng Claude Code, nó mặc định thêm dòng "Co-Authored-By: Claude" vào commit. Tắt nó đi. Không phải để giấu, mà vì trách nhiệm mang tên bạn, và một cái trailer ngầm bảo reviewer hạ tiêu chuẩn.
+
+Chốt phần tôi: SOP không phải để trói tay. Nó là context đóng gói sẵn để lần sau bạn và AI làm đúng ngay từ đầu.
 
 **Trao mic (lần duy nhất):** "Đến đây là toàn bộ SOP: cách đưa AI đúng context, cách kiểm chứng thứ nó viết, và ai ký tên. Câu hỏi còn lại: nếu đẩy tự động đến cùng, không còn ai đọc code, thì kỷ luật đó đi về đâu? Nhân sẽ dẫn phần Dark Factory."
 
@@ -354,11 +396,13 @@ Năm checklist đầy đủ có trong README của repo. Chốt: SOP không ph�
 
 **Nói đơn giản.** Người đặt ra từ "vibe coding" đã bỏ nó, chuyển sang mô hình người giám sát agent, và giám sát chặt hơn. Câu hỏi để lại: nếu tự động mãi thì đi đến đâu?
 
-**Đọc.** Từ đây nhìn về phía trước. Dòng thời gian. Tháng hai năm 2025, Karpathy đặt tên vibe coding: giao phó cho cảm giác, quên code đi. Tháng ba năm 2026, chính ông khai tử nó, thẻ bên trái bị gạch, và chuyển sang Agentic Engineering: developer là người giám sát, điều phối các agent tự chạy nhiều bước, và giám sát còn chặt hơn, không lỏng hơn, vì agent làm nhiều việc hơn giữa hai lần người nhìn vào.
+**Đọc.** Cảm ơn Hào. Tôi bắt đầu phần của mình bằng một chuyện nhỏ về từ ngữ, vì nó nói lên rất nhiều.
 
-Người khai sinh thuật ngữ cũng đã nâng cấp nó theo đúng hướng bài hôm nay: từ quên code đi sang quy trình có giám sát.
+Tháng hai năm 2025, Karpathy, người từng dẫn AI ở Tesla và là một trong những người sáng lập OpenAI, đăng một dòng đặt tên cho thứ mà nhiều người đang làm: vibe coding. Buông theo cảm giác, quên code đi, cứ chấp nhận mọi thứ AI gợi ý. Cả ngành nhặt lấy từ đó ngay lập tức. Tháng ba năm 2026, chính ông khai tử nó. Nhìn thẻ bên trái bị gạch. Ông chuyển sang một từ khác: Agentic Engineering. Developer là người giám sát, điều phối các agent tự chạy nhiều bước. Và điểm quan trọng: giám sát chặt hơn, không lỏng hơn, vì agent làm nhiều việc hơn giữa hai lần người nhìn vào.
 
-Đường thời gian kéo dài vào chỗ mờ, với một dấu hỏi. Nếu mức tự động cứ tăng, agent làm nhiều hơn, người nhìn ít hơn, thì điểm cuối của con đường là gì? Có tên cho nó: dark factory.
+Tại sao tôi mở bằng chuyện này? Vì người đặt tên cho trào lưu đã tự sửa lại nó, theo đúng hướng Hào vừa nói suốt một tiếng: từ "quên code đi" sang "quy trình có giám sát". Chúng ta không đi ngược trào lưu. Chúng ta đi cùng người tạo ra nó.
+
+Nhưng nhìn đường thời gian kéo dài vào chỗ mờ, với một dấu hỏi. Nếu mức tự động cứ tăng, agent làm nhiều hơn, người nhìn ít hơn, thì điểm cuối của con đường là gì? Có ai thử hình dung không? Tôi sẽ đưa mọi người đến đó trong mười slide tiếp theo, và cái đích có tên: dark factory.
 
 ---
 
@@ -366,9 +410,13 @@ Người khai sinh thuật ngữ cũng đã nâng cấp nó theo đúng hướng
 
 **Hiểu trước khi nói.** Hình dung một xưởng sản xuất mà bên trong không có công nhân, chỉ có máy; người đứng ngoài chỉ đưa vào bản vẽ và tiêu chuẩn nghiệm thu. Đó là dark factory. Với phần mềm: không ai viết code, không ai review, không ai test tay; người chỉ viết yêu cầu và tiêu chí đạt. Năm slide tiếp theo là năm mục của mô hình, đi theo thứ tự: vì sao cần, đang ở đâu, làm thế nào, cấu trúc ra sao, và có thể hỏng ở đâu.
 
-**Đọc.** Mô hình Dark Factory, nhà máy tối, là một triết lý thiết kế quy trình phát triển phần mềm mà ở đó không có con người tham gia viết code, review code hay kiểm thử thủ công. Con người chỉ đóng vai trò viết đặc tả hệ thống, tức specs, và tiêu chí nghiệm thu; toàn bộ phần việc còn lại do các hệ thống tự động thực hiện.
+**Đọc.** Trước khi vào, tôi nói rõ ý đồ của phần này, để mọi người nghe đúng cách.
 
-Khối này đi qua năm mục: vấn đề thực tế của việc áp dụng AI hiện nay, khung cấp độ tự động hoá, lộ trình bốn giai đoạn, kiến trúc bốn lớp, và các rủi ro kèm giải pháp.
+Tôi sẽ kể lại một thiết kế thật. Không phải lý thuyết, không phải slide của một công ty bán tool. Một trưởng nhóm platform, đội tám kỹ sư, khoảng mười hai microservice Java và TypeScript, ngồi thiết kế con đường từ "AI viết, người review" lên "không còn ai đọc code". Ông ấy viết lại toàn bộ quá trình đó, kể cả chỗ nghi ngờ, và tôi sẽ đi theo đúng năm mục của ông: vấn đề thực tế, khung cấp độ, bốn giai đoạn, kiến trúc bốn lớp, và rủi ro.
+
+Định nghĩa trước. Trong sản xuất, dark factory là nhà máy chạy tắt đèn. Không cần bật đèn vì bên trong không có người; robot làm hết. Với phần mềm: không ai viết code, không ai review code, không ai test tay. Người chỉ làm hai việc: viết đặc tả hệ thống, tức spec, và viết tiêu chí nghiệm thu. Phần còn lại là máy.
+
+Tôi muốn nói ngay điều này để không ai hiểu nhầm: mục đích của phần này không phải bảo mọi người làm theo tuần sau. Mục đích là câu hỏi Hào vừa để lại. Khi không còn ai đọc code, người ta phải nghĩ ra cách kiểm chứng gì để vẫn tin được sản phẩm? Và câu trả lời, khi mọi người nhìn kỹ, vẫn là ba trụ Context, Verification, Ownership, chỉ chuyển từ làm tay sang mã hoá vào máy. Đó là điều tôi muốn mọi người mang về.
 
 ---
 
@@ -376,11 +424,17 @@ Khối này đi qua năm mục: vấn đề thực tế của việc áp dụng 
 
 **Hiểu trước khi nói.** Xe đã có động cơ nhanh hơn nhưng đường vẫn kẹt ở trạm thu phí. AI giúp gõ code nhanh, nhưng thời gian thật sự mất ở chỗ chờ người review, cãi về style, test tay trên máy cá nhân. Bảng thời gian trên slide là số đo thật của một đội đã dùng AI rất nhiều.
 
-**Đọc.** Vấn đề thực tế của việc áp dụng AI hiện nay. Nút thắt cổ chai bị dịch chuyển: nhiều tổ chức đang ăn mừng quá sớm khi trang bị các công cụ AI hỗ trợ viết code như Cursor, Copilot, Cody giúp lập trình viên gõ code nhanh hơn. Tuy nhiên, tốc độ viết code nhanh hơn chỉ đẩy nút thắt cổ chai xuống các khâu tiếp theo: lập trình viên vẫn phải chờ review code hàng giờ liền, thường chỉ mang tính thủ tục hoặc bắt lỗi phong cách thiết kế, và mất nhiều thời gian kiểm thử thủ công trên localhost.
+**Đọc.** Mục một: vấn đề thực tế của việc áp dụng AI hiện nay. Tôi nghĩ mọi người sẽ thấy mình trong slide này.
 
-Thực trạng lãng phí thời gian: qua khảo sát thời gian làm việc thực tế của một đội kỹ sư, phần lớn thời gian bị lãng phí vào các khâu phi sản xuất. Chờ review PR hai đến tám giờ. Trao đổi qua lại về PR ba mươi đến chín mươi phút. Kiểm thử thủ công ba mươi đến sáu mươi phút. Điều tra bug production có khi hai giờ để sửa năm dòng. Viết boilerplate hàng giờ mà không tạo giá trị.
+Đội của tác giả không phải đội chậm. Đến đầu năm 2026 họ đã ở mức khá cao: AI viết phần lớn code, bot tự review mọi PR, thậm chí có agent tự vá cảnh báo bảo mật của Dependabot. Nếu đem lên slide thì rất đẹp. Rồi ông ấy làm một việc ít ai làm: ngồi đo thời gian thật của cả đội trong hai tuần, xem thời gian đi đâu.
 
-Kết luận: mới tự động hoá được việc gõ, và chỉ việc gõ. Nút thắt không biến mất, nó chuyển xuống khâu review và kiểm thử.
+Bảng này là kết quả. Chờ người review PR: hai đến tám giờ, và phần lớn chỉ là đóng dấu cho qua. Trao đổi qua lại trong review: nửa tiếng đến tiếng rưỡi, thường là cãi nhau về tên biến có đủ mô tả chưa. Kiểm thử thủ công trên localhost: nửa tiếng đến một tiếng, và hiếm khi làm tử tế. Điều tra bug production: có khi hai tiếng, để rồi sửa năm dòng. Viết boilerplate: hàng giờ cho mỗi tính năng, không tạo giá trị gì.
+
+Ông ấy nói bảng này làm ông bực. Cả đội đã bỏ bao nhiêu công sức áp dụng AI, và kết quả là: gõ nhanh hơn, còn mọi thứ xung quanh việc gõ vẫn chậm, thủ công, và không nhất quán như xưa. Nút thắt cổ chai không biến mất. Nó dọn nhà xuống cuối hành lang.
+
+Có ai thấy đội mình trong bảng này không? Tôi thấy đội tôi. Đây chính là slide ba của Hào, nhìn từ bên trong một đội thật: chúng ta đã ăn mừng quá sớm, vì mới tự động hoá được việc gõ, và chỉ việc gõ.
+
+Cùng tuần đó, hai bài viết làm ông đổi cách nghĩ. StrongDM công bố cái họ gọi là software factory: ba kỹ sư, không dòng code nào do người viết hay review, chất lượng do kịch bản holdout và bản sao số đảm nhận. OpenAI ra bài về harness engineering: một triệu dòng code không viết tay, trong một phần mười thời gian thường lệ. Cả hai báo cáo tốc độ gấp ba đến mười lần, kéo dài nhiều tháng, trên sản phẩm thật, không phải demo hackathon. Ông tự hỏi: vậy là làm được thật. Cần gì để đến đó? Câu hỏi đó chiếm mấy tuần tiếp theo của ông, và là phần còn lại của khối này.
 
 ---
 
@@ -388,11 +442,19 @@ Kết luận: mới tự động hoá được việc gõ, và chỉ việc gõ.
 
 **Hiểu trước khi nói.** Giống thang xe tự lái. Nấc 1 AI gợi ý từng câu; nấc 2 AI viết cả file, bạn đọc hết, hầu hết team ở đây; nấc 3 AI viết từ yêu cầu, có bộ kiểm định tự chấm, bạn chỉ bấm duyệt; nấc 3.5 vài dịch vụ tự merge; nấc 4 nhà máy tối. Bước khó nhất là từ 2 lên 3, vì phải thay "người đọc code" bằng "máy chấm".
 
-**Đọc.** Khung cấp độ tự động hoá, lấy cảm hứng từ xe tự lái, để định vị một tổ chức đang ở đâu.
+**Đọc.** Mục hai: khung cấp độ tự động hoá. Để nói chuyện "chúng ta đang ở đâu và muốn đi đâu" mà không cãi nhau, tác giả mượn thang của xe tự lái. Năm gian trên màn hình là năm nấc.
 
-Cấp độ một: AI tự động hoàn thành câu lệnh của bạn, con người làm mọi thứ khác. Cấp độ hai: AI viết toàn bộ hàm hoặc file, con người review từng thay đổi nhỏ; hầu hết các đội ngũ hiện nay đang dừng ở đây. Cấp độ ba: AI tạo code từ các bản đặc tả, các kịch bản holdout đóng vai trò kiểm soát chất lượng, con người phê duyệt lượt merge. Cấp độ ba rưỡi: tương tự cấp ba, nhưng một số dịch vụ tự động merge mà không cần con người. Cấp độ bốn, Full Dark Factory: đặc tả đi vào, mã nguồn đã qua kiểm thử tự động được merge ra, quy trình CI/CD sẵn có tự động deploy.
+Nấc một: AI tự hoàn thành câu lệnh của bạn. Autocomplete. Con người làm mọi thứ khác. Đây là Copilot của ba năm trước.
 
-Khoảng cách khó nhất là từ cấp hai lên cấp ba, vì đó là lúc phải thay người đọc code bằng máy kiểm chứng.
+Nấc hai: AI viết toàn bộ hàm hoặc file. Con người review từng thay đổi nhỏ. Nhìn nhãn "you are here": hầu hết các đội ngũ hiện nay đang dừng ở đây, kể cả đội của tác giả lúc đó, và tôi đoán là hầu hết người trong phòng này. Toàn bộ phần của Hào là SOP cho nấc này.
+
+Nấc ba: AI tạo code từ các bản đặc tả. Các kịch bản holdout đóng vai trò kiểm soát chất lượng. Con người chỉ phê duyệt lượt merge. Để ý: ở nấc này con người không đọc code nữa, con người đọc kết quả kiểm định.
+
+Nấc ba rưỡi: tương tự nấc ba, nhưng một số dịch vụ tự động merge mà không cần con người. Chỉ một số, những dịch vụ có bộ kiểm định đủ tốt.
+
+Nấc bốn, full dark factory: đặc tả đi vào, mã nguồn đã qua kiểm thử tự động được merge ra, quy trình CI/CD sẵn có tự động deploy. Không có người trong vòng lặp thường ngày.
+
+Câu hỏi cho phòng: khoảng cách nào trong năm nấc này là khó nhất? Không phải từ ba lên bốn. Là từ hai lên ba. Vì đó là lúc phải thay "người đọc code" bằng "máy kiểm chứng", và phải tin cái máy đó. Toàn bộ bài toán thiết kế khó nằm ở đó, và phần lớn thời gian còn lại của tôi cũng ở đó.
 
 ---
 
@@ -400,7 +462,11 @@ Khoảng cách khó nhất là từ cấp hai lên cấp ba, vì đó là lúc p
 
 **Hiểu trước khi nói.** Như sửa nhà từng phòng: xong phòng nào ở được phòng đó. Dừng ở giai đoạn 1 vẫn có lãi. Và không phải đập pipeline deploy: mọi thứ sau merge y như cũ.
 
-**Đọc.** Quy trình triển khai bốn giai đoạn. Mỗi giai đoạn đều tự mang lại giá trị độc lập ngay lập tức mà không cần đợi hoàn thành toàn bộ dự án. Giai đoạn một: tối ưu hoá ngữ cảnh cho agent. Giai đoạn hai: phát triển hướng đặc tả với kịch bản holdout. Giai đoạn ba: loại bỏ cổng kiểm soát của con người. Giai đoạn bốn: đạt trạng thái Dark Factory toàn phần. Toàn bộ lộ trình không đụng đến pipeline deploy sẵn có; nó chỉ thay người viết code và người review code.
+**Đọc.** Mục ba: lộ trình triển khai. Tác giả có một nguyên tắc mà tôi rất thích: không tin đề xuất nào chỉ có lãi khi xây xong toàn bộ. Vì đó là cách người ta ở tháng thứ mười tám của dự án với hai bàn tay trắng. Nên ông chia bốn giai đoạn, và điều kiện là mỗi giai đoạn phải tự mang lại giá trị độc lập ngay lập tức. Giống sửa nhà từng phòng: xong phòng nào ở được phòng đó. Nếu đội chỉ làm giai đoạn một rồi dừng mãi mãi, vẫn phải tốt hơn hôm nay.
+
+Bốn ga trên đường ray. Giai đoạn một: tối ưu hoá ngữ cảnh cho agent. Cho AI thông tin tốt hơn. Không đụng workflow của ai. Giai đoạn hai: phát triển hướng đặc tả với kịch bản holdout. Đây là phần cốt lõi, spec vào, code đã kiểm chứng ra, người vẫn bấm duyệt. Giai đoạn ba: loại bỏ cổng kiểm soát của con người, từng dịch vụ một, dựa trên số liệu. Giai đoạn bốn: Dark Factory toàn phần, chủ yếu là cấu hình.
+
+Và một ràng buộc để mọi người bớt lo: toàn bộ thiết kế không đụng đến pipeline deploy. Nó chỉ thay hai người: người gõ code và người nheo mắt đọc diff. Mọi thứ sau khi merge, build, deploy, rollout, y nguyên như bạn đang có. Ai lo "phải đập hết CI/CD" thì không phải.
 
 ---
 
@@ -408,13 +474,15 @@ Khoảng cách khó nhất là từ cấp hai lên cấp ba, vì đó là lúc p
 
 **Hiểu trước khi nói.** AGENTS.md là sổ tay cho nhân viên mới: trăm dòng mục lục, chi tiết để trong docs, cần thì tự đào. Build và test ở máy nó trước khi push. Và thông báo lỗi của linter viết như biển chỉ đường ("rẽ trái ở ngã tư sau") thay vì "sai đường". Đây là trụ Context, và là việc làm được ngay chiều nay.
 
-**Đọc.** Giai đoạn một: tối ưu hoá ngữ cảnh cho agent. Ba việc.
+**Đọc.** Giai đoạn một, và tôi muốn nhấn mạnh: đây là thứ ai trong phòng cũng làm được chiều nay, không cần xin phép ai. Nó không liên quan gì đến tự động hoá. Nó chỉ là cho AI thông tin tốt hơn, và tác giả nói lợi ích lớn nhất trên mỗi giờ bỏ ra nằm ở đây. Ba việc.
 
-Tài liệu hiển thị thông tin luỹ tiến, progressive disclosure: tạo file AGENTS.md khoảng một trăm dòng làm bản đồ chỉ dẫn tổng quan về cấu trúc dịch vụ, kiến trúc, quy luật code; kết hợp với thư mục docs chứa tài liệu chi tiết về auth, testing, API để agent truy xuất khi cần thiết. Cách tiếp cận này giúp tránh quá tải thông tin cho AI. Nhìn ví dụ bên trái: phần làm gì, kiến trúc, pattern chính, bản đồ thư mục.
+Việc một: tài liệu hiển thị thông tin luỹ tiến. Mỗi repo có một file AGENTS.md, khoảng một trăm dòng. Hãy nghĩ nó như sổ tay cho nhân viên mới: dịch vụ này làm gì, kiến trúc ra sao, các quy luật code chính, thư mục nào chứa gì. Nhìn ví dụ bên trái. Rồi một thư mục docs chứa tài liệu chi tiết về auth, testing, API, để agent truy xuất khi cần. Ý tưởng gọi là progressive disclosure, tiết lộ dần: agent đọc bản đồ trước, cần chi tiết về auth thì mới đào vào docs/auth.md. Bạn không ném cuốn wiki năm trăm trang cho người mới vào sáng đầu tiên, và cũng không nên làm thế với agent, vì như Hào nói, context là RAM. Tác giả viết file đầu tiên chiều thứ năm; sáng thứ sáu, PR do agent sinh trên repo đó khác rõ rệt. Ông dùng đúng chữ "không tinh tế, mà rõ rệt". Và lợi ích cộng dồn mãi, vì mọi lần AI chạm vào repo đó đều được hưởng.
 
-Quy tắc build-before-push: ép buộc agent phải tự chạy build và bộ test cục bộ trước khi push code.
+Việc hai: quy tắc build-before-push. Ép agent phải tự chạy build và bộ test cục bộ trước khi push code. Hỏng thì sửa tại chỗ. Hết cảnh mở PR chỉ để xem CI đỏ, đẩy bản sửa, CI đỏ kiểu khác, lặp lại.
 
-Linter hướng dẫn hành động: viết các thông báo lỗi linter dưới dạng chỉ dẫn giải quyết thay vì chỉ mô tả lỗi. Thay vì báo lỗi cấu trúc, linter chỉ rõ: hãy di chuyển type dùng chung sang gói model. Với chỉ dẫn cụ thể, agent sửa đúng ngay lần đầu.
+Việc ba, cái tôi thích nhất: linter hướng dẫn hành động. Nếu team có quy tắc kiến trúc, "service không được import từ controller", "mọi endpoint phải có annotation auth", thì đừng ghi vào wiki, hãy mã hoá thành linter. Nhưng mẹo thật sự nằm ở thông báo lỗi. Nhìn hai hộp. Hộp đỏ: "Service layer depends on controller layer." Đó là mô tả. Agent đọc xong loay hoay đoán. Hộp xanh: "Service import từ package controller. Service không được phụ thuộc controller. Hãy chuyển type dùng chung sang package model." Đó là chỉ dẫn. Với chỉ dẫn, agent sửa đúng ngay lần đầu, gần như mọi lần. Tác giả nói ông đã xem chuyện này lặp lại trên hàng chục PR và chênh lệch là rất lớn. Nghĩ như biển báo giao thông: "sai đường" không giúp gì, "rẽ trái ở ngã tư sau" mới giúp.
+
+Ai đang dùng Claude Code: hook chạy sau mỗi lần sửa file, in thông báo ra stderr với exit code hai, và thông báo đó được đưa thẳng cho model. Tức là bạn viết được biển báo cho agent ngay hôm nay.
 
 ---
 
@@ -422,10 +490,15 @@ Linter hướng dẫn hành động: viết các thông báo lỗi linter dướ
 
 **Hiểu trước khi nói.** Spec là bản yêu cầu. Yêu cầu tính năng thì nói cần gì; yêu cầu sửa lỗi thì chỉ tả triệu chứng, không gợi ý nguyên nhân, để AI tự điều tra thay vì tin một giả thuyết có thể sai.
 
-**Đọc.** Giai đoạn hai: phát triển hướng đặc tả. Đặc tả dạng Markdown. Lập trình viên viết đặc tả tính năng mới, feature spec, mô tả yêu cầu và ràng buộc; hoặc lỗi cần sửa, bug spec, chỉ mô tả triệu chứng để agent tự tìm nguyên nhân gốc rễ.
+**Đọc.** Giai đoạn hai là phần thật; tác giả nói mọi thứ khác chỉ là giàn giáo cho nó. Mục tiêu: kỹ sư viết một đặc tả, hệ thống tạo ra code chạy được, đã kiểm chứng, sẵn sàng merge. Bắt đầu từ đầu vào.
 
-Bug spec bên phải không nói tôi nghĩ thiếu null check ở dòng bốn mươi bảy. Nó nói endpoint trả năm trăm khi supplier rỗng, đáng lẽ phải trả bốn trăm với lỗi validation, và dòng cuối: đừng giả định nguyên nhân, hãy điều tra codebase. Vì spec là thứ duy nhất máy nhận, chất lượng spec quyết định chất lượng code.
+Đặc tả là một file Markdown có phần đầu YAML: repo đích, nhánh đích, loại. Hai loại. Bên trái, feature spec, mô tả yêu cầu và ràng buộc. Ví dụ: thêm endpoint validate SQL; yêu cầu kiểm cú pháp, từ chối câu không phải SELECT, phát hiện injection; ràng buộc là theo pattern controller có sẵn, test đầy đủ, không thêm dependency.
 
+Bên phải, bug spec, và chỗ này tinh tế hơn vẻ ngoài của nó. Bug spec chỉ mô tả triệu chứng. Nó không nói "tôi nghĩ thiếu null check ở dòng bốn mươi bảy". Nó nói: gọi endpoint writeback với supplier rỗng thì bị 500, đáng lẽ phải trả 400 với lỗi validation nhắc đến supplier. Và dòng cuối in đậm: đừng giả định nguyên nhân gốc rễ, hãy điều tra codebase. Vì sao? Vì khi bạn viết "dòng bốn mươi bảy", bạn đã gieo cho agent một giả thuyết, và giả thuyết của bạn có thể sai. Để nó tự đi tìm, nó sẽ đọc, chạy test, tìm nguyên nhân thật. Nhớ slide rubber ducking của Hào: viết giả thuyết của mình ra trước là tốt cho người, nhưng đừng nhét giả thuyết đó vào đề bài của máy.
+
+Vì spec là thứ duy nhất máy nhận, chất lượng spec quyết định chất lượng code. Đây là ý "kế hoạch trước, code sau" ở phần 7.1, đẩy đến tận cùng: kế hoạch không còn là thứ bạn duyệt, nó là thứ bạn viết, và là đầu vào duy nhất.
+
+Câu hỏi tôi để lại trước slide sau: viết spec xong rồi, máy sinh code rồi, làm sao biết code đúng khi không ai đọc nó? Đó là slide quan trọng nhất của khối.
 
 ---
 
@@ -433,13 +506,17 @@ Bug spec bên phải không nói tôi nghĩ thiếu null check ở dòng bốn m
 
 **Hiểu trước khi nói.** Hình ảnh thi cử. Agent là học sinh, spec là đề bài. Kịch bản holdout là bộ đề kiểm tra viết bằng tiếng Anh thường, cất trong tủ học sinh không được mở. Một AI khác làm giám khảo: đọc đề, tự nghĩ cách gọi API để thử trên một bản chạy tạm, rồi chấm đạt hay không. Bức tường là quy tắc "không được xem đề thi trước"; nếu xem, học sinh học thuộc đáp án thay vì học bài. Chấm ba lần lấy hai, chín mươi phần trăm số đề phải đạt. Đây là slide quan trọng nhất của khối.
 
-**Đọc.** Kịch bản holdout, cốt lõi của hệ thống. Đây là các bài kiểm thử chấp nhận viết bằng tiếng Anh tự nhiên theo định dạng BDD, và được lưu trong thư mục cách ly mà agent viết code không thể truy cập.
+**Đọc.** Nếu mọi người chỉ nhớ một slide của phần tôi, hãy nhớ slide này. Tôi kể bằng hình ảnh thi cử, vì nó chính xác là như vậy.
 
-Một bộ đánh giá độc lập sử dụng LLM để lập kế hoạch thực hiện các cuộc gọi API kiểm thử trên một môi trường triển khai tạm thời, ephemeral deployment, và đánh giá phản hồi. Nhìn ví dụ: gửi câu SQL có DROP TABLE vào endpoint kiểm tra, kết quả phải là không hợp lệ, và lỗi phải nhắc đến câu lệnh bị cấm.
+Bên trái là học sinh. Coding agent nhận đề bài, tức spec, làm bài, tức viết code, rồi nộp bài, tức mở PR. Nó chỉ có spec và repo. Bên phải là hội đồng chấm. Bộ đề kiểm tra gọi là holdout scenarios, kịch bản holdout. Đó là các bài kiểm thử chấp nhận viết bằng tiếng Anh tự nhiên theo định dạng BDD. Nhìn ví dụ: gửi câu SQL có DROP TABLE vào endpoint validate, thì kết quả phải là không hợp lệ, và lỗi phải nhắc đến câu lệnh bị cấm. Chỉ có vậy, không có code. Bộ đề này cất trong một thư mục cách ly mà agent viết code không thể truy cập.
 
-Kịch bản chạy ba lần, đạt tối thiểu hai trên ba để tính là pass nhằm khử tính bất định của LLM, và tổng tỷ lệ pass phải trên chín mươi phần trăm để vượt qua cổng chất lượng. Agent thi trượt chỉ nhận một dòng thông báo, không bao giờ thấy nội dung kịch bản, nên không thể học vẹt bộ đề.
+Giám khảo là một hệ thống hoàn toàn riêng, một bộ đánh giá dùng LLM. Nó đọc kịch bản, dùng LLM lập kế hoạch cần gọi API nào để kiểm hành vi đó, thực thi các cuộc gọi trên một môi trường triển khai tạm thời, rồi hỏi LLM: các phản hồi có thoả kịch bản không. Vì LLM chấm mỗi lần hơi khác, mỗi kịch bản chạy ba lần, đạt hai trên ba mới tính là pass. Cổng tổng: chín mươi phần trăm số kịch bản phải pass thì PR mới đi tiếp.
 
-Cách này giải quyết triệt để vấn đề mục nát glue code của các công cụ kiểm thử BDD truyền thống như Cucumber: không có step definition, bộ đánh giá tự thích ứng khi API đổi, bạn chỉ bảo trì văn bản tiếng Anh.
+Và bức tường ở giữa là quy tắc quan trọng nhất: học sinh không bao giờ được xem đề thi. Nếu agent trượt và được làm lại, nó nhận đúng một dòng: "SQL Injection Detection trượt, endpoint trả 500". Không có nội dung kịch bản. Vì sao khắt khe thế? Vì nếu cho xem đề, agent sẽ viết code để qua đúng bài đó, tức học thuộc đáp án thay vì học bài. Ai học machine learning sẽ nhận ra ngay: đây là tách tập train và tập test. Spec là tập train, kịch bản là tập test, và bức tường là thứ làm cho điểm số có nghĩa. Không có bức tường thì không có cổng chất lượng, chỉ có sân khấu kịch.
+
+Nhớ slide mười tám của Hào không? Test sinh từ cùng nguồn với code thì không kiểm được code, vì cả hai đến từ cùng một sự hiểu sai. Kịch bản holdout chính là cách xây bài học đó thành kiến trúc: hai nguồn khác nhau, cách ly bằng quyền truy cập.
+
+Một điểm cộng bất ngờ mà tác giả cho là quý ngay cả khi bỏ chuyện AI sang một bên. Ai từng dùng Cucumber? Test viết bằng tiếng Anh, nhưng bên dưới cần rất nhiều code dán keo, step definition, và code đó mục dần: đổi format một API response là bốn mươi step definition nổ. Tác giả đã ở ba team dùng Cucumber và cả ba đều chết chìm vì chuyện đó. Ở đây không có code dán keo. Giám khảo tự tìm cách thử mỗi lần; API đổi hình thì nó tự thích nghi. Bạn chỉ bảo trì văn bản tiếng Anh, và không gì khác.
 
 ---
 
@@ -447,11 +524,15 @@ Cách này giải quyết triệt để vấn đề mục nát glue code của c
 
 **Hiểu trước khi nói.** Ở giai đoạn 2 người vẫn bấm duyệt, nhưng đọc bản báo cáo "bao nhiêu đề đạt" thay vì đọc code: năm phút thay vì hai tiếng. Giai đoạn 3 là tập lái: có người kèm đủ lâu và đủ điểm (ba con số) mới được tự lái. Kèm agent dọn nhà hằng tuần để code tự sinh không trôi về bừa bộn. Đây là trụ Ownership: quyền mở dần theo số liệu.
 
-**Đọc.** Vai trò con người ở giai đoạn hai: không đọc code từng dòng nữa mà chuyển sang xem xét báo cáo kết quả của các kịch bản kiểm thử, mất khoảng năm phút thay vì hai giờ.
+**Đọc.** Slide này trả lời hai câu: ở giai đoạn hai con người còn làm gì, và giai đoạn ba bỏ con người ra thế nào.
 
-Giai đoạn ba: loại bỏ cổng kiểm soát của con người. Áp dụng tự động merge cho một số dịch vụ đạt chỉ số an toàn: tỷ lệ pass kịch bản trên chín mươi phần trăm trong hai mươi PR gần nhất, tỷ lệ báo lỗi giả dưới năm phần trăm, và tỷ lệ con người ghi đè hoặc từ chối dưới mười phần trăm. Thay đổi thật sự chỉ là một dòng cấu hình, và ai trong team vẫn chặn được trước khi merge.
+Giai đoạn hai chưa phải tự merge. Máy sinh code, chấm theo kịch bản, và xuất một bản báo cáo mức thoả mãn. Người nhìn báo cáo, có thể liếc diff, rồi bấm merge. Nhưng để ý cái đã đổi, và đây là thay đổi lớn nhất về nghề trong cả khối: người không còn đọc code từng dòng nữa. Người đọc kết quả. Kịch bản pass chưa? Tỷ lệ bao nhiêu? Cái nào trượt? Đó là việc năm phút thay vì hai tiếng. Một tải nhận thức hoàn toàn khác, và cũng là thứ khiến chuyện "chờ review tám tiếng" ở slide đầu biến mất.
 
-Kèm theo là Quality Maintenance Agents, agent bảo trì chất lượng, chạy ngầm hằng tuần để quét code trôi dạt, cập nhật tài liệu lỗi thời và tinh chỉnh các bất nhất trong mã nguồn tự động sinh ra.
+Giai đoạn ba: loại bỏ cổng kiểm soát của con người. Tác giả nói sau đủ nhiều PR mà người chỉ đóng dấu, và ông cá là chuyện này đến nhanh hơn bạn đoán, bạn bắt đầu tháo bánh phụ. Nhưng không phải mọi nơi cùng lúc. Chọn một hai dịch vụ có bộ kịch bản tốt, và ba con số phải đúng trên hai mươi PR gần nhất. Tỷ lệ pass kịch bản trên chín mươi phần trăm. Tỷ lệ báo lỗi giả, tức kịch bản bảo đạt mà code thật ra hỏng, dưới năm phần trăm. Tỷ lệ con người ghi đè, tức người từ chối thứ kịch bản đã cho qua, dưới mười phần trăm. Nghĩ như tập lái xe: có người kèm đủ lâu, đủ điểm, mới được tự lái. Đạt cả ba thì thay đổi thật sự chỉ là một dòng cấu hình, từ "gắn nhãn chờ review" sang "merge". Và ai trong team vẫn chặn được PR trước khi cửa sổ merge đóng.
+
+Ô cuối là Quality Maintenance Agents, agent bảo trì chất lượng, chạy ngầm hằng tuần. Chúng quét code trôi dạt, cập nhật tài liệu lỗi thời, tinh chỉnh các bất nhất trong mã nguồn tự sinh, và mở PR dọn dẹp nhỏ đi qua cùng cổng kịch bản như mọi PR khác. Vì sao cần? Vì code do AI sinh, nếu không ai dọn, tích luỹ những bất nhất nhỏ; không có gì thảm hoạ, chỉ trôi dần về bừa bộn. Coi nó như dọn nhà định kỳ.
+
+Điểm tôi muốn mọi người nối về slide ba mươi lăm lát nữa: đây là "niềm tin phải kiếm được". Quyền của máy mở dần theo số liệu, không theo tuyên bố.
 
 ---
 
@@ -459,9 +540,15 @@ Kèm theo là Quality Maintenance Agents, agent bảo trì chất lượng, ch�
 
 **Hiểu trước khi nói.** Giai đoạn 4 gần như chỉ là bật công tắc: tự merge ở mọi dịch vụ đủ điểm, ticket gắn nhãn bot:fix tự thành spec, và dựng bản giả lập cho các dịch vụ bên ngoài hay chập chờn để chấm bài rẻ và nhanh hơn.
 
-**Đọc.** Giai đoạn bốn: đạt trạng thái Dark Factory toàn phần. Mở rộng tự động merge cho mọi dịch vụ đạt chỉ số. Đồng bộ hoá với hệ thống quản lý task như Jira hay Trello: các thẻ dán nhãn bot fix sẽ tự động kích hoạt tạo spec và chạy qua pipeline. Xây dựng Digital Twins, máy chủ ảo hay mock server giả lập các dịch vụ bên ngoài, để giảm chi phí và độ trễ khi chạy kiểm thử kịch bản; chỉ xây khi cần, bắt đầu từ dịch vụ gây phiền nhất.
+**Đọc.** Giai đoạn bốn, và tác giả nói đến đây phần khó đã xong; đây là cấu hình, không phải kiến trúc.
 
-Trạng thái cuối: kỹ sư viết spec và kịch bản, hệ thống làm phần còn lại. Mọi thứ sau merge vẫn đi qua pipeline CI/CD cũ.
+Ba việc. Một, mở rộng tự động merge cho mọi dịch vụ đạt chỉ số, cùng ba con số ở slide trước, không ngoại lệ. Hai, đồng bộ với hệ thống quản lý task như Jira hay Trello: thẻ gắn nhãn bot fix tự động kích hoạt tạo spec và chảy qua pipeline. Tức là một ticket bug viết đủ triệu chứng có thể thành một PR đã kiểm chứng mà không ai chạm vào bàn phím. Thêm dashboard để nhìn cả dây chuyền.
+
+Ba, mảnh hạ tầng mới duy nhất: Digital Twins, bản sao số, tức máy chủ ảo hay mock server giả lập các dịch vụ bên ngoài. Vì sao cần? Khi giám khảo chạy kịch bản trên môi trường tạm, nó gọi API thật của bên thứ ba, và những API đó hoặc chập chờn hoặc tốn tiền. Bản sao số giảm chi phí và độ trễ khi chạy kiểm thử. Chỉ xây khi cần, bắt đầu từ dịch vụ nào gây phiền nhất.
+
+Trạng thái cuối: kỹ sư viết spec và kịch bản. Họ nghĩ về sản phẩm nên làm gì và làm sao biết nó làm đúng. Hệ thống làm phần còn lại. Deploy đi qua pipeline như trước giờ. Nhìn dòng cuối: không có gì sau merge thay đổi.
+
+Có ai đang nghĩ "vậy kỹ sư còn làm gì"? Giữ câu hỏi đó, slide rủi ro sẽ nói.
 
 ---
 
@@ -469,9 +556,17 @@ Trạng thái cuối: kỹ sư viết spec và kịch bản, hệ thống làm p
 
 **Hiểu trước khi nói.** Bốn tầng nhà: tầng đầu vào là của người; tầng sinh code là máy; tầng chấm là máy nhưng cách ly; tầng merge và deploy dùng hạ tầng cũ. Điều duy nhất phải nhớ: giữa tầng sinh code và tầng chấm phải có tường, không thì agent có thể gian lận.
 
-**Đọc.** Kiến trúc bốn lớp của hệ thống. Lớp Inputs, con người sở hữu: đặc tả, kịch bản holdout, tài liệu AGENTS.md, luật linter. Lớp Code Generation, tự động: agent đọc spec cộng ngữ cảnh repo, tự sinh mã, build, test tại chỗ, tự review và mở PR. Lớp Validation, tự động và cách ly: chạy CI truyền thống, sau đó bộ đánh giá kịch bản chạy thử trên môi trường tạm thời. Lớp Merge và Deploy, tự động cộng infra sẵn có: tự động merge vào nhánh chính và kích hoạt pipeline CI/CD hiện có để deploy.
+**Đọc.** Mục bốn: kiến trúc bốn lớp. Tác giả nói ranh giới giữa các lớp quan trọng hơn ruột của từng lớp, và tôi đồng ý, nên tôi sẽ đi nhanh qua ruột và dừng lâu ở ranh giới.
 
-Lưu ý cực kỳ quan trọng: lớp Code Generation và lớp Validation phải được cách ly hoàn toàn để tránh tình trạng agent gian lận hoặc học vẹt bộ đề thi. Không có bức tường đó thì không có cổng chất lượng.
+Lớp một, Inputs, con người sở hữu: đặc tả, kịch bản holdout, tài liệu AGENTS.md, luật linter. Đây là toàn bộ chỗ con người đặt ý chí của mình vào hệ thống. Để ý: bốn thứ này chính là Context và tiêu chí của Verification.
+
+Lớp hai, Code Generation, tự động: agent đọc spec cộng ngữ cảnh repo, tự sinh mã, build, test tại chỗ, tự review và mở PR. Đây là vòng lặp ReAct của Hào, chạy không người.
+
+Lớp ba, Validation, tự động và cách ly: chạy CI truyền thống trước, unit test, static analysis, rồi bộ đánh giá kịch bản chạy thử trên môi trường tạm thời.
+
+Lớp bốn, Merge và Deploy, tự động cộng infra sẵn có: tự merge vào nhánh chính và kích hoạt pipeline CI/CD hiện có. Không có gì mới ở đây.
+
+Giờ nhìn dải gạch chéo đỏ giữa lớp hai và lớp ba. Đây là lưu ý mà tác giả gọi là cực kỳ quan trọng, và là thứ duy nhất tôi cần mọi người nhớ từ slide này: lớp Code Generation và lớp Validation phải được cách ly hoàn toàn. Agent không thấy kịch bản. Bộ đánh giá không biết và không cần biết code được tạo ra sao. Nếu không cách ly, agent có thể gian lận hoặc học vẹt bộ đề thi, và khi đó bạn không có cổng chất lượng, bạn có diễn kịch. Với những ai dùng Claude Code, cách ly này cụ thể là hai phiên chạy với hai bộ quyền tool không giao nhau: phiên viết bị cấm đọc thư mục holdout, phiên chấm chỉ được đọc và gọi HTTP.
 
 ---
 
@@ -479,15 +574,17 @@ Lưu ý cực kỳ quan trọng: lớp Code Generation và lớp Validation ph�
 
 **Hiểu trước khi nói.** Bốn rủi ro, mỗi cái một cách đỡ: giám khảo chấm sai (chấm ba lần, cổng 90%, người soát 50 PR đầu, CI cũ vẫn chạy); kỹ sư không muốn thôi viết code (đổi vai lên định nghĩa sản phẩm và kiểm soát chất lượng); tốn tiền API (giới hạn ba lần thử, cảnh báo token); đề kiểm tra lỗi thời (giám khảo tự thích nghi, agent bảo trì hằng tuần).
 
-**Đọc.** Các rủi ro tiềm ẩn và giải pháp. Bộ đánh giá duyệt nhầm code lỗi: giảm thiểu bằng cách chạy kịch bản ba lần, duy trì cổng pass chín mươi phần trăm, kiểm toán thủ công năm mươi PR đầu tiên, và giữ nguyên bộ CI/CD truyền thống chạy sau merge.
+**Đọc.** Mục năm, và tôi thích tác giả vì có mục này. Ông nói ông không tin đề xuất nào bỏ qua phần "cái gì có thể hỏng". Bốn rủi ro, mỗi cái một cách giảm thiểu.
 
-Kháng cự từ đội ngũ kỹ sư: kỹ sư thường gắn bản sắc cá nhân với việc trực tiếp viết code. Giải pháp là chuyển dịch vai trò của họ sang việc định nghĩa sản phẩm và kiểm soát chất lượng, kỹ thuật sản phẩm cao cấp hơn.
+Một, bộ đánh giá duyệt nhầm code lỗi. Đây là rủi ro lớn nhất, vì LLM chấm phản hồi API theo kỳ vọng viết bằng tiếng Anh là chuyện xác suất, không phải tuyệt đối. Giảm thiểu bằng bốn lớp: chạy kịch bản ba lần lấy hai, duy trì cổng pass chín mươi phần trăm, kiểm toán thủ công năm mươi PR tự merge đầu tiên, và giữ nguyên bộ CI/CD truyền thống chạy sau merge như lưới cuối. Thứ gì lọt qua cả bốn lớp thì tác giả nói ông vừa ấn tượng vừa sợ.
 
-Chi phí API tăng cao: giới hạn cứng tối đa ba lần thử lại cho mỗi bản đặc tả và thiết lập giám sát token kèm cảnh báo.
+Hai, kháng cự từ đội ngũ kỹ sư. Đây là rủi ro về con người, và tôi nghĩ nó thật hơn rủi ro kỹ thuật. Kỹ sư gắn bản sắc cá nhân với việc trực tiếp viết code. Câu "việc của bạn giờ là viết spec" nghe không dễ chịu. Hỏi thật: trong phòng này, ai thấy hơi khó chịu khi nghe câu đó? Giải pháp của tác giả là chuyển dịch vai trò, không phải bỏ vai trò: từ viết code sang định nghĩa sản phẩm và kiểm soát chất lượng, tức kỹ thuật sản phẩm cao cấp hơn. Và cách tiếp cận theo giai đoạn giúp: giai đoạn một không bắt ai đổi gì, đến giai đoạn hai họ đã thấy kết quả. Nhưng ông không giả vờ chuyện này dễ. Phải quản chủ động.
 
-Kịch bản kiểm thử bị lỗi thời: đánh giá bằng LLM tự động thích ứng với thay đổi cấu trúc API mà không cần bảo trì glue code, kết hợp bảo trì hằng tuần bởi agent chuyên trách.
+Ba, chi phí API tăng cao, chủ yếu vì thử lại. Giới hạn cứng tối đa ba lần thử lại cho mỗi bản đặc tả, và giám sát token kèm cảnh báo. Để so sánh: StrongDM báo khoảng một nghìn đô một ngày cho mỗi suất kỹ sư tương đương, vẫn rẻ hơn lương nhiều.
 
-Và một sự cố để nhớ: một agent có quyền ghi sai đã xoá một phẩy chín triệu dòng production. Dù tự động đến đâu, người cấp quyền vẫn sở hữu sự cố. Đó là lý do slide sau nói về việc nhìn thấy agent đang làm gì.
+Bốn, kịch bản kiểm thử bị lỗi thời khi API đổi. Ít hơn bạn tưởng, vì không có code dán keo để mục; đánh giá bằng LLM tự thích ứng với cấu trúc API mới, kết hợp bảo trì hằng tuần bởi agent chuyên trách.
+
+Và cái khung đỏ dưới cùng, tôi giữ lại từ một nguồn khác để nhắc một điều đúng ở mọi nấc: một agent có quyền ghi sai đã xoá một phẩy chín triệu dòng dữ liệu production. Không phải giả định. Agent không hiểu hệ quả, không dừng để hỏi, và có quyền làm. Người sở hữu sự cố vẫn là người: người cấp quyền, người không đặt giới hạn, người không có backup. Dù tự động đến đâu, Ownership không chuyển sang máy được. Đó là lý do slide sau nói về việc nhìn thấy agent đang làm gì.
 
 ---
 
@@ -497,17 +594,17 @@ Và một sự cố để nhớ: một agent có quyền ghi sai đã xoá một
 
 **Nói đơn giản.** Muốn tin một agent tự chạy thì phải nhìn thấy nó đã làm gì: log từng hành động, nối thành đường đi, và một bản ghi không sửa được để truy trách nhiệm.
 
-**Đọc.** Đèn bật lại. Slide trước để lại câu hỏi: agent tự chạy không ai xem, làm sao biết nó đã làm gì. Đây là một dashboard, và câu trả lời có ba lớp.
+**Đọc.** Khối dark factory vừa để lại một câu hỏi rất thực tế: nếu agent tự chạy không ai xem, làm sao biết nó đã làm gì? Slide này là một dashboard, và câu trả lời có ba lớp.
 
-Hàng trên là metric. Latency, token mỗi lần chạy, và số lần escalate lên người, ba lần một ngày. Con số escalate đáng xem nhất: nó nói thẳng agent đang ở nấc nào của thang.
+Hàng trên là metric: latency, token mỗi lần chạy, và số lần agent phải escalate lên người, ba lần một ngày. Trong ba số, số escalate đáng xem nhất, vì nó nói thẳng agent đang ở nấc nào của thang: escalate nhiều là nấc ba, escalate về không là đang tiến đến nấc bốn.
 
-Dòng log là lớp một, logging: ghi có cấu trúc từng hành động của agent. Request đến, tool nó chọn, tham số, kết quả, exception nếu có, kèm trace id và timestamp. Điểm quan trọng: log do hệ thống ghi thì đáng tin. Báo cáo do model tự viết thì không, vì nó cũng là văn bản dự đoán.
+Dòng log dưới đó là lớp một, logging: ghi có cấu trúc từng hành động của agent. Request đến, tool nó chọn, tham số, kết quả, exception nếu có, kèm trace id và timestamp. Điểm quan trọng: log do hệ thống ghi thì đáng tin. Báo cáo do model tự viết thì không, vì như Hào nói ở slide sáu, nó cũng chỉ là văn bản dự đoán. Nhớ cửa sổ "Done, all tests pass" ở slide mười lăm.
 
-Waterfall là lớp hai, tracing: nối các log rời thành một đường thực thi. Agent suy luận, đọc file, chạy test thấy hai fail, sửa file, chạy test lại không fail, rồi định npm install. Nhìn được thứ tự, độ trễ từng bước. Đây là thứ cho phép trả lời "vì sao nó xoá file đó" bằng cách lần ngược từ hành động về quan sát và suy luận trước đó, thay vì hỏi lại model và nhận một lời giải thích bịa sau sự việc.
+Waterfall ở giữa là lớp hai, tracing: nối các log rời thành một đường thực thi. Agent suy luận, đọc file, chạy test thấy hai fail, sửa file, chạy test lại không fail, rồi định npm install. Nhìn được thứ tự, độ trễ từng bước. Đây là thứ cho phép trả lời "vì sao nó xoá file đó" bằng cách lần ngược từ hành động về quan sát và suy luận trước đó, thay vì hỏi lại model và nhận một lời giải thích bịa sau sự việc.
 
-Chuỗi khối dưới cùng là lớp ba, audit trail: bản ghi chống sửa, kiểm soát truy cập. Trả lời ba câu của trách nhiệm: quyết định gì đã được đưa ra, dữ liệu nào đã được đọc, có người duyệt hay không và là ai. Nhìn khối ba: edit được approved bởi nhân. Khối năm: install bị chặn vì không được duyệt. Log để debug; audit để chịu trách nhiệm, append-only, không ai kể cả agent xoá được.
+Chuỗi khối dưới cùng là lớp ba, audit trail: bản ghi chống sửa, kiểm soát truy cập. Trả lời ba câu của trách nhiệm: quyết định gì đã được đưa ra, dữ liệu nào đã được đọc, có người duyệt hay không và là ai. Nhìn khối ba: edit được approved bởi nhân. Khối năm: install bị chặn vì không được duyệt. Log để debug; audit để chịu trách nhiệm; audit phải append-only, không ai kể cả agent xoá được.
 
-Stack ở dòng cuối: OpenTelemetry, Jaeger, Prometheus, Grafana. Cùng stack team backend đã dùng cho service. Agent chỉ là một service nữa cần được quan sát. Nguyên tắc: observability là lớp thiết kế từ đầu, không phải monitoring gắn thêm sau sự cố. Nếu bạn không quan sát được hành vi của agent, bạn không thể tin nó.
+Stack ở dòng cuối: OpenTelemetry, Jaeger, Prometheus, Grafana. Chính là stack team backend đã dùng cho service. Agent chỉ là một service nữa cần được quan sát; không cần mua gì mới. Nguyên tắc: observability là lớp thiết kế từ đầu, không phải monitoring gắn thêm sau sự cố. Nếu bạn không quan sát được hành vi của agent, bạn không thể tin nó.
 
 ---
 
@@ -517,13 +614,17 @@ Stack ở dòng cuối: OpenTelemetry, Jaeger, Prometheus, Grafana. Cùng stack 
 
 **Nói đơn giản.** Tự động hoàn toàn không bỏ con người, chỉ đổi việc của con người: từ đọc từng dòng sang đặt giới hạn quyền và đọc log. Ba trụ đầu buổi vẫn còn nguyên, chỉ chuyển từ làm tay sang làm bằng máy.
 
-**Đọc.** Đây là cú lật của cái kết. Tự động hoàn toàn không bỏ con người ra khỏi hệ thống. Nó đổi hình con người. Review không mất; review đổi từ đọc từng PR sang thiết kế cổng và đọc log.
+**Đọc.** Đây là cú lật của cái kết, và là chỗ tôi muốn nói chậm nhất.
 
-Cầu thang bên trái là earned trust. Không ai giao production cho agent ngày đầu. Quyền mở dần theo độ tin cậy đã chứng minh: read-only, agent chỉ đọc và đề xuất. Write vào branch, agent tạo PR, người merge. Staging, agent deploy lên môi trường thử. Production, agent deploy thật, có giới hạn, và một người vẫn giữ cần gạt. Mỗi bậc là một giai đoạn quan sát: làm đúng đủ lâu thì mở bậc tiếp. Và giới hạn blast radius của mỗi agent: quyền tối thiểu cho việc của nó, tách credential, không có quyền xoá hàng loạt nếu việc không cần. Đó là bài học một phẩy chín triệu dòng.
+Sau mười slide về dark factory, có thể ai đó đang nghĩ: vậy tương lai là không cần review, không cần SOP, học hôm nay làm gì. Câu trả lời: tự động hoàn toàn không bỏ con người ra khỏi hệ thống. Nó đổi hình con người. Review không mất; review đổi từ đọc từng PR sang thiết kế cổng và đọc log.
+
+Cầu thang bên trái là earned trust, niềm tin phải kiếm được. Không ai giao production cho agent ngày đầu. Quyền mở dần theo độ tin cậy đã chứng minh. Bậc một, read-only: agent chỉ đọc và đề xuất. Bậc hai, write vào branch: agent tạo PR, người merge. Bậc ba, staging: agent deploy lên môi trường thử. Bậc bốn, production: agent deploy thật, có giới hạn, và nhìn hình người trên cùng, một người vẫn giữ cần gạt. Mỗi bậc là một giai đoạn quan sát: làm đúng đủ lâu thì mở bậc tiếp. Đây chính là ba con số của giai đoạn ba, chỉ khác là vẽ thành cầu thang. Và giới hạn blast radius của mỗi agent: quyền tối thiểu cho việc của nó, tách credential, không có quyền xoá hàng loạt nếu việc không cần. Đó là bài học một phẩy chín triệu dòng.
 
 Bên phải là DeepSeek Harness, một harness agent mã nguồn mở. Harness là lớp bao quanh model: vòng lặp gọi tool, quản context, ghi log. Triết lý mọi thứ là plugin, kể cả vòng lặp agent, nên từng phần thay được và kiểm được riêng. Điểm cho bài này: session log append-only, inspect được. Mọi prompt, mọi tool call, mọi context đã nạp, mọi token. Không sửa được, không xoá được. Nhìn dãy khối: chỉ nối thêm, không bao giờ bớt.
 
-Giờ nhìn lại đầu buổi. Earned trust là trụ Verification mã hoá thành cơ chế: không tin lời, chỉ tin hành vi đã quan sát. Audit trail là trụ Ownership mã hoá thành cơ chế: mọi hành động có người chịu trách nhiệm truy ra được. SOP hôm nay là bản thủ công của cùng một kỷ luật. Hôm nay bạn chạy checklist bằng tay. Ngày mai bạn viết checklist đó thành guardrail và cổng cho agent. Người viết guardrail phải hiểu SOP, vì guardrail chính là SOP. Ba chấm sáng lại cả ba. Kỷ luật scale lên. Nó không biến mất.
+Giờ nhìn lại đầu buổi, ba chấm C V O sáng cả ba. Earned trust là trụ Verification mã hoá thành cơ chế: không tin lời, chỉ tin hành vi đã quan sát. Audit trail là trụ Ownership mã hoá thành cơ chế: mọi hành động có người chịu trách nhiệm truy ra được. AGENTS.md là trụ Context mã hoá thành file. SOP mà Hào dạy hôm nay là bản thủ công của cùng một kỷ luật. Hôm nay bạn chạy checklist bằng tay. Ngày mai bạn viết checklist đó thành guardrail và cổng cho agent. Và người viết guardrail phải hiểu SOP, vì guardrail chính là SOP.
+
+Kỷ luật scale lên. Nó không biến mất. Đó là câu tôi muốn mọi người mang về từ phần Dark Factory.
 
 ---
 
@@ -531,8 +632,13 @@ Giờ nhìn lại đầu buổi. Earned trust là trụ Verification mã hoá th
 
 **Nói đơn giản.** Kết: tốc độ AI cho không, chất lượng bạn phải tự giữ. Không giải thích được dòng nào thì dòng đó không được vào.
 
-**Đọc.** Bạn là người ký. Ba trụ gói lại thành một câu: tốc độ là phần AI cho không; chất lượng là phần bạn phải tự giữ; SOP là cách giữ nó mà không phải chậm lại.
+**Đọc.** Kết lại bằng ba câu.
 
-Câu để mang về: nếu bạn không giải thích được dòng đó, nó không được vào. Đó là SOP ngắn nhất, và là bước một của mọi checklist hôm nay.
+Tốc độ là phần AI cho không. Chất lượng là phần bạn phải tự giữ. Và SOP, dù chạy bằng tay ở nấc hai hay mã hoá thành cổng ở nấc bốn, là cách giữ chất lượng mà không phải chậm lại.
 
-Cảm ơn mọi người. Hai chúng tôi nhận câu hỏi: phần SOP thì Hào, phần Dark Factory thì tôi.
+Ai cần một câu ngắn hơn nữa để dán lên màn hình, thì đây, dòng cuối trên slide: nếu bạn không giải thích được dòng đó, nó không được vào. Đó là SOP ngắn nhất, và là bước một của mọi checklist hôm nay. Nhớ câu chuyện PR bốn trăm dòng ở đầu buổi: chỉ cần một câu hỏi đó là đủ dừng nó lại.
+
+Cảm ơn mọi người. Hai chúng tôi nhận câu hỏi. Phần SOP thì Hào, phần Dark Factory thì tôi. Và câu hỏi tôi muốn nghe nhất: team bạn đang ở nấc mấy, và bước tiếp theo là gì?
+
+---
+
