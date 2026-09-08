@@ -392,3 +392,11 @@ Numbering below is the **final deck order**; the original 25 slides shift accord
 - **Layout:** 3 cards, audit card in amber.
 - **Say:** Ba lớp, ba nhóm metric, cùng stack team đã dùng cho service. Nối thẳng vào slide 27 (DeepSeek Harness = hiện thân của lớp audit). Trụ Ownership bằng cơ chế.
 - **Source:** K. Vyas — *Observability in Agentic AI: Logging, Tracing, Audit Trails* (LinkedIn); OpenTelemetry docs.
+
+---
+
+# Addendum 2 — deck as built (36 slides)
+
+- Removed: the Legacy Rescue exercise slide and the checkpoint slide with the live ReDoS demo. The exercise repo stays in `legacy-rescue/` for self-study.
+- Added: an 11-slide Dark Factory block (deck 23–33) following the five-part summary: the problem (24), autonomy levels (25), phased rollout (26, with Phase 1 at 27, Phase 2 spec at 28, holdout at 29, human role + Phase 3 at 30, Phase 4 at 31), four-layer architecture (32), risks and mitigations (33). Levels are 1 / 2 / 3 / 3.5 / 4.
+- Final order: 1–21 as in the addendum above, 22 Karpathy 2026, 23–33 Dark Factory, 34 Observability, 35 Why the discipline survives, 36 Close.

@@ -12,6 +12,9 @@ SLIDE-PLAN.md       the slide-by-slide spec the deck is built from (English slid
 SCRIPT.md           presenter script (Vietnamese): who says what, per slide, plus key-press rhythm
 EFFECTS-PLAN.md     step-by-step reveal plan per slide
 VISUAL-PLAN.md      the figure-per-slide redesign the deck follows
+DARK-FACTORY-PLAN.md the Dark Factory block, slide by slide
+SCRIPT-READ.md      reading script: plain-language background + verbatim narration per slide
+CLAUDE-MAPPING.md   which slide maps to which Claude Code mechanism, with config examples
 assets/widgets.js   ReDoS live demo + SVG arc overlay, driven by data-widget
 assets/             deck styles + runtime (vanilla CSS/JS)
 legacy-rescue/      the workshop exercise
@@ -35,7 +38,6 @@ python3 -m http.server 8000    # → http://localhost:8000
 | `→` `↓` `space` `j` | next step, then next slide |
 | `←` `↑` `k` | previous step / slide |
 | `r` | reset the current slide's steps |
-| `d` | run the live ReDoS demo (slide 23) |
 | `home` / `end` | first / last |
 | `o` | overview grid — click any slide to jump |
 | `n` | speaker notes |

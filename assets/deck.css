@@ -1464,6 +1464,27 @@ body.overview .bgdiff { display: none; }
   .donut .arc { transition: none; }
 }
 
+
+/* dark factory block */
+.ladder.five .rung p { margin: 0.4rem 0 0; font-size: clamp(0.78rem, 1.9vh, 1rem); line-height: 1.35; max-width: none; }
+.ladder .rung.here { border-color: var(--accent); }
+.ladder .rung.here .lvl { color: var(--accent); }
+.wallfig .wall { fill: var(--crit-soft); stroke: var(--crit); stroke-width: 1.5; }
+.layers { display: flex; flex-direction: column; gap: 0.55rem; margin-top: 0.4rem; }
+.layer { display: grid; grid-template-columns: 11rem 11rem 1fr; gap: 1rem; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 0.8rem 1.1rem; }
+.layer .ln { font-family: var(--display); font-weight: 700; font-size: clamp(1rem, 2.6vh, 1.4rem); color: var(--text); }
+.layer .who { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.layer .who.human { color: var(--accent); }
+.layer .who.iso { color: var(--crit); }
+.layer .what { font-size: clamp(0.9rem, 2.2vh, 1.15rem); color: var(--muted); }
+.wallbar { height: 1.4rem; border-radius: 4px; background: repeating-linear-gradient(135deg, var(--crit-soft) 0 10px, transparent 10px 20px); border: 1px dashed var(--crit); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; color: var(--crit); text-transform: uppercase; }
+.risks { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.risk { display: grid; grid-template-columns: 1fr 1.6fr; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px solid var(--line); font-size: clamp(0.9rem, 2.2vh, 1.15rem); }
+.risk .bad { color: var(--crit); }
+.risk .bad::before { content: "✗ "; }
+.risk .fix { color: var(--muted); }
+.risk .fix::before { content: "✓ "; color: var(--good); }
+
 /* ---------- print / PDF export ---------- */
 
 @media print {

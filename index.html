@@ -610,60 +610,6 @@
     </div>
   </section>
 
-  <section class="slide" data-section="Exercise" data-pillar="verify ownership">
-    <div class="slide-inner">
-      <p class="eyebrow warn">Practical exercise · The Legacy Rescue</p>
-      <h2 class="compact">One function. Undocumented, badly named, wrong in ways the tests don't catch.</h2>
-      <div class="cols">
-        <ul class="stations">
-          <li data-step="3"><svg class="icon mid"><use href="#i-brain"/></svg><span><b>Explain</b> — <em class="hi" data-step-class="3:is-lit">your hypothesis first</em></span></li>
-          <li data-step="4"><svg class="icon mid"><use href="#i-broom"/></svg><span><b>Refactor</b> — small steps, tests between</span></li>
-          <li data-step="5"><svg class="icon mid"><use href="#i-flask"/></svg><span><b>Generate tests</b></span></li>
-          <li data-step="6"><svg class="icon mid"><use href="#i-mag"/></svg><span><b>Manual</b> — find two edge cases the AI missed</span></li>
-        </ul>
-        <div>
-          <div class="filecard"><div class="fn"><svg class="icon"><use href="#i-file"/></svg> src/billing.js · 2019 · "do not touch"</div><div class="ln" style="width:60%"></div><div class="ln" style="width:85%"></div><div class="ln" style="width:40%"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:55%"></div><span class="q" style="left:64%;top:36%">?</span><span class="q" style="left:88%;top:52%">?</span><span class="q" style="left:44%;top:68%">?</span><span class="q" style="left:72%;top:84%">?</span></div>
-          <pre class="tout" data-step-class="2:is-doubt" data-pulse-on="2" data-pulse="pulse"><span data-type data-type-speed="18">git clone https://github.com/spartan-nhanho/slides-vibe-coding-sops</span>
-<span data-step="1" data-type data-type-speed="18">cd slides-vibe-coding-sops/legacy-rescue &amp;&amp; node --test</span>
-<span data-step="1" class="late"><span class="ok">✔</span><span class="q">?</span> small order, no discount, flat shipping
-<span class="ok">✔</span><span class="q">?</span> large order gets a volume discount
-<span class="ok">✔</span><span class="q">?</span> coupon reduces the total
-<span class="ok">✔</span><span class="q">?</span> empty order is just shipping
-<span class="sum">ℹ tests 4 · pass 4 · fail 0</span></span></pre>
-          <p class="small" data-step="2"><em class="hi" data-step-class="2:is-warn">The passing tests are part of the problem.</em> Read <code>SPEC.md</code> first.</p>
-          <div class="chips" data-step="7"><span class="chip accent">Node 20+</span><span class="chip">No deps</span><span class="chip">No AI trailers</span></div>
-        </div>
-      </div>
-      <div class="notes">
-        <div class="notes-label">Say</div>
-        <p>Test đang pass là một phần của vấn đề. Spec là yêu cầu; code chỉ là thứ đã ship. Có 4 bug gieo sẵn — đa số tìm ra 2. Đừng nói số bug đến debrief. 45 phút; đi vòng, để ý nhóm nào rơi vào "prompt harder" thay vì dừng.</p>
-        <p><strong>4 bug (instructor only, xem INSTRUCTOR.md):</strong> (1) ngưỡng tier dùng <code>&gt;</code> thay vì <code>&gt;=</code>, đúng 100/500/1000 rơi xuống tier dưới; (2) free shipping tính trên subtotal trước discount; (3) <strong>hàm mutate order của caller</strong> — gọi <code>calc</code> hai lần ra số khác, bug gây sự cố thật mà không ai đọc ra; (4) tax đánh cả shipping. Điểm thảo luận: tiền là float — hôm nay không viết được test fail, nên quy tắc là "integer cents" chứ không phải "round carefully". Bug 3 vô hình trừ khi có test gọi <code>calc</code> hai lần — test sinh tự động không bao giờ làm vậy vì viết từ implementation. → Punchline cho checkpoint Hard.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="slide" data-section="Checkpoints" data-pillar="verify" data-widget="redos">
-    <div class="slide-inner">
-      <p class="eyebrow">Checkpoint questions</p>
-      <div class="trio" data-spot-group data-spot-release="4">
-        <div class="cell" data-step="1" data-step-fx="spotlight"><svg class="icon mid"><use href="#i-clip"/></svg><h3>Easy</h3><p>Copy-pasting straight from an LLM into prod — what's the danger?</p></div>
-        <div class="cell" data-step="2" data-step-fx="spotlight"><svg class="icon mid"><use href="#i-db"/></svg><h3>Medium</h3><p>How do you structure a prompt for a Postgres-optimized SQL query?</p></div>
-        <div class="cell" data-step="3" data-step-fx="spotlight" data-pulse-on="3" data-pulse="pulse-r" style="border-color:rgba(240,85,91,.4);background:var(--crit-soft)"><svg class="icon mid" style="color:var(--crit)"><use href="#i-regex"/></svg><h3>Hard</h3><p>AI generated an email regex. It looks correct. Your SOP to verify it's safe against ReDoS?</p></div>
-      </div>
-      <p class="caption" data-step="4">ReDoS — a bad regex → catastrophic backtracking → one crafted request pins a CPU. "Looks right" ≠ "safe".</p>
-      <div class="redos-wrap" data-step="5"><div class="redos"></div><div class="redos-chart"><svg viewBox="0 0 240 120"><path class="ax" d="M30 8v96h204"/><text x="4" y="14">ms</text><text x="212" y="116">n</text><g class="pts"></g></svg></div></div>
-      <div class="notes">
-        <div class="notes-label">Answers (don't print)</div>
-        <p><strong>Easy.</strong> Không phải "nó có thể sai" (mọi code đều vậy). Nguy hiểm cụ thể: nó <strong>hợp lý</strong>, nên sống sót qua lần đọc lướt vốn chỉ bắt code sai rõ ràng — và sau này không ai có mental model để debug. Thêm: lỗ hổng OWASP (secret hardcode, SQLi), rò rỉ dữ liệu (vụ Samsung), và bạn vẫn là người chịu trách nhiệm.</p>
-        <p><strong>Medium.</strong> Đưa DDL, index hiện có, số dòng, version Postgres, và <code>EXPLAIN ANALYZE</code> hiện tại. Yêu cầu nó nói plan nó kỳ vọng. Rồi chạy <code>EXPLAIN</code> thật. Kiểm chứng với planner, không phải với model.</p>
-        <p><strong>Hard.</strong> Đọc regex tìm <strong>nested quantifiers</strong> <code>(a+)+</code> và <strong>overlapping alternation</strong> <code>(.|\s)*</code> — hình dạng gây catastrophic backtracking. Test bằng <strong>input đối nghịch</strong> (prefix mơ hồ dài + một ký tự làm fail, vd <code>"a"×40 + "!"</code>), đo thời gian — không được tăng siêu tuyến tính. Dùng <strong>engine tuyến tính (RE2)</strong> · đặt <strong>timeout</strong> · <strong>giới hạn độ dài input</strong>. Rồi chất vấn tiền đề: validate email bằng regex là sai công cụ — check <code>@</code>, cap length, gửi mail xác nhận. Một request khéo là đủ treo CPU. "Trông đúng" ≠ "an toàn".</p>
-        <p>Nguồn: Willison; Veracode; Socket; Forbes/Samsung; Postgres docs; regular-expressions.info + OWASP <em>ReDoS</em>.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PART 6 · FRONTIER & CLOSE ============ -->
-
   <section class="slide" data-section="Frontier">
     <div class="slide-inner">
       <p class="eyebrow">What's next · 2026</p>
@@ -690,22 +636,304 @@
     </div>
   </section>
 
-  <section class="slide" data-section="Frontier" data-tone="dark" data-pillar="ownership">
+  <section class="slide divider" data-section="06 · Dark factory">
+    <div class="rail"></div>
     <div class="slide-inner">
-      <p class="eyebrow crit">The frontier · Dark factory</p>
-      <h2 class="compact">The end of the ladder: a codebase that ships itself</h2>
-      <svg class="fig factory" viewBox="0 0 900 290" data-step-class="2:l2 3:l3 4:l4 5:l5" data-step-hud="5:off 6:ownership" data-step-tone="5:darker">
-        <path class="belt" d="M10 272H890"/>
-        <g class="bay1" data-step="1"><path class="bay on" d="M20 260V150l40-24 40 24V150l40-24 40 24V260z"/><rect class="win" x="38" y="176" width="26" height="22" rx="2"/><rect class="win" x="82" y="176" width="26" height="22" rx="2"/><rect class="win" x="126" y="176" width="26" height="22" rx="2"/><g class="ppl"><path d="M50 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/><path d="M72 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/><path d="M94 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/><path d="M116 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/><path d="M138 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/></g><text class="t" x="100" y="112" text-anchor="middle" style="font-size:12px">L1 · Assisted</text></g><g class="bay2" data-step="2"><path class="bay on" d="M196 260V150l40-24 40 24V150l40-24 40 24V260z"/><rect class="win" x="214" y="176" width="26" height="22" rx="2"/><rect class="win" x="258" y="176" width="26" height="22" rx="2"/><rect class="win" x="302" y="176" width="26" height="22" rx="2"/><g class="ppl"><path d="M226 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/><path d="M248 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/><path d="M270 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/></g><text class="t" x="276" y="112" text-anchor="middle" style="font-size:12px">L2 · + Review</text></g><g class="bay3" data-step="3"><path class="bay on" d="M372 260V150l40-24 40 24V150l40-24 40 24V260z"/><rect class="win" x="390" y="176" width="26" height="22" rx="2"/><rect class="win" x="434" y="176" width="26" height="22" rx="2"/><rect class="win" x="478" y="176" width="26" height="22" rx="2"/><g class="ppl"><path d="M402 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/><path d="M424 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/></g><text class="t" x="452" y="112" text-anchor="middle" style="font-size:12px">L3 · + Auto gates</text></g><g class="bay4" data-step="4"><path class="bay on" d="M548 260V150l40-24 40 24V150l40-24 40 24V260z"/><rect class="win" x="566" y="176" width="26" height="22" rx="2"/><rect class="win" x="610" y="176" width="26" height="22" rx="2"/><rect class="win" x="654" y="176" width="26" height="22" rx="2"/><g class="ppl"><path d="M578 236a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 12a6 6 0 0 1 12 0"/></g><text class="t" x="628" y="112" text-anchor="middle" style="font-size:12px">L4 · Escalate-only</text></g><g class="bay5" data-step="5"><path class="bay crit" d="M724 260V150l40-24 40 24V150l40-24 40 24V260z"/><rect class="win" x="742" y="176" width="26" height="22" rx="2"/><rect class="win" x="786" y="176" width="26" height="22" rx="2"/><rect class="win" x="830" y="176" width="26" height="22" rx="2"/><g class="ppl"></g><text class="r" x="804" y="112" text-anchor="middle" style="font-size:12px">L5 · Dark factory</text></g>
-      </svg>
-      <div class="callout" data-step="6" data-pulse-on="6" data-pulse="shake">
-        <span class="tag">Real risk</span>
-        <p>An agent with the wrong write access <strong>wiped <span class="n" data-count="1.9" data-decimals="1" data-duration="600">1.9</span> million production rows.</strong> <span class="hi" data-step-class="7:is-crit">You still own the incident.</span></p>
+      <svg class="bgfig" viewBox="0 0 200 200" aria-hidden="true"><path d="M20 170V90l40-24 40 24V90l40-24 40 24V90l40-24 40 24v80H20z"/><rect x="40" y="120" width="20" height="18"/><rect x="80" y="120" width="20" height="18"/><rect x="120" y="120" width="20" height="18"/><rect x="160" y="120" width="20" height="18"/><path d="M60 90V40h14v46"/></svg>
+      <div data-stagger="120">
+        <div class="num">06</div>
+        <p class="eyebrow">The dark factory</p>
+        <h2>When no human writes, reviews, or tests the code</h2>
+        <p class="lede">No human writes, reviews, or manually tests code. Humans write specs and acceptance criteria; automated systems do the rest.</p>
       </div>
       <div class="notes">
         <div class="notes-label">Say</div>
-        <p>Điểm cuối logic của nấc thang agentic. Mở bằng: "phần này để biết chân trời, không cần nhớ chi tiết — chỉ cần một điều ở slide sau." ĐỪNG để lớp hiểu nhầm "hết cần review" — slide sau hoá giải ngay. Nói nhẹ, không sa vào từng nấc.</p>
-        <p>Nguồn: MindStudio <em>What is a Dark Factory</em>; HackerNoon <em>The Dark Factory Pattern</em>.</p>
+        <p>Mô hình Dark Factory, nhà máy tối: một triết lý thiết kế quy trình phát triển phần mềm mà ở đó không có con người tham gia viết code, review code hay kiểm thử thủ công. Con người chỉ viết đặc tả hệ thống (specs) và tiêu chí nghiệm thu; toàn bộ phần việc còn lại do các hệ thống tự động thực hiện.</p>
+        <p>Năm mục: vấn đề thực tế, khung cấp độ tự động hoá, bốn giai đoạn triển khai, kiến trúc bốn lớp, rủi ro và giải pháp.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory">
+    <div class="slide-inner">
+      <p class="eyebrow">1 · The problem with AI adoption today</p>
+      <h2 class="compact">Faster typing only moves the bottleneck downstream</h2>
+      <table class="grid">
+        <thead><tr><th>Activity</th><th>Time per occurrence</th><th>Honest assessment</th></tr></thead>
+        <tbody>
+          <tr data-step="1"><td>Waiting for a human code review</td><td>2–8 h</td><td class="fail-cell">rubber stamp</td></tr>
+          <tr data-step="2"><td>Review back-and-forth</td><td>30–90 min</td><td class="fail-cell">style nitpicks</td></tr>
+          <tr data-step="3"><td>Manual testing on localhost</td><td>30–60 min</td><td class="fail-cell">rarely done well</td></tr>
+          <tr data-step="4"><td>Investigating production bugs</td><td>30 min – 2 h</td><td class="fail-cell">the fix was five lines</td></tr>
+          <tr data-step="5"><td>Writing boilerplate</td><td>hours per feature</td><td class="fail-cell">zero value</td></tr>
+        </tbody>
+      </table>
+      <p class="caption" data-step="6">Already Level 2: AI writes most code, AI reviews PRs, agents fix Dependabot alerts. Tracked two weeks. Still this. <b>The bottleneck didn't disappear. It moved down the hall.</b></p>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Nút thắt cổ chai bị dịch chuyển: nhiều tổ chức ăn mừng quá sớm khi trang bị Cursor, Copilot, Cody giúp gõ code nhanh hơn. Nhưng tốc độ viết code chỉ đẩy nút thắt xuống các khâu sau: lập trình viên vẫn chờ review hàng giờ (thường chỉ mang tính thủ tục hoặc bắt lỗi phong cách) và mất nhiều thời gian kiểm thử thủ công trên localhost.</p>
+        <p>Khảo sát thời gian thực tế của một đội kỹ sư: phần lớn thời gian lãng phí vào khâu phi sản xuất: chờ review PR 2–8 giờ, trao đổi qua lại 30–90 phút, kiểm thử thủ công 30–60 phút.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory" data-tone="dark">
+    <div class="slide-inner">
+      <p class="eyebrow crit">2 · Autonomy levels</p>
+      <h2 class="compact">Five levels, borrowed from self-driving cars</h2>
+      <div class="ladder five">
+        <div class="rung" data-step="1"><span class="lvl">Level 1</span><h3>Autocomplete</h3><p>AI finishes your sentences. You do everything else.</p></div>
+        <div class="rung here" data-step="2"><span class="lvl">Level 2 · you are here</span><h3>Whole files</h3><p>AI writes functions or files. You review every change.</p></div>
+        <div class="rung" data-step="3"><span class="lvl">Level 3</span><h3>Spec → code</h3><p>Holdout scenarios gate quality. You approve the merge.</p></div>
+        <div class="rung" data-step="4"><span class="lvl">Level 3.5</span><h3>Some auto-merge</h3><p>Same, except some services merge without you.</p></div>
+        <div class="rung crit" data-step="5" data-pulse-on="5" data-pulse="pulse-r"><span class="lvl">Level 4</span><h3>Dark factory</h3><p>Specs in, tested code out, merged. Your pipeline deploys it.</p></div>
+      </div>
+      <p class="caption" data-step="6">Most teams: Level 2. <b>The hard design problems live between 2 and 3.</b></p>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Khung cấp độ tự động hoá, lấy cảm hứng từ xe tự lái. Cấp 1: AI tự hoàn thành câu lệnh, con người làm mọi thứ khác. Cấp 2: AI viết toàn bộ hàm hoặc file, con người review từng thay đổi nhỏ; hầu hết đội ngũ hiện nay dừng ở đây. Cấp 3: AI tạo code từ specs, kịch bản holdout kiểm soát chất lượng, con người phê duyệt merge. Cấp 3.5: như cấp 3 nhưng một số dịch vụ tự merge. Cấp 4, Full Dark Factory: đặc tả đi vào, mã nguồn đã qua kiểm thử tự động được merge ra, CI/CD sẵn có tự deploy.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory">
+    <div class="slide-inner">
+      <p class="eyebrow">3 · Phased rollout</p>
+      <h2 class="compact">Four phases. Each one pays off on its own.</h2>
+      <div class="pipeline">
+        <div class="step" data-step="1"><span class="k">Phase 1</span><h3>Better context</h3><p>AGENTS.md · build-before-push · linters that talk to agents</p></div>
+        <div class="step" data-step="2"><span class="k">Phase 2</span><h3>Spec-driven + holdout</h3><p>Spec in, validated code out. Humans still approve.</p></div>
+        <div class="step" data-step="3"><span class="k">Phase 3</span><h3>Remove the gate</h3><p>One service at a time, by the numbers.</p></div>
+        <div class="step" data-step="4"><span class="k">Phase 4</span><h3>Full dark factory</h3><p>Configuration, not architecture.</p></div>
+      </div>
+      <p class="caption" data-step="5"><b>Nothing downstream of merge changes.</b> It replaces the person typing code and the person squinting at a diff. Your deploy pipeline is untouched.</p>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Lộ trình chia bốn giai đoạn, mỗi giai đoạn tự mang lại giá trị độc lập ngay lập tức mà không cần đợi hoàn thành toàn bộ dự án. Giai đoạn 1: tối ưu ngữ cảnh cho agent. Giai đoạn 2: phát triển hướng đặc tả với kịch bản holdout. Giai đoạn 3: loại bỏ cổng kiểm soát của con người. Giai đoạn 4: Dark Factory toàn phần. Không đụng pipeline deploy sẵn có.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory" data-pillar="context">
+    <div class="slide-inner">
+      <p class="eyebrow">Phase 1 · Context optimization</p>
+      <h2 class="compact">Give the agent the right context, not more context</h2>
+      <div class="fig-left narrow">
+        <pre data-step="1"><span class="tok-c"># AGENTS.md — QueryEngine (~100 lines)</span>
+
+<span class="tok-k">## What this service does</span>
+Query execution layer. Receives SQL,
+validates, runs it, returns results.
+
+<span class="tok-k">## Architecture</span>
+- Java 21, Spring Boot 3.5, Gradle
+- JWT auth on all endpoints
+
+<span class="tok-k">## Key patterns</span>
+- Controllers extend generated OpenAPI interfaces
+- See docs/coding-patterns.md
+
+<span class="tok-k">## Directory map</span>
+- .../controller/  REST endpoints
+- .../service/     business logic</pre>
+        <div class="cards" style="grid-template-columns:1fr">
+          <div class="card" data-step="1"><span class="tag">AGENTS.md · progressive disclosure</span><p>A table of contents, not an encyclopedia. The agent reads the map; needs auth? drills into <code>docs/auth.md</code>. Written Thursday afternoon, obvious by Friday morning.</p></div>
+          <div class="card" data-step="2"><span class="tag">Build before push</span><p>Agent runs build + full test suite locally. Fix it there, not in CI ping-pong.</p></div>
+          <div class="card" data-step="3"><span class="tag">Linters that talk to agents</span><p>Encode architecture rules as lint checks. Write the error as an <strong>instruction</strong>:</p>
+            <div class="ba" style="margin-top:.6rem"><div class="box bad"><span class="lab">✗ description</span>Service layer depends on controller layer.</div><div class="box good"><span class="lab">✓ instruction</span>Service imports from controller package. Move the shared type to the model package.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Tài liệu hiển thị thông tin luỹ tiến (progressive disclosure): file AGENTS.md khoảng 100 dòng làm bản đồ tổng quan về cấu trúc dịch vụ, kiến trúc, quy luật code; kết hợp thư mục docs/ chứa tài liệu chi tiết (auth, testing, API) để agent truy xuất khi cần. Tránh quá tải thông tin cho AI.</p>
+        <p>Quy tắc build-before-push: ép agent tự chạy build và bộ test cục bộ trước khi push.</p>
+        <p>Linter hướng dẫn hành động: thông báo lỗi viết dưới dạng chỉ dẫn giải quyết thay vì chỉ mô tả lỗi, ví dụ &quot;hãy di chuyển type dùng chung sang gói model&quot;.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory" data-pillar="context">
+    <div class="slide-inner">
+      <p class="eyebrow">Phase 2 · Spec-driven development</p>
+      <h2 class="compact">Specs in Markdown: features describe requirements, bugs describe symptoms</h2>
+      <div class="ba">
+        <div class="box good" data-step="1"><span class="lab">feature spec</span>---
+target_repo: ExampleOrg/QueryEngine
+type: feature
+---
+# Add SQL validation endpoint
+
+## Goal
+POST /api/v1/sql/validate — validate without executing.
+
+## Requirements
+- syntax · reject non-SELECT · detect injection
+- structured JSON result
+
+## Constraints
+- follow existing controller patterns
+- full test coverage · no new dependencies</div>
+        <div class="box" style="background:var(--surface);border:1px solid var(--line-2)" data-step="2"><span class="lab" style="color:var(--warn)">bug spec</span>---
+target_repo: ExampleOrg/WritebackService
+type: bug-fix
+---
+# Writeback returns 500 when supplier is null
+
+## Symptom
+POST /oracle/writeback with null supplier → HTTP 500
+
+## Expected
+HTTP 400 with a validation error mentioning "supplier"
+
+<b class="hi" data-step-class="3:is-warn">## Do not assume the root cause. Investigate the codebase.</b></div>
+      </div>
+      <p class="caption" data-step="3">A bug spec describes the symptom and nothing else. Not "the null check is missing on line 47." <b>The agent goes and finds out why.</b></p>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Đặc tả dạng Markdown. Lập trình viên viết feature spec (mô tả yêu cầu, ràng buộc) hoặc bug spec (chỉ mô tả triệu chứng, để agent tự tìm nguyên nhân gốc rễ).</p>
+        <p>Bug spec không nói &quot;tôi nghĩ thiếu null check ở dòng 47&quot;; nó nói endpoint trả 500 khi supplier null, phải trả 400 với lỗi validation. Agent tự điều tra codebase.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory" data-pillar="verify">
+    <div class="slide-inner">
+      <p class="eyebrow crit">Phase 2 · Holdout scenarios, the core of the system</p>
+      <h2 class="compact">The coding agent never sees the acceptance tests.</h2>
+      <div class="fig-left">
+        <svg class="fig wallfig" viewBox="0 0 520 300">
+          <g data-step="1">
+            <rect class="fill-s ac" x="10" y="20" width="200" height="44" rx="6"/><text class="t" x="110" y="47" text-anchor="middle" style="font-size:12px">Spec (markdown)</text>
+            <path class="ac" d="M110 64v26M103 82l7 8 7-8"/>
+            <rect class="fill-s ac" x="10" y="98" width="200" height="70" rx="6"/><svg class="icon" x="16" y="104" width="22" height="22" style="color:var(--accent)"><use href="#i-brain"/></svg><text class="t" x="120" y="130" text-anchor="middle" style="font-size:12px">coding agent</text><text class="f" x="120" y="150" text-anchor="middle" style="font-size:8.5px">reads spec + repo · builds · tests</text>
+            <path class="ac" d="M110 168v26M103 186l7 8 7-8"/>
+            <rect class="fill-s" x="60" y="202" width="100" height="40" rx="6"/><text class="t" x="110" y="227" text-anchor="middle" style="font-size:12px">PR</text>
+            <text class="f" x="110" y="270" text-anchor="middle" style="font-size:9px">training set: the spec</text>
+          </g>
+          <g data-step="2"><rect class="wall" x="250" y="6" width="20" height="288" rx="4"/><text class="r" x="260" y="150" text-anchor="middle" transform="rotate(-90 260 150)" style="font-size:9px;letter-spacing:3px">THE WALL</text></g>
+          <g data-step="3">
+            <rect class="fill-s wn" x="310" y="20" width="200" height="44" rx="6"/><svg class="icon" x="322" y="32" width="20" height="20" style="color:var(--warn)"><use href="#i-lock"/></svg><text class="t" x="420" y="47" text-anchor="middle" style="font-size:12px">holdout scenarios</text>
+            <text class="f" x="410" y="80" text-anchor="middle" style="font-size:9px">plain English · a dir the agent can't read</text>
+            <path class="wn" d="M410 86v14M403 92l7 8 7-8"/>
+            <rect class="fill-s wn" x="310" y="104" width="200" height="64" rx="6"/><svg class="icon" x="316" y="110" width="22" height="22" style="color:var(--warn)"><use href="#i-eye"/></svg><text class="t" x="420" y="130" text-anchor="middle" style="font-size:12px">LLM evaluator</text><text class="f" x="420" y="150" text-anchor="middle" style="font-size:8.5px">plans calls · runs · judges</text>
+            <path class="wn" d="M410 168v26M403 186l7 8 7-8"/>
+            <rect class="fill-s gd" x="330" y="202" width="160" height="40" rx="6"/><text class="g" x="410" y="227" text-anchor="middle" style="font-size:12px">satisfied? 3× · 2 of 3</text>
+            <text class="f" x="410" y="270" text-anchor="middle" style="font-size:9px">test set: the scenarios</text>
+          </g>
+          <g data-step="4"><path class="cr dash" d="M330 222H220C200 222 200 180 210 168"/><path class="cr" d="M204 176l6-9 6 8"/><text class="r" x="110" y="292" text-anchor="middle" style="font-size:8.5px">on retry: one line back, never the scenario</text></g>
+        </svg>
+        <div>
+          <pre data-step="3" style="font-size:clamp(.72rem,1.7vh,.95rem)"><span class="tok-c"># SQL Injection Detection · P0</span>
+POST /api/v1/sql/validate with
+  sql: <span class="tok-s">"SELECT * FROM users; DROP TABLE users; --"</span>
+Then valid should be false.
+Errors should mention disallowed statement types.</pre>
+          <p class="lede" data-step="2" style="font-size:clamp(1rem,2.6vh,1.5rem)">Spec is the training set. Scenarios are the test set. <strong>The wall between them is what makes the gate mean anything.</strong></p>
+          <p class="caption" data-step="4">3 runs, 2 of 3 must pass · 90% of scenarios gate the PR · a failing agent gets one line back, never the scenario text. <b>No glue code:</b> the evaluator adapts, so scenarios don't rot like Cucumber step definitions.</p>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Kịch bản holdout là cốt lõi của hệ thống: các bài kiểm thử chấp nhận viết bằng tiếng Anh tự nhiên theo định dạng BDD, lưu trong thư mục cách ly mà agent viết code không thể truy cập.</p>
+        <p>Một bộ đánh giá độc lập dùng LLM lập kế hoạch các cuộc gọi API kiểm thử trên một môi trường triển khai tạm thời (ephemeral deployment) và đánh giá phản hồi.</p>
+        <p>Kịch bản chạy 3 lần, đạt tối thiểu 2/3 để tính pass nhằm khử tính bất định của LLM; tổng tỷ lệ pass phải trên 90% để vượt cổng chất lượng.</p>
+        <p>Giải quyết triệt để vấn đề mục nát glue code của các công cụ BDD truyền thống như Cucumber: không có step definition, bộ đánh giá tự thích ứng khi API đổi.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory" data-pillar="ownership">
+    <div class="slide-inner">
+      <p class="eyebrow">Phase 2 · The human role → Phase 3 · Removing the human gate</p>
+      <h2 class="compact">Review the report, not the code. Then let the numbers open the gate.</h2>
+      <div class="fig-left narrow">
+        <div>
+          <div class="card" data-step="1"><span class="tag">Phase 2 · review results, not code</span><p>"Did the scenarios pass? What's the satisfaction rate?" Glance at the diff, click merge.</p><p><strong>Five minutes, not two hours.</strong></p></div>
+          <div class="card" data-step="4" style="margin-top:1rem"><span class="tag">Maintenance agents</span><p>Weekly sweeps for drift, stale docs, outdated patterns. Small cleanup PRs through the same gate. Garbage collection for the codebase.</p></div>
+        </div>
+        <div>
+          <p class="small" data-step="2">Phase 3, one service at a time: swap <code>label for review</code> → <code>merge</code>, only when the last 20 PRs show:</p>
+          <table class="grid" data-step="2">
+            <thead><tr><th>Metric</th><th>Threshold</th></tr></thead>
+            <tbody>
+              <tr data-step="2"><td>Scenario pass rate</td><td><span class="chip accent">&gt; 90%</span></td></tr>
+              <tr data-step="3"><td>False positives — scenarios said yes, code was broken</td><td><span class="chip crit">&lt; 5%</span></td></tr>
+              <tr data-step="3"><td>Human override — human rejected what scenarios passed</td><td><span class="chip warn">&lt; 10%</span></td></tr>
+            </tbody>
+          </table>
+          <p class="caption" data-step="3">Any team member can still block before the merge window closes. <b>Earn the trust. Don't declare it.</b></p>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Vai trò con người ở giai đoạn 2: không đọc code từng dòng nữa mà xem xét báo cáo kết quả của các kịch bản kiểm thử, mất khoảng 5 phút thay vì 2 giờ.</p>
+        <p>Giai đoạn 3: áp dụng auto-merge cho một số dịch vụ đạt chỉ số an toàn: tỷ lệ pass kịch bản trên 90% trong 20 PR gần nhất, tỷ lệ báo lỗi giả dưới 5%, tỷ lệ con người ghi đè hoặc từ chối dưới 10%.</p>
+        <p>Quality Maintenance Agents chạy ngầm hằng tuần để quét code trôi dạt (code drift), cập nhật tài liệu lỗi thời và tinh chỉnh các bất nhất trong mã nguồn tự sinh.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory" data-pillar="verify ownership">
+    <div class="slide-inner">
+      <p class="eyebrow">Phase 4 · Full dark factory</p>
+      <h2 class="compact">Specs in. Tested code merged out. Your pipeline deploys it.</h2>
+      <div class="cards c3" data-spot-group data-spot-release="4">
+        <div class="card" data-step="1" data-step-fx="spotlight"><span class="tag">Auto-merge everywhere</span><svg class="icon mid"><use href="#i-branch"/></svg><p>Expand auto-merge to every service whose scenario numbers are strong. Same three metrics, no exceptions.</p></div>
+        <div class="card" data-step="2" data-step-fx="spotlight"><span class="tag">Issue tracker → specs</span><svg class="icon mid"><use href="#i-clip"/></svg><p>Tickets tagged <code>bot:fix</code> in Jira or Trello auto-generate a spec and flow through the pipeline. Dashboards on top.</p></div>
+        <div class="card" data-step="3" data-step-fx="spotlight"><span class="tag">Digital twins</span><svg class="icon mid"><use href="#i-cloud"/></svg><p>Mock servers for external dependencies that add cost or flakiness to scenario runs. Build them only as you need them.</p></div>
+      </div>
+      <p class="caption" data-step="4">End state: engineers write specs and scenarios. The system does everything else. <b>Nothing downstream of merge changes.</b></p>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Giai đoạn 4, Dark Factory toàn phần: mở rộng tự động merge cho mọi dịch vụ đạt chỉ số. Đồng bộ với hệ thống quản lý task (Jira, Trello): thẻ gắn nhãn bot:fix tự động kích hoạt tạo spec và chạy qua pipeline.</p>
+        <p>Xây dựng Digital Twins, mock server giả lập các dịch vụ bên ngoài, để giảm chi phí và độ trễ khi chạy kiểm thử kịch bản; chỉ xây khi cần.</p>
+        <p>Trạng thái cuối: kỹ sư viết spec và kịch bản, hệ thống làm phần còn lại; mọi thứ sau merge giữ nguyên.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory" data-pillar="verify ownership">
+    <div class="slide-inner">
+      <p class="eyebrow">4 · Four-layer architecture</p>
+      <h2 class="compact">Four layers. The boundaries matter more than the guts.</h2>
+      <div class="layers">
+        <div class="layer" data-step="1"><span class="ln">Inputs</span><span class="who human">humans</span><span class="what">specs · holdout scenarios · AGENTS.md · linter rules</span></div>
+        <div class="layer" data-step="2"><span class="ln">Code generation</span><span class="who">autonomous</span><span class="what">reads spec + repo knowledge → generates, builds, tests, self-reviews, opens PR</span></div>
+        <div class="wallbar" data-step="3"><span>the wall · agent can't see scenarios · evaluator doesn't care how code was made</span></div>
+        <div class="layer" data-step="3"><span class="ln">Validation</span><span class="who iso">autonomous · isolated</span><span class="what">standard CI first, then scenario evaluator on an ephemeral deployment</span></div>
+        <div class="layer" data-step="4"><span class="ln">Merge &amp; deploy</span><span class="who">autonomous + your infra</span><span class="what">auto-merge to main, then the pipeline you already have</span></div>
+      </div>
+      <p class="caption" data-step="5"><b>Code generation and validation must be completely isolated</b>, or the agent can game the test or learn the exam by heart. Same principle as train/test separation in ML.</p>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Kiến trúc bốn lớp. Inputs, con người sở hữu: specs, kịch bản holdout, AGENTS.md, luật linter. Code Generation, tự động: agent đọc spec và ngữ cảnh repo, tự sinh mã, build, test tại chỗ, tự review và mở PR. Validation, tự động và cách ly: chạy CI truyền thống, rồi bộ đánh giá kịch bản chạy thử trên môi trường tạm thời. Merge và Deploy, tự động cộng infra sẵn có: tự merge vào nhánh chính và kích hoạt pipeline CI/CD hiện có.</p>
+        <p>Lưu ý cực kỳ quan trọng: lớp Code Generation và lớp Validation phải cách ly hoàn toàn để tránh agent gian lận hoặc học vẹt bộ đề thi.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="06 · Dark factory" data-pillar="ownership">
+    <div class="slide-inner">
+      <p class="eyebrow crit">5 · Risks and mitigations</p>
+      <h2 class="compact">Four things that go wrong, and what catches each</h2>
+      <div class="risks">
+        <div class="risk" data-step="1"><span class="bad">The evaluator approves broken code</span><span class="fix">3 runs per scenario · 90% pass gate · manual audit of the first 50 PRs · the traditional CI/CD suite still runs after merge</span></div>
+        <div class="risk" data-step="2"><span class="bad">Engineers resist: identity is tied to writing code</span><span class="fix">Shift the role up: defining the product and controlling quality is higher-level product engineering, not less engineering</span></div>
+        <div class="risk" data-step="3"><span class="bad">API costs climb with retries</span><span class="fix">Hard cap of 3 attempts per spec · token monitoring with alerts</span></div>
+        <div class="risk" data-step="4"><span class="bad">Scenarios go stale as APIs change</span><span class="fix">LLM evaluation adapts to API shape without glue code · weekly upkeep by maintenance agents</span></div>
+      </div>
+      <div class="callout" data-step="5" data-pulse-on="5" data-pulse="shake">
+        <span class="tag">Still true at every level</span>
+        <p>An agent with the wrong write access <strong>wiped <span class="n" data-count="1.9" data-decimals="1" data-duration="600">1.9</span> million production rows.</strong> <span class="hi" data-step-class="5:is-crit">You still own the incident.</span></p>
+      </div>
+      <div class="notes">
+        <div class="notes-label">Say</div>
+        <p>Bộ đánh giá duyệt nhầm code lỗi: giảm thiểu bằng chạy kịch bản 3 lần, cổng pass 90%, kiểm toán thủ công 50 PR đầu tiên, và giữ nguyên bộ CI/CD truyền thống chạy sau merge.</p>
+        <p>Kháng cự từ đội ngũ kỹ sư: kỹ sư gắn bản sắc cá nhân với việc trực tiếp viết code. Giải pháp là chuyển dịch vai trò sang định nghĩa sản phẩm và kiểm soát chất lượng, kỹ thuật sản phẩm cao cấp hơn.</p>
+        <p>Chi phí API tăng cao: giới hạn cứng tối đa 3 lần thử lại cho mỗi spec, giám sát token kèm cảnh báo.</p>
+        <p>Kịch bản kiểm thử lỗi thời: đánh giá bằng LLM tự thích ứng với thay đổi cấu trúc API mà không cần bảo trì glue code, kết hợp bảo trì hằng tuần bởi agent chuyên trách.</p>
+        <p>Giữ sự cố 1,9 triệu dòng để nhắc: dù tự động đến đâu, người cấp quyền vẫn sở hữu sự cố.</p>
       </div>
     </div>
   </section>
@@ -810,7 +1038,6 @@
       <dt>→ ↓ space j</dt><dd>Next step, then next slide</dd>
       <dt>← ↑ k</dt><dd>Previous step / slide</dd>
       <dt>r</dt><dd>Reset this slide's steps</dd>
-      <dt>d</dt><dd>Run the ReDoS demo (slide 23)</dd>
       <dt>home / end</dt><dd>First / last slide</dd>
       <dt>o</dt><dd>Overview grid</dd>
       <dt>n</dt><dd>Speaker notes</dd>
