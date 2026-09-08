@@ -408,7 +408,6 @@
         <div class="notes-label">Say</div>
         <p>Bốn pattern mọi agentic coding tool đều dùng, và với mỗi cái: làm gì, hỏng ở đâu, bước SOP nào bịt chỗ hỏng. Planner/Executor = Explore→Plan→Code→Commit (slide 12), duyệt spec trước, task nhỏ một test. Multi-agent = Writer/Reviewer (slide 15) + sub-agent chỉ trả tóm tắt (slide 11), một người ký. Memory = CLAUDE.md / todo.md ngắn và đúng, /clear khi bẩn; "agent nhớ được thì phải chịu trách nhiệm được". Tool-using = quyền tối thiểu; cài package, push, chạm production qua người (slide 16, 25).</p>
         <p>Chốt: bốn pattern giải thích vì sao checklist ở slide 21 có đúng những bước đó, và bỏ một bước là mở lại đúng một chỗ hỏng.</p>
-        <p><strong>Handoff → Nhan:</strong> "Đó là cách làm việc với AI cho đúng: context, vòng lặp nhỏ, spec trước, và biết agent chạy bằng gì bên trong. Nhưng làm nhanh mà không review được thì vô nghĩa. Phần quan trọng nhất, review và những chỗ AI hỏng âm thầm, Nhan sẽ dẫn."</p>
         <p>Nguồn: K. Vyas (LinkedIn) <em>Planner/Executor</em>, <em>Multi-Agent Collaboration</em>, <em>Memory-Augmented Agent</em>, <em>Tool-Using</em>; Anthropic <em>Building effective agents</em>.</p>
       </div>
     </div>
@@ -606,6 +605,7 @@
         <p><strong>Khung 4 bước:</strong> nạp context chuẩn (template, PR mẫu, convention, schema) → cho AI cách tự kiểm (test/build/lint) → verify rủi ro đặc thù của loại task → người ký tên trước khi merge.</p>
         <p><strong>Migration checklist (Fowler):</strong> nhỏ / tăng dần · versioned cùng code · có rollback · chạy tự động giống nhau mọi môi trường · breaking change dùng parallel change. Endpoint: validate input, auth, error handling. Integration test: chạm biên thật (DB thật / container), không mock hết.</p>
         <p>Nguồn: Fowler <em>Evolutionary Database Design</em>.</p>
+        <p><strong>Handoff → Nhân (lần duy nhất):</strong> &quot;Đến đây là toàn bộ SOP: cách đưa AI đúng context, cách kiểm chứng thứ nó viết, và ai ký tên. Câu hỏi còn lại: nếu đẩy tự động đến cùng, không còn ai đọc code, thì kỷ luật đó đi về đâu? Nhân sẽ dẫn phần Dark Factory.&quot;</p>
       </div>
     </div>
   </section>

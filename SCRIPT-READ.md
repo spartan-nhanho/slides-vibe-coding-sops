@@ -6,7 +6,7 @@ Câu chuyện của buổi, tóm trong ba câu: AI làm việc gõ code rẻ đi
 
 ---
 
-## Khối 1 · Hào · Slide 1–13
+## Phần 1 · Hào · Slide 1–21 · SOPs
 
 ### Slide 1 · Vibe Coding SOPs
 
@@ -212,11 +212,8 @@ Tool-using: agent gọi tool đọc, test, sửa, và cả cài package, push. H
 
 Bốn pattern này giải thích vì sao checklist ở phần 7.4 có đúng những bước đó, và bỏ một bước là mở lại đúng một chỗ hỏng.
 
-**Trao mic:** "Đó là cách làm việc với AI cho đúng: context, vòng lặp nhỏ, spec trước, và biết agent chạy bằng gì bên trong. Nhưng làm nhanh mà không review được thì vô nghĩa. Phần quan trọng nhất, review và những chỗ AI hỏng âm thầm, Nhân sẽ dẫn."
 
 ---
-
-## Khối 2 · Nhân · Slide 14–20
 
 ### Slide 14 · Divider · Code Review Process
 
@@ -328,11 +325,8 @@ Bên phải là một tờ ADR, Architecture Decision Record, theo template Nyga
 
 Chốt: cho AI cầm bút, đừng cho AI cầm quyền quyết. Đây là trụ Ownership.
 
-**Trao mic:** "Biết cái gì cần bắt rồi: đúng, an toàn, đủ nhanh, test có nghĩa, và AI không được quyết. Câu hỏi là làm sao bắt nó mỗi lần, kể cả lúc hai giờ sáng. Hào sẽ đưa khung SOP, rồi kể về một đội đã bỏ hẳn người ra khỏi vòng lặp như thế nào."
 
 ---
-
-## Khối 3 · Hào · Slide 21–28
 
 ### Slide 21 · SOPs for common tasks
 
@@ -348,7 +342,11 @@ Checklist cụ thể phụ thuộc stack của team, nên đây là một khung.
 
 Năm checklist đầy đủ có trong README của repo. Chốt: SOP không phải để trói tay. Nó là context đóng gói sẵn để lần sau bạn và AI làm đúng ngay từ đầu.
 
+**Trao mic (lần duy nhất):** "Đến đây là toàn bộ SOP: cách đưa AI đúng context, cách kiểm chứng thứ nó viết, và ai ký tên. Câu hỏi còn lại: nếu đẩy tự động đến cùng, không còn ai đọc code, thì kỷ luật đó đi về đâu? Nhân sẽ dẫn phần Dark Factory."
+
 ---
+
+## Phần 2 · Nhân · Slide 22–36 · Dark Factory
 
 ### Slide 22 · Even Karpathy retired "vibe coding"
 
@@ -428,11 +426,8 @@ Linter hướng dẫn hành động: viết các thông báo lỗi linter dướ
 
 Bug spec bên phải không nói tôi nghĩ thiếu null check ở dòng bốn mươi bảy. Nó nói endpoint trả năm trăm khi supplier rỗng, đáng lẽ phải trả bốn trăm với lỗi validation, và dòng cuối: đừng giả định nguyên nhân, hãy điều tra codebase. Vì spec là thứ duy nhất máy nhận, chất lượng spec quyết định chất lượng code.
 
-**Trao mic:** "Spec là đầu vào của máy. Nhưng làm sao biết code sinh ra đúng khi không ai đọc nó? Nhân sẽ nói về bức tường."
 
 ---
-
-## Khối 4 · Nhân · Slide 29–36
 
 ### Slide 29 · Phase 2 · Holdout scenarios, the core of the system
 
@@ -540,4 +535,4 @@ Giờ nhìn lại đầu buổi. Earned trust là trụ Verification mã hoá th
 
 Câu để mang về: nếu bạn không giải thích được dòng đó, nó không được vào. Đó là SOP ngắn nhất, và là bước một của mọi checklist hôm nay.
 
-Cảm ơn mọi người. Hai chúng tôi nhận câu hỏi: về workflow, AGENTS.md và spec thì Hào; về security, docs, holdout và phần tương lai thì tôi.
+Cảm ơn mọi người. Hai chúng tôi nhận câu hỏi: phần SOP thì Hào, phần Dark Factory thì tôi.

@@ -6,20 +6,14 @@
 
 Thông điệp xuyên suốt: **AI làm việc gõ code rẻ đi. Hiểu, review, và đúng thì vẫn đắt như cũ. SOP là quy trình cho phần đắt đó.** Ba trụ nhắc ở mỗi phần: **Context · Verification · Ownership.**
 
-| Khối | Slide | Người | Nội dung | Phút |
+| Phần | Slide | Người | Nội dung | Phút |
 |---|---|---|---|---|
-| 1 | 1–13 | **Hào** | Mở đầu, foundations, ReAct loop, 7.1 workflow, agent patterns | 28 |
-| 2 | 14–20 | **Nhân** | 7.2 review, security, 7.3 docs | 16 |
-| 3 | 21–28 | **Hào** | Khung SOP, Karpathy 2026, dark factory: vấn đề, cấp độ, bốn giai đoạn, giai đoạn 1, spec | 17 |
-| 4 | 29–36 | **Nhân** | Dark factory: holdout, vai trò người và giai đoạn 3, giai đoạn 4, kiến trúc, rủi ro; observability, discipline survives, close | 22 |
+| 1 · SOPs | 1–21 | **Hào** | Mở đầu, foundations, ReAct, 7.1 workflow, agent patterns, 7.2 review và security, 7.3 docs, 7.4 khung SOP | 48 |
+| 2 · Dark Factory | 22–36 | **Nhân** | Karpathy 2026, khối Dark Factory (vấn đề, cấp độ, bốn giai đoạn, kiến trúc, rủi ro), observability, discipline survives, close | 35 |
 
-Tổng khoảng 78 phút giảng, không còn bài tập và debrief. Chia dark factory tại bức tường: Hào giữ phía Context (AGENTS.md, spec), Nhân giữ phía Verification và Ownership (holdout, auto-merge theo chỉ số, rủi ro).
+Tổng khoảng 83 phút giảng. Hai phần, hai người, **một lần trao mic** sau slide 21.
 
-Ba lần trao mic:
-
-1. **Sau slide 13, Hào → Nhân:** "Đó là cách làm việc với AI cho đúng: context, vòng lặp nhỏ, spec trước, và biết agent chạy bằng gì bên trong. Nhưng làm nhanh mà không review được thì vô nghĩa. Phần quan trọng nhất, review và những chỗ AI hỏng âm thầm, Nhân sẽ dẫn."
-2. **Sau slide 20, Nhân → Hào:** "Biết cái gì cần bắt rồi: đúng, an toàn, đủ nhanh, test có nghĩa, và AI không được quyết. Câu hỏi là làm sao bắt nó mỗi lần, kể cả lúc hai giờ sáng. Hào sẽ đưa khung SOP, rồi kể về một đội đã bỏ hẳn người ra khỏi vòng lặp như thế nào."
-3. **Sau slide 28, Hào → Nhân:** "Spec là đầu vào của máy. Nhưng làm sao biết code sinh ra đúng khi không ai đọc nó? Nhân sẽ nói về bức tường."
+**Câu trao mic (sau slide 21, Hào → Nhân):** "Đến đây là toàn bộ SOP: cách đưa AI đúng context, cách kiểm chứng thứ nó viết, và ai ký tên. Câu hỏi còn lại: nếu đẩy tự động đến cùng, không còn ai đọc code, thì kỷ luật đó đi về đâu? Nhân sẽ dẫn phần Dark Factory."
 
 Mỗi slide có bốn phần: **Trên slide**, **Nội dung**, **Nếu bị hỏi** (khi có), **Nguồn**.
 
@@ -30,11 +24,11 @@ Mỗi slide có bốn phần: **Trên slide**, **Nội dung**, **Nếu bị hỏ
 | 1–4 | Title · Mindset shift · Why this matters · Three pillars | Hào |
 | 5–7 | Foundations · Hallucination · ReAct loop | Hào |
 | 8–13 | 7.1: prompts · Postgres · context · big tasks · four patterns | Hào |
-| 14–18 | 7.2: test rule · slopsquatting · OWASP · green but wrong | Nhân |
-| 19–20 | 7.3: docs · Diátaxis · ADR | Nhân |
+| 14–18 | 7.2: test rule · slopsquatting · OWASP · green but wrong | Hào |
+| 19–20 | 7.3: docs · Diátaxis · ADR | Hào |
 | 21 | 7.4 SOP frame | Hào |
-| 22 | Karpathy 2026 (cầu nối) | Hào |
-| 23–28 | Dark factory: divider · 1 vấn đề · 2 cấp độ · 3 bốn giai đoạn · giai đoạn 1 · giai đoạn 2 spec | Hào |
+| 22 | Karpathy 2026 (cầu nối) | Nhân |
+| 23–28 | Dark factory: divider · 1 vấn đề · 2 cấp độ · 3 bốn giai đoạn · giai đoạn 1 · giai đoạn 2 spec | Nhân |
 | 29–33 | Dark factory: giai đoạn 2 holdout · vai trò người và giai đoạn 3 · giai đoạn 4 · 4 kiến trúc · 5 rủi ro | Nhân |
 | 34–36 | Observability · Why the discipline survives · Close | Nhân |
 
@@ -55,7 +49,7 @@ Nhịp bấm phím của 21 slide đầu và ba slide cuối giữ như `EFFECTS
 
 ---
 
-## Khối 1 · HAO — Slide 1–13
+## Phần 1 · HAO — Slide 1–21 · SOPs
 
 ### Slide 1 · HAO — Vibe Coding SOPs
 
@@ -355,13 +349,10 @@ Câu chốt: bốn pattern không phải lý thuyết để nhớ. Chúng giải
 
 **Nguồn:** K. Vyas — *Planner/Executor*, *Multi-Agent Collaboration*, *Memory-Augmented Agent*, *Tool-Using* (LinkedIn); Anthropic — *Building effective agents*, *Claude Code Best Practices*.
 
-**Handoff → Nhân:** "Đó là cách làm việc với AI cho đúng: context, vòng lặp nhỏ, spec trước, và biết agent chạy bằng gì bên trong. Nhưng làm nhanh mà không review được thì vô nghĩa. Phần quan trọng nhất, review và những chỗ AI hỏng âm thầm, Nhân sẽ dẫn."
 
 ---
 
-## Khối 2 · NHAN — Slide 14–20
-
-### Slide 14 · NHAN — Divider 03 · 7.2 Review
+### Slide 14 · HAO — Divider 03 · 7.2 Review
 
 **Trên slide:** divider 03, nền kính lúp soi diff mờ.
 
@@ -371,7 +362,7 @@ Phần 7.2: code review. Review code AI khác review code người: code ngườ
 
 ---
 
-### Slide 15 · NHAN — "You have to test what it writes."
+### Slide 15 · HAO — "You have to test what it writes."
 
 **Trên slide:** quote gõ ra; dưới là hai pane: trái cửa sổ chat agent nói "Done ✅ all tests pass", phải terminal `node --test` in ✖ 2 failed; bước 2 ba con dấu test output / command it ran / screenshot.
 
@@ -393,7 +384,7 @@ Mẹo tổ chức Writer/Reviewer: một phiên (hoặc một agent) viết code
 
 ---
 
-### Slide 16 · NHAN — When hallucination becomes a supply-chain attack
+### Slide 16 · HAO — When hallucination becomes a supply-chain attack
 
 **Trên slide:** trái: chuỗi tấn công bốn nút LLM suggests → doesn't exist (?) → attacker squats it (skull trong registry) → npm install (đỏ, rung ở bước 4). Phải: hai số lớn 19.7% và 58% đếm lên. Caption SOP.
 
@@ -426,7 +417,7 @@ Nối về slide 6: hallucination check ở đó là lời khuyên. Ở đây n�
 
 ---
 
-### Slide 17 · NHAN — What AI generates → OWASP Top 10
+### Slide 17 · HAO — What AI generates → OWASP Top 10
 
 **Trên slide:** lưới 10 ô A01…A10, năm ô AI hay dính sáng lên theo bước (đỏ High, amber Med) với icon và 4 từ; bước 6 tấm lưới SAST hạ xuống phủ lưới.
 
@@ -456,7 +447,7 @@ SOP: đưa SAST (static application security testing) vào pipeline như một l
 
 ---
 
-### Slide 18 · NHAN — Two places AI is "green but wrong"
+### Slide 18 · HAO — Two places AI is "green but wrong"
 
 **Trên slide:** trái: sơ đồ N+1 (orders (100) tỏa 13 đường xuống users, nhãn "101 queries · 1 + N") và ba icon mùi còn lại sáng amber theo bước; phải: donut coverage 95% xanh với "0 rules verified" đỏ và dòng `expect(spy).toHaveBeenCalled()`. Badge "✓ 4 passed · on 10 rows" cố định góc phải trên, "green" trong tiêu đề đổi đỏ ở bước 7.
 
@@ -490,7 +481,7 @@ Chốt phần 7.2: AI review được style và lỗi rõ. Bốn thứ chỉ con
 
 ---
 
-### Slide 19 · NHAN — Divider 04 · 7.3 Docs
+### Slide 19 · HAO — Divider 04 · 7.3 Docs
 
 **Trên slide:** divider 04, nền sách mở mờ.
 
@@ -500,7 +491,7 @@ Phần 7.3, documentation, một slide. Nguyên tắc: cho AI cầm bút, không
 
 ---
 
-### Slide 20 · NHAN — AI drafts; a human reviews and decides
+### Slide 20 · HAO — AI drafts; a human reviews and decides
 
 **Trên slide:** trái: dòng `code → docs` an toàn / `prose → code` drift, rồi lưới Diátaxis 2×2 (trục learning↔doing, practical↔theoretical) với Tutorial / How-to / Explanation / Reference. Phải: tờ ADR-014 năm dòng, con dấu "DRAFTED BY AI" mờ, bước 4 con dấu "DECIDED BY: ____" teal.
 
@@ -526,11 +517,8 @@ Chốt: cho AI cầm bút, đừng cho AI cầm quyền quyết. Docs và ADR l�
 
 **Nguồn:** KnowledgeHut — *AI for code documentation*; Diátaxis (diataxis.fr); adr.github.io + Nygard template; Pragmatic Engineer — *Scaling engineering via RFCs*.
 
-**Handoff → Hào:** "Biết cái gì cần bắt rồi: đúng, an toàn, đủ nhanh, test có nghĩa, và AI không được quyết. Câu hỏi là làm sao bắt nó mỗi lần, kể cả lúc hai giờ sáng. Hào sẽ đưa khung SOP, rồi kể về một đội đã bỏ hẳn người ra khỏi vòng lặp như thế nào."
 
 ---
-
-## Khối 3 · HAO — Slide 21–28
 
 ### Slide 21 · HAO — Divider 05 · SOPs for common tasks
 
@@ -575,9 +563,13 @@ Chốt: SOP không phải để trói tay. Nó là context đóng gói sẵn đ�
 
 **Nguồn:** Fowler — *Evolutionary Database Design*; README của repo (SOP-1 đến SOP-5).
 
+**Handoff → Nhân (lần duy nhất):** "Đến đây là toàn bộ SOP: cách đưa AI đúng context, cách kiểm chứng thứ nó viết, và ai ký tên. Câu hỏi còn lại: nếu đẩy tự động đến cùng, không còn ai đọc code, thì kỷ luật đó đi về đâu? Nhân sẽ dẫn phần Dark Factory."
+
 ---
 
-### Slide 22 · HAO — Even Karpathy retired "vibe coding"
+## Phần 2 · NHAN — Slide 22–36 · Dark Factory
+
+### Slide 22 · NHAN — Even Karpathy retired "vibe coding"
 
 **Trên slide:** trái: dòng thời gian, thẻ "vibe coding · Feb 2025" bị gạch đỏ và mờ ở bước 1, thẻ "Agentic Engineering · Mar 2026" sáng teal, đường kéo dài mờ dần tới dấu "?". Phải: tiêu đề, lede, caption "→ the dark factory." gõ ra; nền tối dần.
 
@@ -593,7 +585,7 @@ Cây cầu sang slide sau: nếu mức tự động cứ tăng, agent làm nhi�
 
 ---
 
-### Slide 23 · HAO — Divider · The Dark Factory
+### Slide 23 · NHAN — Divider · The Dark Factory
 
 **Trên slide:** 06 · THE DARK FACTORY · *When no human writes, reviews, or tests the code.* No human writes, reviews, or manually tests code. Humans write specs and acceptance criteria; automated systems do the rest.
 
@@ -607,7 +599,7 @@ Khối này đi qua năm mục: vấn đề thực tế của việc áp dụng 
 
 ---
 
-### Slide 24 · HAO — 1 · The problem with AI adoption today
+### Slide 24 · NHAN — 1 · The problem with AI adoption today
 
 **Trên slide:** Headline **Faster typing only moves the bottleneck downstream** · bảng: waiting for human review 2–8 h · review back-and-forth 30–90 min · manual testing on localhost 30–60 min · investigating production bugs 30 min–2 h · writing boilerplate hours · caption: already Level 2, tracked two weeks, still this.
 
@@ -623,7 +615,7 @@ Kết luận: mới tự động hoá được việc gõ, và chỉ việc gõ.
 
 ---
 
-### Slide 25 · HAO — 2 · Autonomy levels
+### Slide 25 · NHAN — 2 · Autonomy levels
 
 **Trên slide:** Headline **Five levels, borrowed from self-driving cars** · Level 1 autocomplete · Level 2 whole files, you review every change (you are here) · Level 3 spec → code, holdout scenarios gate, you approve merge · Level 3.5 some services auto-merge · Level 4 full dark factory · caption: most teams at Level 2.
 
@@ -639,7 +631,7 @@ Khoảng cách khó nhất là từ cấp hai lên cấp ba, vì đó là lúc p
 
 ---
 
-### Slide 26 · HAO — 3 · Phased rollout
+### Slide 26 · NHAN — 3 · Phased rollout
 
 **Trên slide:** Headline **Four phases. Each one pays off on its own.** · Phase 1 context optimization · Phase 2 spec-driven + holdout · Phase 3 remove the human gate · Phase 4 full dark factory · caption: nothing downstream of merge changes.
 
@@ -651,7 +643,7 @@ Quy trình triển khai bốn giai đoạn. Mỗi giai đoạn đều tự mang 
 
 ---
 
-### Slide 27 · HAO — Phase 1 · Context optimization
+### Slide 27 · NHAN — Phase 1 · Context optimization
 
 **Trên slide:** Headline **Give the agent the right context, not more context** · AGENTS.md mẫu ~100 dòng · card progressive-disclosure docs · card build-before-push · card linters that talk to agents với before/after: ✗ "Service layer depends on controller layer." ✓ "Move the shared type to the model package."
 
@@ -669,7 +661,7 @@ Linter hướng dẫn hành động: viết các thông báo lỗi linter dướ
 
 ---
 
-### Slide 28 · HAO — Phase 2 · Spec-driven development
+### Slide 28 · NHAN — Phase 2 · Spec-driven development
 
 **Trên slide:** Headline **Specs in Markdown: features describe requirements, bugs describe symptoms** · feature spec (goal, requirements, constraints) · bug spec (symptom, expected, "Do not assume the root cause. Investigate the codebase.").
 
@@ -679,13 +671,10 @@ Giai đoạn hai: phát triển hướng đặc tả. Đặc tả dạng Markdow
 
 Bug spec bên phải không nói tôi nghĩ thiếu null check ở dòng bốn mươi bảy. Nó nói endpoint trả năm trăm khi supplier rỗng, đáng lẽ phải trả bốn trăm với lỗi validation, và dòng cuối: đừng giả định nguyên nhân, hãy điều tra codebase. Vì spec là thứ duy nhất máy nhận, chất lượng spec quyết định chất lượng code.
 
-**Handoff → Nhân:** "Spec là đầu vào của máy. Nhưng làm sao biết code sinh ra đúng khi không ai đọc nó? Nhân sẽ nói về bức tường."
 
 **Nguồn:** Bản tóm tắt, mục 3, giai đoạn 2.
 
 ---
-
-## Khối 4 · NHAN — Slide 29–36
 
 ### Slide 29 · NHAN — Phase 2 · Holdout scenarios, the core of the system
 
@@ -834,7 +823,7 @@ Bạn là người ký. Ba trụ gói lại thành một câu: tốc độ là p
 
 Câu để mang về: nếu bạn không giải thích được dòng đó, nó không được vào. Đó là SOP ngắn nhất, và là bước một của mọi checklist hôm nay.
 
-Kết thúc, hai người cùng nhận câu hỏi: workflow, AGENTS.md và spec thì Hào; security, docs, holdout và phần tương lai thì Nhân.
+Kết thúc, hai người cùng nhận câu hỏi: phần SOP thì Hào, phần Dark Factory thì Nhân.
 
 ---
 
