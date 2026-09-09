@@ -716,6 +716,17 @@ table.grid.dense td { padding: 0.6rem 0.9rem 0.6rem 0; }
 table.grid.dense td:last-child { white-space: normal; }
 table.grid.dense td:first-child { white-space: nowrap; }
 
+/* slide 35: by-hand vs mechanism */
+table.grid.sameh { margin-top: 1.2rem; table-layout: fixed; width: 100%; }
+table.grid.sameh th:first-child, table.grid.sameh td:first-child { width: 9.5rem; }
+table.grid.sameh td { vertical-align: top; padding-right: 1.6rem; }
+table.grid.sameh td:last-child { white-space: normal; }
+table.grid.sameh td:nth-child(3) { color: var(--text); }
+table.grid.sameh th:nth-child(3) { color: var(--accent); }
+table.grid.sameh .pk { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--display); font-weight: 700; color: var(--accent); }
+table.grid.sameh .pk .icon { width: 1.1em; height: 1.1em; }
+table.grid.sameh code { font-size: 0.92em; }
+
 /* ---------- chips ---------- */
 
 .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }

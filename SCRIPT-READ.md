@@ -608,21 +608,25 @@ Stack ở dòng cuối: OpenTelemetry, Jaeger, Prometheus, Grafana. Chính là s
 
 ---
 
-### Slide 35 · Full autonomy doesn't remove humans, it changes their shape
+### Slide 35 · Same discipline, different hands
 
-**Hiểu trước khi nói.** Cú lật của cái kết. Earned trust: quyền của agent mở dần theo độ tin cậy đã chứng minh, read-only rồi write vào branch rồi staging rồi production; giới hạn blast radius mỗi agent bằng quyền tối thiểu và tách credential. DeepSeek Harness: harness là lớp bao quanh model (vòng lặp gọi tool, quản context, ghi log); harness mã nguồn mở này theo triết lý mọi thứ là plugin và có session log append-only, inspect được, mọi prompt, tool call, context, token. Nối về đầu buổi: earned trust là trụ Verification bằng cơ chế, audit trail là trụ Ownership bằng cơ chế. SOP hôm nay là bản thủ công của cùng kỷ luật; người viết guardrail phải hiểu SOP. Framing bắt buộc: review đổi hình, không phải hết cần review.
+**Hiểu trước khi nói.** Cú lật của cái kết. Bảng ba hàng theo ba trụ, hai cột: làm tay (phần Hào) và cơ chế (dark factory). Context: dán context vào prompt ↔ AGENTS.md nạp mỗi phiên, linter chỉ cách sửa. Verify: tự chạy test, tách writer/reviewer ↔ holdout agent không thấy, 2/3, 90%, cách ly generator và judge. Own: ký commit, duyệt merge ↔ auto-merge sau 20 PR chứng minh, audit log chỉ nối thêm, người giữ cần gạt. Earned trust (quyền agent mở dần theo hành vi: read-only → branch → staging → production) nằm trong ô Own. Mỗi hàng là một phím; hàng thứ tư là caption chốt.
 
-**Nói đơn giản.** Tự động hoàn toàn không bỏ con người, chỉ đổi việc của con người: từ đọc từng dòng sang đặt giới hạn quyền và đọc log. Ba trụ đầu buổi vẫn còn nguyên, chỉ chuyển từ làm tay sang làm bằng máy.
+**Nói đơn giản.** Tự động hoàn toàn không bỏ kỷ luật, chỉ đổi người thực hiện: từ tay người sang cơ chế của máy. Ba trụ đầu buổi vẫn còn nguyên, và người xây cơ chế phải hiểu kỷ luật trước.
 
 **Đọc.** Đây là cú lật của cái kết, và là chỗ tôi muốn nói chậm nhất.
 
-Sau mười slide về dark factory, có thể ai đó đang nghĩ: vậy tương lai là không cần review, không cần SOP, học hôm nay làm gì. Câu trả lời: tự động hoàn toàn không bỏ con người ra khỏi hệ thống. Nó đổi hình con người. Review không mất; review đổi từ đọc từng PR sang thiết kế cổng và đọc log.
+Sau mười slide về dark factory, có thể ai đó đang nghĩ: vậy tương lai là không cần review, không cần SOP, học hôm nay làm gì. Tôi muốn trả lời bằng một bảng thay vì bằng lời. Cột trái là thứ Hào dạy các bạn một tiếng trước, làm bằng tay. Cột phải là thứ các bạn vừa thấy trong mười slide, làm bằng máy. Đi từng hàng.
 
-Cầu thang bên trái là earned trust, niềm tin phải kiếm được. Không ai giao production cho agent ngày đầu. Quyền mở dần theo độ tin cậy đã chứng minh. Bậc một, read-only: agent chỉ đọc và đề xuất. Bậc hai, write vào branch: agent tạo PR, người merge. Bậc ba, staging: agent deploy lên môi trường thử. Bậc bốn, production: agent deploy thật, có giới hạn, và nhìn hình người trên cùng, một người vẫn giữ cần gạt. Mỗi bậc là một giai đoạn quan sát: làm đúng đủ lâu thì mở bậc tiếp. Đây chính là ba con số của giai đoạn ba, chỉ khác là vẽ thành cầu thang. Và giới hạn blast radius của mỗi agent: quyền tối thiểu cho việc của nó, tách credential, không có quyền xoá hàng loạt nếu việc không cần. Đó là bài học một phẩy chín triệu dòng.
+Hàng Context. Bên trái, Hào bảo: dán schema, dán test đang fail, dán convention vào prompt; giữ CLAUDE.md ngắn và đúng. Bên phải, dark factory có AGENTS.md và thư mục docs nạp vào mỗi phiên, và linter nói luôn cách sửa. Nhìn kỹ: cùng một việc. Đưa đúng thông tin vào đúng lúc. Chỉ khác là bên trái bạn dán bằng tay mỗi lần, bên phải viết một lần và máy nạp mãi.
 
-Bên phải là DeepSeek Harness, một harness agent mã nguồn mở. Harness là lớp bao quanh model: vòng lặp gọi tool, quản context, ghi log. Triết lý mọi thứ là plugin, kể cả vòng lặp agent, nên từng phần thay được và kiểm được riêng. Điểm cho bài này: session log append-only, inspect được. Mọi prompt, mọi tool call, mọi context đã nạp, mọi token. Không sửa được, không xoá được. Nhìn dãy khối: chỉ nối thêm, không bao giờ bớt.
+Hàng Verify. Bên trái: tự chạy test, đòi output chứ không nhận chữ "done", tách phiên viết và phiên review. Bên phải: holdout scenario mà agent không bao giờ thấy, chạy ba lấy hai, cổng chín mươi phần trăm, lớp sinh code cách ly khỏi lớp chấm. Cùng một việc: không tin lời, chỉ tin bằng chứng từ một nguồn độc lập. Tách writer và reviewer ở slide mười lăm chính là bức tường ở slide hai mươi chín, chỉ là xây bằng thói quen thay vì bằng quyền truy cập.
 
-Giờ nhìn lại đầu buổi, ba chấm C V O sáng cả ba. Earned trust là trụ Verification mã hoá thành cơ chế: không tin lời, chỉ tin hành vi đã quan sát. Audit trail là trụ Ownership mã hoá thành cơ chế: mọi hành động có người chịu trách nhiệm truy ra được. AGENTS.md là trụ Context mã hoá thành file. SOP mà Hào dạy hôm nay là bản thủ công của cùng một kỷ luật. Hôm nay bạn chạy checklist bằng tay. Ngày mai bạn viết checklist đó thành guardrail và cổng cho agent. Và người viết guardrail phải hiểu SOP, vì guardrail chính là SOP.
+Hàng Own. Bên trái: bạn ký commit, bạn quyết ADR, bạn bấm merge. Bên phải: auto-merge chỉ được bật sau hai mươi PR chứng minh bằng ba con số; audit log chỉ nối thêm, không sửa, không xoá; và người vẫn giữ cần gạt, vẫn chặn được PR trước khi cửa sổ đóng. Cùng một việc: mọi hành động có người chịu trách nhiệm truy ra được. Quyền của máy mở dần theo hành vi đã quan sát, không theo tuyên bố. Người ta gọi là earned trust, niềm tin phải kiếm được.
+
+Có ai thấy hàng nào ở cột phải mà không có gốc ở cột trái không? Tôi tìm mãi không thấy. Đó là điểm của slide này.
+
+Giờ nhìn ba chấm C V O ở góc, sáng cả ba. Kỷ luật không biến mất trên đường đến dark factory. Nó đổi hình. Hôm nay bạn chạy checklist bằng tay. Ngày mai bạn viết checklist đó thành cổng cho agent. Và người viết cổng phải hiểu checklist, vì cổng chính là checklist. Ai không hiểu vì sao phải tách writer và reviewer thì sẽ không hiểu vì sao phải cách ly generator và judge, và sẽ xây một cổng cho agent xem đề thi.
 
 Kỷ luật scale lên. Nó không biến mất. Đó là câu tôi muốn mọi người mang về từ phần Dark Factory.
 

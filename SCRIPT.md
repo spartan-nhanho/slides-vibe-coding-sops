@@ -778,7 +778,7 @@ Khối dark factory vừa để lại câu hỏi: nếu agent tự chạy không
 
 Nguyên tắc: observability phải là lớp thiết kế từ đầu, không phải monitoring gắn thêm sau khi có sự cố. Câu bài gốc: nếu bạn không quan sát được hành vi của agent, bạn không thể tin nó.
 
-Nối sang slide 5: DeepSeek Harness với session log append-only là một hiện thân cụ thể của lớp audit này. Và nhìn về đầu buổi: đây là trụ Ownership chuyển từ "người ký tên trên PR" thành "hệ thống ghi lại ai đã làm gì, không xoá được".
+Nối sang slide 35: audit log chỉ nối thêm là ô Own trong bảng đối chiếu. Và nhìn về đầu buổi: đây là trụ Ownership chuyển từ "người ký tên trên PR" thành "hệ thống ghi lại ai đã làm gì, không xoá được".
 
 **Nếu bị hỏi**
 - *"Coding tool hiện tại có log kiểu này không?"* Hầu hết ghi lại lịch sử phiên và tool call ở mức cơ bản. Trace id, metric, audit chống sửa thì chưa phải chuẩn; đó là khoảng cách giữa tool cá nhân và agent chạy trong tổ chức.
@@ -788,28 +788,30 @@ Nối sang slide 5: DeepSeek Harness với session log append-only là một hi�
 
 ---
 
-### Slide 35 · NHAN — Full autonomy doesn't remove humans — it changes their shape
+### Slide 35 · NHAN — Same discipline, different hands
 
-**Trên slide:** trái: cầu thang bốn bậc read-only → write-to-branch → staging → production, ba ổ khoá mở xanh, bậc cuối ổ khoá amber và hình người "a human holds the lever"; phải: Earned trust, Append-only log với dãy khối #1…#4 nối thêm. Caption peak; hàng ba icon trụ sáng cả ba ở bước 3, HUD sáng cả ba.
+**Trên slide:** bảng ba hàng Context / Verify / Own, hai cột: *By hand · part one* (SOP của Hào) và *As mechanism · part two* (dark factory). Mỗi hàng hiện theo một phím, HUD sáng dần C → V → O. Caption peak: "The discipline did not disappear. It scaled." Hàng ba icon trụ sáng cả ba ở bước 4.
 
 **Nội dung**
 
-Cú lật của cái kết: tự động hoàn toàn không bỏ con người ra khỏi hệ thống. Nó đổi hình con người. Review không mất; review đổi từ đọc từng PR sang thiết kế cổng và đọc log.
+Cú lật của cái kết: tự động hoàn toàn không bỏ kỷ luật đi, nó chuyển kỷ luật từ tay người sang cơ chế của máy. Đi từng hàng, cột trái là thứ Hào dạy làm tay một tiếng trước, cột phải là thứ vừa thấy trong mười slide dark factory.
 
-**Earned trust.** Không ai giao production cho agent ngày đầu. Quyền được mở dần theo độ tin cậy đã chứng minh: read-only (agent chỉ đọc và đề xuất) → write vào branch (agent tạo PR, người merge) → staging (agent deploy lên môi trường thử) → production (agent deploy thật, có giới hạn). Mỗi nấc là một giai đoạn quan sát: agent làm đúng đủ lâu thì mở nấc tiếp. Và giới hạn blast radius của mỗi agent: quyền tối thiểu cần cho việc của nó, tách credential, không có quyền xoá hàng loạt nếu việc không cần. Đó là bài học 1.9 triệu dòng: thiệt hại của quyền ghi sai không có trần.
+**Context.** Làm tay: dán schema, test đang fail, convention vào prompt; giữ CLAUDE.md ngắn và đúng. Cơ chế: AGENTS.md và docs/ nạp mỗi phiên; linter chỉ cách sửa chứ không chỉ báo lỗi. Cùng một việc: đưa đúng thông tin vào đúng lúc.
 
-**DeepSeek Harness.** Một harness agent mã nguồn mở (harness là lớp bao quanh model: vòng lặp gọi tool, quản context, ghi log). Triết lý "mọi thứ là plugin", kể cả vòng lặp agent, nên từng phần thay được và kiểm được riêng. Điểm quan trọng cho bài này: session log append-only, inspect được: mọi prompt, mọi tool call, mọi context đã nạp, mọi token. Không sửa được, không xoá được, đọc lại được. Khi agent tự chạy không ai xem, log là thứ cho phép trả lời sau đó: nó đã thấy gì, quyết gì, vì sao.
+**Verify.** Làm tay: tự chạy test, đòi output thay vì chữ "done", tách writer và reviewer thành hai phiên. Cơ chế: holdout scenario agent không bao giờ thấy, 2/3 lần chạy, cổng 90%, lớp sinh code cách ly khỏi lớp chấm. Cùng một việc: không tin lời, chỉ tin bằng chứng từ nguồn độc lập.
 
-**Nối về đầu buổi.** Earned trust là trụ Verification mã hoá thành cơ chế: không tin lời, chỉ tin hành vi đã quan sát. Audit trail là trụ Ownership mã hoá thành cơ chế: mọi hành động có người chịu trách nhiệm truy ra được. SOP hôm nay là bản thủ công của cùng một kỷ luật. Hôm nay bạn chạy checklist bằng tay; ngày mai bạn viết checklist đó thành guardrail và cổng cho agent. Người viết guardrail phải hiểu SOP, vì guardrail chính là SOP. Kỷ luật scale lên; nó không biến mất.
+**Own.** Làm tay: ký commit, quyết ADR, bấm merge. Cơ chế: auto-merge chỉ sau 20 PR chứng minh bằng ba con số; audit log chỉ nối thêm; người vẫn giữ cần gạt và chặn được PR. Cùng một việc: mọi hành động có người chịu trách nhiệm truy ra được.
 
-Câu bắt buộc: "review đổi hình", không bao giờ "hết cần review".
+**Chốt.** Kỷ luật không biến mất, nó scale. Hôm nay bạn chạy checklist bằng tay; ngày mai bạn viết checklist đó thành cổng cho agent. Người viết cổng phải hiểu checklist, vì cổng chính là checklist.
+
+Câu bắt buộc: "kỷ luật đổi hình", không bao giờ "hết cần review".
 
 **Nếu bị hỏi**
-- *"Học SOP làm gì nếu tương lai là agent?"* Vì guardrail của agent là SOP được mã hoá, và người viết guardrail phải hiểu SOP. Hơn nữa, hầu hết team ở L2 đến L4 nhiều năm nữa, nơi con người vẫn ký.
-- *"DeepSeek Harness dùng được ngay không?"* Mã nguồn mở trên GitHub (`deepseek-ai/deepseek-harness`). Ở đây nó là ví dụ về nguyên tắc audit trail, không phải khuyến nghị tool.
-- *"Nhóm mình đang ở nấc nào?"* PR do agent viết có người đọc từng dòng không? Có thì L2. Test, lint, SAST tự chặn không? Có thì L3.
+- *"Học SOP làm gì nếu tương lai là agent?"* Vì cổng của agent là SOP được mã hoá, và người viết cổng phải hiểu SOP. Hơn nữa, hầu hết team ở nấc 2 nhiều năm nữa, nơi con người vẫn ký.
+- *"Nhóm mình đang ở nấc nào?"* PR do agent viết có người đọc từng dòng không? Có thì nấc 2. Có bộ kiểm chứng độc lập thay người đọc chưa? Chưa thì chưa lên nấc 3.
+- *"Earned trust là gì?"* Quyền của agent mở dần theo hành vi đã quan sát: read-only → write vào branch → staging → production. Chính là ba con số của giai đoạn 3 vẽ thành cầu thang.
 
-**Nguồn:** MindStudio (progressive autonomy, guardrails); DeepSeek Harness (GitHub `deepseek-ai/deepseek-harness`) + The New Stack.
+**Nguồn:** tổng hợp từ phần 1 (slides 9–21) và khối Dark Factory (slides 27–33); earned trust từ MindStudio (progressive autonomy).
 
 ---
 
@@ -855,5 +857,5 @@ Kết thúc, hai người cùng nhận câu hỏi: phần SOP thì Hào, phần 
 - KnowledgeHut — *AI for code documentation*; Diátaxis (diataxis.fr); adr.github.io + Nygard template; Pragmatic Engineer — *Scaling via RFCs*
 - Martin Fowler — *Evolutionary Database Design*
 - Forbes / AI Incident Database — Samsung (5/2023)
-- MindStudio — *What is a Dark Factory*; HackerNoon — *The Dark Factory Pattern*; DeepSeek Harness (`deepseek-ai/deepseek-harness`) + The New Stack
+- MindStudio — *What is a Dark Factory*; HackerNoon — *The Dark Factory Pattern*
 - Trong repo: `SLIDE-PLAN.md`, `README.md` (SOP-1 đến SOP-5), `legacy-rescue/SPEC.md`, `legacy-rescue/INSTRUCTOR.md`

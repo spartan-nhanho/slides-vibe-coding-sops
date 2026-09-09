@@ -973,29 +973,37 @@ Errors should mention disallowed statement types.</pre>
   <section class="slide" data-section="Frontier" data-pillar="context verify ownership">
     <div class="slide-inner">
       <p class="eyebrow">Why the discipline survives</p>
-      <h2 class="compact">Full autonomy doesn't remove humans — it changes their shape</h2>
-      <div class="fig-left" data-step-hud="1:verify 2:ownership 3:all">
-        <svg class="fig stairs" viewBox="0 0 420 220" data-step="1">
-          <g data-stagger="260">
-            <g><rect class="step-r on" x="10" y="170" width="100" height="40" rx="3"/><text class="t" x="60" y="195" text-anchor="middle" style="font-size:10px">read-only</text><svg class="icon" x="16" y="146" width="18" height="18" style="color:var(--good)"><use href="#i-unlock"/></svg></g>
-            <g><rect class="step-r on" x="110" y="130" width="100" height="80" rx="3"/><text class="t" x="160" y="175" text-anchor="middle" style="font-size:10px">write-to-branch</text><svg class="icon" x="116" y="106" width="18" height="18" style="color:var(--good)"><use href="#i-unlock"/></svg></g>
-            <g><rect class="step-r on" x="210" y="90" width="100" height="120" rx="3"/><text class="t" x="260" y="155" text-anchor="middle" style="font-size:10px">staging</text><svg class="icon" x="216" y="66" width="18" height="18" style="color:var(--good)"><use href="#i-unlock"/></svg></g>
-            <g><rect class="step-r" x="310" y="50" width="100" height="160" rx="3"/><text class="t" x="360" y="135" text-anchor="middle" style="font-size:10px">production</text><svg class="icon" x="316" y="26" width="18" height="18" style="color:var(--warn)"><use href="#i-lock"/></svg><path d="M372 30a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-6 14a6 6 0 0 1 12 0M378 24l12-6"/><text class="f" x="360" y="14" text-anchor="middle" style="font-size:9px">a human holds the lever</text></g>
-          </g>
-          <text class="g" x="10" y="22" style="font-size:9px">access expands by proven reliability →</text>
-        </svg>
-        <div>
-          <div data-step="1"><b class="hi is-lit">Earned trust</b><p class="small">No production on day one. Limit each agent's blast radius.</p></div>
-          <div data-step="2"><b class="hi is-lit">Append-only log</b><p class="small">DeepSeek Harness: every prompt, tool call, token — auditable even when nobody watches.</p>
-            <div class="applog" data-step-class="2:is-appended"><span class="lock">🔒</span><i>#1</i><i>#2</i><i>#3</i><i class="new">#4</i></div></div>
-        </div>
-      </div>
-      <p class="caption peak" data-step="3"><b>Today's SOP = the manual version of the same discipline.</b> Verification + Ownership, encoded into guardrails + audit trails. Discipline scales — it doesn't vanish.</p>
-      <div class="pillars-row" data-step-class="3:is-on"><span class="p"><svg class="icon"><use href="#i-brain"/></svg>Context</span><span class="p"><svg class="icon"><use href="#i-shield"/></svg>Verification</span><span class="p"><svg class="icon"><use href="#i-pen"/></svg>Ownership</span></div>
+      <h2 class="compact">Same discipline, different hands</h2>
+      <p class="lede">Nothing was removed on the way to the dark factory. Each habit from part one became a mechanism in part two.</p>
+      <table class="grid dense sameh" data-step-hud="1:context 2:verify 3:ownership 4:all">
+        <thead>
+          <tr><th></th><th>By hand · part one</th><th>As mechanism · part two</th></tr>
+        </thead>
+        <tbody>
+          <tr data-step="1">
+            <td><span class="pk"><svg class="icon"><use href="#i-brain"/></svg>Context</span></td>
+            <td>Paste the schema, the failing test, the convention into the prompt. Keep <code>CLAUDE.md</code> short and true.</td>
+            <td><code>AGENTS.md</code> + <code>docs/</code> loaded every session. A linter that tells the agent how to fix, not just what is wrong.</td>
+          </tr>
+          <tr data-step="2">
+            <td><span class="pk"><svg class="icon"><use href="#i-check"/></svg>Verify</span></td>
+            <td>Run the test yourself. Demand output, not "done". Split writer and reviewer.</td>
+            <td>Holdout scenarios the agent never sees. 2 of 3 runs, 90% gate. Generator isolated from judge.</td>
+          </tr>
+          <tr data-step="3">
+            <td><span class="pk"><svg class="icon"><use href="#i-stamp"/></svg>Own</span></td>
+            <td>You sign the commit. You decide the ADR. You approve the merge.</td>
+            <td>Auto-merge only after 20 PRs prove it. Append-only audit log. A human still holds the lever.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="caption peak" data-step="4"><b>The discipline did not disappear. It scaled.</b> Today you run the checklist by hand. Tomorrow you write it into the gates — and whoever writes the gates has to know the checklist.</p>
+      <div class="pillars-row" data-step-class="4:is-on"><span class="p"><svg class="icon"><use href="#i-brain"/></svg>Context</span><span class="p"><svg class="icon"><use href="#i-check"/></svg>Verification</span><span class="p"><svg class="icon"><use href="#i-stamp"/></svg>Ownership</span></div>
       <div class="notes">
         <div class="notes-label">Say · load-bearing</div>
-        <p>⚠️ Cú lật quan trọng nhất của cái kết. Framing bắt buộc: nói <strong>"review đổi hình"</strong>, KHÔNG nói "hết cần review". Nối thẳng về 3 trụ đầu buổi: Context · Verification · Ownership. KHÔNG được lướt slide này — đừng vội.</p>
-        <p>Nguồn: MindStudio (progressive autonomy, guardrails); DeepSeek Harness (GitHub <code>deepseek-ai/deepseek-harness</code>) + The New Stack.</p>
+        <p>⚠️ Cú lật của cái kết. Framing bắt buộc: nói <strong>"kỷ luật đổi hình"</strong>, KHÔNG nói "hết cần review". Đi từng hàng: cột trái là thứ Hào dạy làm tay, cột phải là thứ vừa thấy trong dark factory. Cùng một trụ, hai đôi tay.</p>
+        <p>Context: dán schema và test vào prompt ↔ AGENTS.md nạp mỗi phiên, linter chỉ cách sửa. Verify: tự chạy test, tách writer/reviewer ↔ holdout agent không thấy, 2/3, 90%, cách ly generator và judge. Own: ký commit, duyệt merge ↔ auto-merge sau 20 PR chứng minh, audit log chỉ nối thêm, người vẫn giữ cần gạt.</p>
+        <p>Chốt: kỷ luật không mất, nó scale. Ai viết cổng phải hiểu checklist, vì cổng chính là checklist.</p>
       </div>
     </div>
   </section>
